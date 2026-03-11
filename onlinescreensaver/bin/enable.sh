@@ -18,6 +18,16 @@ else
 	exit 1
 fi
 
+# Handle interval override from argument
+INTERVAL=$1
+if [ -n "$INTERVAL" ]; then
+	logger "Setting forced interval to $INTERVAL minutes"
+	sed -i "s/^FORCE_INTERVAL=.*/FORCE_INTERVAL=$INTERVAL/" config.sh
+else
+	logger "Clearing forced interval (using default schedule)"
+	sed -i "s/^FORCE_INTERVAL=.*/FORCE_INTERVAL=/" config.sh
+fi
+
 if [ -e /etc/upstart ]; then
 	logger "Enabling online screensaver auto-update (upstart)"
 

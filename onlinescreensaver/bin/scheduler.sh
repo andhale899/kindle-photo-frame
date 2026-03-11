@@ -106,7 +106,13 @@ while [ 1 -eq 1 ]; do
 	sh ./update.sh
 	
 	# Wait until next scheduled update time
-	WAITMINUTES=$(get_time_to_next_update)
+	if [ -n "$FORCE_INTERVAL" ] && [ "$FORCE_INTERVAL" -eq "$FORCE_INTERVAL" ] 2>/dev/null; then
+		WAITMINUTES=$FORCE_INTERVAL
+		logger "Forced interval active: next update in $WAITMINUTES minutes"
+	else
+		WAITMINUTES=$(get_time_to_next_update)
+	fi
+	
 	logger "Sleeping for $WAITMINUTES minutes"
 	wait_for $(( 60 * $WAITMINUTES ))
 done
