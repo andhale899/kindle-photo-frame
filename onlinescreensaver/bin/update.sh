@@ -115,11 +115,7 @@ if [ 1 -eq $CONNECTED ]; then
 				# Show battery on screen
 				batt=$(powerd_test -s | awk -F: '/Battery Level: / {print $2}' | awk -F' |%' '{print $2}')
 				eips 40 39 "Batt:${batt}%"
-			)
 		fi
-
-		# Force LinkSS to "see" the new images
-		touch /mnt/us/linkss/reboot
 	fi
 fi
 
