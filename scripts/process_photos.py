@@ -44,6 +44,8 @@ FONT_CANDIDATES = [
     "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
     "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
     "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
+    "C:\\Windows\\Fonts\\arialbd.ttf",
+    "C:\\Windows\\Fonts\\arial.ttf",
     "/System/Library/Fonts/Helvetica.ttc",
     "/System/Library/Fonts/Arial.ttf",
 ]
@@ -137,30 +139,50 @@ def to_kindle_grayscale(img: Image.Image) -> Image.Image:
     return gray.filter(ImageFilter.UnsharpMask(radius=1.2, percent=110, threshold=3))
 
 
-def draw_overlay(img: Image.Image, date_text: str, weather_text: str, cfg: dict) -> Image.Image:
+def draw_overlay(img: Image.Image, date_text: str, weather_text: str, cfg: dict, force_position=None) -> Image.Image:
     draw = ImageDraw.Draw(img, "RGBA")
     w, h = img.size
     pad  = cfg["padding"]
+    position = force_position or cfg["position"]
 
     font_date    = get_font(cfg["font_size_date"])
     font_weather = get_font(cfg["font_size_weather"])
 
     _, _, _, date_h = draw.textbbox((0, 0), date_text or " ", font=font_date)
-    _, _, _, wx_h   = draw.textbbox((0, 0), weather_text or " ", font=font_weather)
+    _, _, wx_w, wx_h = draw.textbbox((0, 0), weather_text or " ", font=font_weather)
 
     has_weather = bool(weather_text)
-    bar_h   = date_h + (wx_h if has_weather else 0) + pad * (3 if has_weather else 2)
-    bar_top = h - bar_h if cfg["position"] == "bottom" else 0
+    # Estimate bar height for positioning
+    bar_h   = date_h + (wx_h if has_weather else 0) + pad * (2.5 if has_weather else 1.5)
+    
+    if position == "bottom":
+        y_start = h - bar_h - pad
+    else:
+        y_start = pad
 
+    # Draw shadow helper for aesthetics (no black bar needed)
+    def draw_text_with_shadow(draw, pos, text, font, fill, shadow_fill=(0, 0, 0, 200)):
+        x, y = pos
+        # Draw shadow in a thicker 2px radius for high-res Kindle screen
+        for dx in [-2, -1, 0, 1, 2]:
+            for dy in [-2, -1, 0, 1, 2]:
+                if dx == 0 and dy == 0: continue
+                draw.text((x + dx, y + dy), text, font=font, fill=shadow_fill)
+        # Main text
+        draw.text(pos, text, font=font, fill=fill)
+
+    # Only draw rectangle if opacity is significant
     alpha = int(cfg["background_opacity"] * 255)
-    draw.rectangle([(0, bar_top), (w, bar_top + bar_h)], fill=(0, 0, 0, alpha))
+    if alpha > 10:
+        bar_top = h - bar_h if position == "bottom" else 0
+        draw.rectangle([(0, bar_top), (w, bar_top + bar_h)], fill=(0, 0, 0, alpha))
 
-    y = bar_top + pad
+    y = y_start
     if date_text:
-        draw.text((pad, y), date_text, font=font_date, fill=(255, 255, 255, 240))
+        draw_text_with_shadow(draw, (pad, y), date_text, font=font_date, fill=(255, 255, 255, 255))
         y += date_h + pad // 2
     if has_weather:
-        draw.text((pad, y), weather_text, font=font_weather, fill=(210, 210, 210, 220))
+        draw_text_with_shadow(draw, (pad, y), weather_text, font=font_weather, fill=(230, 230, 230, 255))
 
     return img
 
@@ -226,7 +248,9 @@ def main():
         img   = img.convert("RGBA")
 
         if date_text or weather_text:
-            img = draw_overlay(img, date_text, weather_text, ov_cfg)
+            # Alternate position between top and bottom for screen burn prevention
+            current_pos = "top" if idx % 2 == 0 else "bottom"
+            img = draw_overlay(img, date_text, weather_text, ov_cfg, force_position=current_pos)
 
         final    = img.convert("L")
         out_path = output_dir / f"photo_{idx:02d}.{k_cfg['output_format']}"

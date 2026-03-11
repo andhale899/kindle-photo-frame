@@ -18,22 +18,22 @@ kindle:
 # --- Weather overlay (uses wttr.in — no API key needed) ---
 weather:
   enabled: true
-  location: "Mumbai, IN"  # "City, Country" e.g. "London, GB" or "New York, US"
+  location: "Ahmednagar, IN"  # "City, Country" e.g. "London, GB" or "New York, US"
   units: "metric"         # metric = C  |  imperial = F
 
 # --- Date/time overlay ---
 datetime:
   enabled: true
-  format: "%d %b %Y  |  %H:%M"   # e.g. "11 Mar 2026  |  14:30"
+  format: "%d %A %b"              # e.g. "11 Wednesday Mar"
   timezone: "Asia/Kolkata"        # IANA timezone string
 
 # --- Overlay bar appearance ---
 overlay:
-  position: "bottom"              # top | bottom
-  background_opacity: 0.55        # 0.0 (clear) – 1.0 (solid black)
-  font_size_date: 36
-  font_size_weather: 32
-  padding: 28
+  position: "bottom"              # default, but script will now alternate
+  background_opacity: 0.0         # 0.0 (clear) – no more black bar
+  font_size_date: 64              # increased for readability
+  font_size_weather: 52           # increased for readability
+  padding: 48                     # increased for better spacing
 
 # --- Git output settings ---
 git:
