@@ -1,0 +1,28 @@
+{
+  "google_photos": {
+    "album_url": "https://photos.app.goo.gl/yBPwxSGuEEnwnhGk9",
+    "fallback_image_url": "https://images.unsplash.com/photo-1506744626753-157948a4c849?q=80&w=1080&auto=format&fit=crop"
+  },
+  "weather": {
+    "enabled": true,
+    "provider": "open-meteo", 
+    "latitude": 51.5074,
+    "longitude": -0.1278,
+    "units": "celsius"
+  },
+  "calendar": {
+    "enabled": true,
+    "ics_urls": [
+      "https://p01-calendars.icloud.com/published/2/example"
+    ],
+    "max_events": 5,
+    "max_days_ahead": 14
+  },
+  "display": {
+    "width": 1072,
+    "height": 1448,
+    "orientation": "portrait",
+    "grayscale": true,
+    "overlay_position": "bottom"
+  }
+}

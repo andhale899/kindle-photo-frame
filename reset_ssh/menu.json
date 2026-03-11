@@ -1,0 +1,9 @@
+{
+	"items": [
+		{"name": "Reset SSH Password",
+			"items" : [
+				{"name": "Reset password to 'mario'", "priority":1, "action": "bin/reset_mario.sh"}
+			]
+		}
+	]
+}
