@@ -1,6 +1,10 @@
 name: Update Kindle Screensaver
 
 on:
+  push:
+    branches:
+      - master
+      - main
   schedule:
     # Run at the top of every hour
     - cron: '0 * * * *'
