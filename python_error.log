@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\andha\OneDrive\Desktop\kindle_photo_frame\scripts\update_photo.py", line 98, in <module>
-    process_image(url, OUTPUT_FILE)
-  File "C:\Users\andha\OneDrive\Desktop\kindle_photo_frame\scripts\update_photo.py", line 60, in process_image
-    response.raise_for_status()
-  File "C:\Users\andha\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 1021, in raise_for_status
-    raise HTTPError(http_error_msg, response=self)
-requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://lh3.googleusercontent.com/pw=w1500-h1500

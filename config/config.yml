@@ -1,0 +1,46 @@
+# ============================================================
+# Kindle Photo Frame — Master Config
+# Edit this file to change all behaviour.
+# ============================================================
+
+# --- Google Photos shared album ---
+album:
+  url: "https://photos.app.goo.gl/yBPwxSGuEEnwnhGk9"
+  pick_count: 15          # How many random photos per run
+
+# --- Kindle Paperwhite 7th Gen output ---
+kindle:
+  width: 1072
+  height: 1448
+  dpi: 300
+  output_format: "png"    # png = sharpest on e-ink
+
+# --- Weather overlay (uses wttr.in — no API key needed) ---
+weather:
+  enabled: true
+  location: "Mumbai, IN"  # "City, Country" e.g. "London, GB" or "New York, US"
+  units: "metric"         # metric = C  |  imperial = F
+
+# --- Date/time overlay ---
+datetime:
+  enabled: true
+  format: "%d %b %Y  |  %H:%M"   # e.g. "11 Mar 2026  |  14:30"
+  timezone: "Asia/Kolkata"        # IANA timezone string
+
+# --- Overlay bar appearance ---
+overlay:
+  position: "bottom"              # top | bottom
+  background_opacity: 0.55        # 0.0 (clear) – 1.0 (solid black)
+  font_size_date: 36
+  font_size_weather: 32
+  padding: 28
+
+# --- Git output settings ---
+git:
+  output_branch: "processed-photos"
+  commit_message: "chore: refresh Kindle photos [{timestamp}]"
+  output_dir: "photos"
+
+# --- Workflow schedule (informational — actual cron is in the workflow YAML) ---
+schedule:
+  cron: "0 * * * *"    # every hour

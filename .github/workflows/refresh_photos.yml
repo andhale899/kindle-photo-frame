@@ -1,0 +1,183 @@
+name: Kindle Photo Refresh
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # every hour
+
+  # Trigger manually from the Actions tab (great for testing)
+  workflow_dispatch:
+    inputs:
+      count_override:
+        description: "Override photo count (leave blank for config default)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Dry run — generate test cards instead of downloading"
+        type: boolean
+        default: false
+
+env:
+  CONFIG_FILE: config/config.yml
+  URLS_FILE:   /tmp/image_urls.json
+  OUTPUT_DIR:  /tmp/processed_photos
+
+jobs:
+  refresh-photos:
+    name: Scrape → Process → Push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────────
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ── 2. Python + deps ─────────────────────────────────────────────────
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install fonts
+        run: |
+          sudo apt-get install -y --no-install-recommends \
+            fonts-dejavu-core fonts-liberation 2>/dev/null || true
+
+      # ── 3. Parse config ───────────────────────────────────────────────────
+      - name: Parse config.yml
+        id: cfg
+        run: |
+          python3 - <<'EOF'
+          import yaml, os
+          with open("config/config.yml") as f:
+              cfg = yaml.safe_load(f)
+
+          album_url  = cfg["album"]["url"]
+          pick_count = cfg["album"]["pick_count"]
+          out_branch = cfg["git"]["output_branch"]
+          out_dir    = cfg["git"]["output_dir"]
+          msg        = cfg["git"]["commit_message"]
+          width      = cfg["kindle"]["width"]
+          height     = cfg["kindle"]["height"]
+
+          # Allow manual override of count
+          override = os.environ.get("COUNT_OVERRIDE", "").strip()
+          if override.isdigit():
+              pick_count = int(override)
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as gh:
+              gh.write(f"album_url={album_url}\n")
+              gh.write(f"pick_count={pick_count}\n")
+              gh.write(f"out_branch={out_branch}\n")
+              gh.write(f"out_dir={out_dir}\n")
+              gh.write(f"commit_msg={msg}\n")
+              gh.write(f"width={width}\n")
+              gh.write(f"height={height}\n")
+          EOF
+        env:
+          COUNT_OVERRIDE: ${{ github.event.inputs.count_override }}
+
+      # ── 4. Scrape album ───────────────────────────────────────────────────
+      - name: Scrape Google Photos album
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          python3 scripts/scrape_album.py \
+            --url    "${{ steps.cfg.outputs.album_url }}" \
+            --count  "${{ steps.cfg.outputs.pick_count }}" \
+            --width  "${{ steps.cfg.outputs.width }}" \
+            --height "${{ steps.cfg.outputs.height }}" \
+            --output "${{ env.URLS_FILE }}"
+
+      # In dry-run: generate a fake URLs file so the next step still works
+      - name: Generate dummy URLs (dry-run only)
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: |
+          python3 -c "
+          import json
+          urls = [f'https://example.com/photo_{i}.jpg' for i in range(1, ${{ steps.cfg.outputs.pick_count }} + 1)]
+          json.dump(urls, open('${{ env.URLS_FILE }}', 'w'))
+          print(f'Created {len(urls)} dummy URLs')
+          "
+
+      # ── 5. Process photos ─────────────────────────────────────────────────
+      - name: Process photos (grayscale + overlay)
+        run: |
+          DRY_RUN_FLAG=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            DRY_RUN_FLAG="--dry-run"
+          fi
+          python3 scripts/process_photos.py \
+            --urls-file  "${{ env.URLS_FILE }}" \
+            --config     "${{ env.CONFIG_FILE }}" \
+            --output-dir "${{ env.OUTPUT_DIR }}" \
+            $DRY_RUN_FLAG
+
+      - name: List processed photos
+        run: ls -lh "${{ env.OUTPUT_DIR }}"
+
+      # ── 6. Push to output branch ──────────────────────────────────────────
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Prepare output branch
+        run: |
+          BRANCH="${{ steps.cfg.outputs.out_branch }}"
+          if git ls-remote --exit-code origin "refs/heads/$BRANCH" > /dev/null 2>&1; then
+            git fetch origin "$BRANCH"
+            git checkout "$BRANCH"
+          else
+            echo "Creating orphan branch: $BRANCH"
+            git checkout --orphan "$BRANCH"
+            git rm -rf . --quiet || true
+            echo "# Kindle processed photos" > README.md
+            git add README.md
+            git commit -m "chore: init processed-photos branch"
+          fi
+
+      - name: Copy photos into branch
+        run: |
+          OUT="${{ steps.cfg.outputs.out_dir }}"
+          mkdir -p "$OUT"
+          rm -f "$OUT"/*.png "$OUT"/*.jpg
+          cp "${{ env.OUTPUT_DIR }}"/* "$OUT"/
+
+      - name: Commit and push
+        run: |
+          BRANCH="${{ steps.cfg.outputs.out_branch }}"
+          TS=$(date -u "+%Y-%m-%d %H:%M UTC")
+          MSG=$(echo "${{ steps.cfg.outputs.commit_msg }}" | sed "s/{timestamp}/$TS/")
+          git add "${{ steps.cfg.outputs.out_dir }}/"
+          if git diff --cached --quiet; then
+            echo "Nothing changed — skipping commit"
+          else
+            git commit -m "$MSG"
+            git push origin "$BRANCH"
+            COUNT=$(git show --stat HEAD | grep -c "photo_" || true)
+            echo "Pushed $COUNT photos to $BRANCH"
+          fi
+
+      # ── 7. Summary ────────────────────────────────────────────────────────
+      - name: Write job summary
+        if: always()
+        run: |
+          TS=$(date -u "+%Y-%m-%d %H:%M UTC")
+          cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          ## Kindle Photo Refresh — $TS
+
+          | | |
+          |---|---|
+          | Photos | ${{ steps.cfg.outputs.pick_count }} |
+          | Resolution | ${{ steps.cfg.outputs.width }}x${{ steps.cfg.outputs.height }} |
+          | Branch | \`${{ steps.cfg.outputs.out_branch }}\` |
+          | Dry run | ${{ github.event.inputs.dry_run || 'false' }} |
+          | Status | ${{ job.status }} |
+          EOF
