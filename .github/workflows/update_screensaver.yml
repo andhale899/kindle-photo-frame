@@ -29,24 +29,22 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install Pillow requests
+        run: pip install Pillow requests icalendar python-dateutil
 
-      - name: Fetch and Process Image
+      - name: Fetch and Process Images
         run: python scripts/update_photo.py
 
       - name: Deploy to Screensaver Branch
         run: |
-          # Configure Git
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Create an orphan branch specifically for the image to keep history clean
+          # Use an orphan branch to keep only the latest images and avoid bloating the repo
           git checkout --orphan screensaver-deploy
-          
-          # Clear all files from git index, then add just the screensaver
           git rm -rf .
-          git add screensaver.png
           
-          # Commit and force push
-          git commit -m "Update screensaver image - $(date)" || echo "No changes to commit"
+          # Add all generated screensaver images
+          git add bg_ss*.png
+          
+          git commit -m "Update screensaver images - $(date)" || echo "No changes to commit"
           git push -f origin screensaver-deploy

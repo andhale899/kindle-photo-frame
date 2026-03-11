@@ -1,7 +1,8 @@
 {
   "google_photos": {
     "album_url": "https://photos.app.goo.gl/yBPwxSGuEEnwnhGk9",
-    "fallback_image_url": "https://images.unsplash.com/photo-1506744626753-157948a4c849?q=80&w=1080&auto=format&fit=crop"
+    "fallback_image_url": "https://images.unsplash.com/photo-1506744626753-157948a4c849?q=80&w=1080&auto=format&fit=crop",
+    "max_images": 15
   },
   "weather": {
     "enabled": true,
