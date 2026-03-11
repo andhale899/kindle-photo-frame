@@ -48,7 +48,7 @@ while [ 0 -eq $CONNECTED ]; do
 	else
 		# Every 10 seconds, if not connected, try to nudge the wifi association
 		if [ $(( $TIMER % 10 )) -eq 0 ]; then
-			logger "Waiting for Wi-Fi... ($TIMERs left)"
+			logger "Waiting for Wi-Fi... (${TIMER}s left)"
 		fi
 		
 		TIMER=$(($TIMER-1))
