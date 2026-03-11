@@ -9,15 +9,18 @@ DEFAULTINTERVAL=60
 
 # Schedule for updating the screensaver.
 # Format: "STARTHOUR:STARTMINUTE-ENDHOUR:ENDMINUTE=INTERVAL_IN_MINUTES"
-# Between midnight and 6am: update every 4 hours (save battery at night)
-# Between 6am and 11pm: update every 30 minutes (stay fresh during the day)
-# Between 11pm and midnight: update every 4 hours
 SCHEDULE="00:00-06:00=240 06:00-23:00=30 23:00-24:00=240"
 
-# URL of screensaver image.
-# MUST be exact resolution of your Kindle screen (1072x1448 for Paperwhite 7)
-# and MUST be a clean 8-bit grayscale PNG.
-IMAGE_URI="https://placehold.co/1072x1448.png"
+# Forced interval (optional). If set, this overrides the schedule.
+# Set via KUAL menu (e.g., 5, 10, 60). Leave empty to use SCHEDULE.
+FORCE_INTERVAL=
+
+# --- GitHub Repository Settings ---
+# Where to fetch processed photos from
+REPO_USER="andhale899"
+REPO_NAME="kindle-photo-frame"
+REPO_BRANCH="processed-photos"
+REPO_PATH="photos"
 
 # Folder that holds the screensavers (linkss screensaver hack folder)
 SCREENSAVERFOLDER=/mnt/us/linkss/screensavers/
@@ -54,5 +57,4 @@ RTC=1
 TMPFILE=/tmp/tmp.onlinescreensaver.png
 
 # Webhook address for battery reporting (leave empty to disable)
-# Example for Home Assistant: "http://homeassistant.local/api/webhook/kindle-battery-update-hook"
 WEBHOOKADR=""

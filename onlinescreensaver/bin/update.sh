@@ -27,23 +27,14 @@ else
 	exit 1
 fi
 
-# Do nothing if no URL is set
-if [ -z "$IMAGE_URI" ]; then
-	logger "No image URL has been set. Please edit config.sh."
-	exit 1
-fi
-
-logger "Starting screensaver update from: $IMAGE_URI"
-
 # 1. Get the list of photos from the GitHub repository
-# We use the GitHub API to list files in the 'photos' directory of the 'processed-photos' branch
-logger "Fetching photo list from GitHub repository..."
-REPO_API_URL="https://api.github.com/repos/andhale899/kindle-photo-frame/contents/photos?ref=processed-photos"
+logger "Fetching photo list from GitHub repository: $REPO_USER/$REPO_NAME ($REPO_BRANCH)"
+REPO_API_URL="https://api.github.com/repos/${REPO_USER}/${REPO_NAME}/contents/${REPO_PATH}?ref=${REPO_BRANCH}"
 
 PHOTO_LIST=$(curl -s -k "$REPO_API_URL" | grep '"download_url":' | sed -E 's/.*"download_url": "([^"]+)".*/\1/')
 
 if [ -z "$PHOTO_LIST" ]; then
-	logger "No photos found in the repository."
+	logger "No photos found in the repository or error fetching list."
 	exit 1
 fi
 
