@@ -22,15 +22,15 @@ IMAGE_URI="https://placehold.co/1072x1448.png"
 # Folder that holds the screensavers (linkss screensaver hack folder)
 SCREENSAVERFOLDER=/mnt/us/linkss/screensavers/
 
-# Screensaver file to overwrite.
-# For Kindle Paperwhite (fw5+), this is bg_xsmall_ss00.png
-SCREENSAVERFILE=$SCREENSAVERFOLDER/bg_ss01.png
+# Screensaver file format to overwrite.
+# We will use sequential naming: bg_ss01.png, bg_ss02.png, etc.
+SCREENSAVERNAME=bg_ss
 
 # Whether to create log output (1) or not (0)
 LOGGING=1
 
-# Where to log to
-LOGFILE=/tmp/onlinescreensaver.log
+# Where to log to (relative to this bin folder)
+LOGFILE=../onlinescreensaver.log
 
 # Whether to disable WiFi after the script has finished
 # (if WiFi was off when script started, it will always turn it off)
