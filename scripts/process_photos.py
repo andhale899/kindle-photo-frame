@@ -231,10 +231,20 @@ def main():
         current_pos = "top" if idx % 2 == 0 else "bottom"
         img = draw_overlay(img, now, temp, desc, ov_cfg, force_position=current_pos)
 
-        final    = img.convert("L")
+        # Kindle compatibility hardening: 
+        # Convert to 'L' (8-bit grayscale) and ensure no transparency or metadata
+        final = img.convert("L")
         out_path = output_dir / f"photo_{idx:02d}.{k_cfg['output_format']}"
-        final.save(str(out_path), dpi=(k_cfg["dpi"], k_cfg["dpi"]))
-        log.info("       saved -> %s", out_path.name)
+        
+        # Explicitly save without ICC profile or extra chunks to prevent Kindle errors
+        final.save(
+            str(out_path), 
+            dpi=(k_cfg["dpi"], k_cfg["dpi"]),
+            icc_profile=None,
+            pnginfo=None,
+            optimize=True
+        )
+        log.info("       saved -> %s (hardened)", out_path.name)
         success += 1
 
     log.info("=" * 50)

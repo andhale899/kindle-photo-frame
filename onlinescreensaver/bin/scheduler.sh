@@ -9,12 +9,13 @@
 cd "$(dirname "$0")"
 
 # Load configuration
-if [ -e "config.sh" ]; then
-	source ./config.sh
-else
-	DEFAULTINTERVAL=60
-	RTC=1
-fi
+# Moved into the loop to pick up changes dynamically
+# if [ -e "config.sh" ]; then
+# 	source ./config.sh
+# else
+# 	DEFAULTINTERVAL=60
+# 	RTC=1
+# fi
 
 # Load utils
 if [ -e "utils.sh" ]; then
@@ -103,6 +104,11 @@ logger "Scheduler started"
 
 # Loop forever
 while [ 1 -eq 1 ]; do
+	# Re-load configuration to pick up changes (like FORCE_INTERVAL)
+	if [ -e "config.sh" ]; then
+		source ./config.sh
+	fi
+
 	sh ./update.sh
 	
 	# Wait until next scheduled update time
