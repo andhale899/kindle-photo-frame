@@ -27,48 +27,56 @@ else
 	exit 1
 fi
 
-# 1. Enable wireless if it is currently off
+# 1. Prevent the Kindle from sleeping while we are working
+# This is critical to ensure the network stays active
+lipc-set-prop com.lab126.powerd preventScreenSaver 1
+
+# 2. Enable wireless if it is currently off
 if [ 0 -eq $(lipc-get-prop com.lab126.cmd wirelessEnable) ]; then
 	logger "WiFi is off, turning it on now"
 	lipc-set-prop com.lab126.cmd wirelessEnable 1
 	DISABLE_WIFI=1
 fi
 
-	# 2. Wait for network to be up
-	TIMER=60 # Increased to 60s for better reliability on wake-up
-	CONNECTED=0
-	while [ 0 -eq $CONNECTED ]; do
-		/bin/ping -c 1 $TEST_DOMAIN > /dev/null && CONNECTED=1
-
-		if [ 0 -eq $CONNECTED ]; then
-			TIMER=$(($TIMER-1))
-			if [ 0 -eq $TIMER ]; then
-				logger "No internet connection after 60 seconds, aborting."
-				break
-			else
-				sleep 1
-			fi
+# 3. Wait for network to be up
+TIMER=60 # Increased to 60s for better reliability on wake-up
+CONNECTED=0
+while [ 0 -eq $CONNECTED ]; do
+	# Try to ping. If it fails, maybe nudge the wifi
+	if /bin/ping -c 1 $TEST_DOMAIN > /dev/null; then
+		CONNECTED=1
+	else
+		# Every 10 seconds, if not connected, try to nudge the wifi association
+		if [ $(( $TIMER % 10 )) -eq 0 ]; then
+			logger "Waiting for Wi-Fi... ($TIMERs left)"
 		fi
-	done
-
-	if [ 1 -eq $CONNECTED ]; then
-		# 3. Get the list of photos from the GitHub repository
-		logger "Fetching photo list from GitHub repository: $REPO_USER/$REPO_NAME ($REPO_BRANCH)"
-		REPO_API_URL="https://api.github.com/repos/${REPO_USER}/${REPO_NAME}/contents/${REPO_PATH}?ref=${REPO_BRANCH}"
-
-		# GitHub API requires a User-Agent. Adding -k for insecure/old Kindle certs.
-		# Using -w to capture HTTP status code
-		RAW_RESPONSE=$(curl -s -k -H "User-Agent: Kindle-Photo-Frame" "$REPO_API_URL")
-		HTTP_STATUS=$(curl -s -k -H "User-Agent: Kindle-Photo-Frame" -o /dev/null -w "%{http_code}" "$REPO_API_URL")
-
-		# Extract download_urls more robustly using grep -o and cut
-		PHOTO_LIST=$(echo "$RAW_RESPONSE" | grep -o '"download_url":"[^"]*"' | cut -d'"' -f4)
-
-		if [ -z "$PHOTO_LIST" ]; then
-			logger "Error: No photos found. HTTP Status: $HTTP_STATUS. Response snippet: $(echo "$RAW_RESPONSE" | head -c 100)"
-			exit 1
+		
+		TIMER=$(($TIMER-1))
+		if [ 0 -eq $TIMER ]; then
+			logger "No internet connection after 60 seconds, aborting."
+			break
+		else
+			sleep 1
 		fi
+	fi
+done
 
+if [ 1 -eq $CONNECTED ]; then
+	# 4. Get the list of photos from the GitHub repository
+	logger "Fetching photo list from GitHub repository: $REPO_USER/$REPO_NAME ($REPO_BRANCH)"
+	REPO_API_URL="https://api.github.com/repos/${REPO_USER}/${REPO_NAME}/contents/${REPO_PATH}?ref=${REPO_BRANCH}"
+
+	# GitHub API requires a User-Agent. Adding -k for insecure/old Kindle certs.
+	# Using -w to capture HTTP status code
+	RAW_RESPONSE=$(curl -s -k -H "User-Agent: Kindle-Photo-Frame" "$REPO_API_URL")
+	HTTP_STATUS=$(curl -s -k -H "User-Agent: Kindle-Photo-Frame" -o /dev/null -w "%{http_code}" "$REPO_API_URL")
+
+	# Extract download_urls more robustly using grep -o and cut
+	PHOTO_LIST=$(echo "$RAW_RESPONSE" | grep -o '"download_url":"[^"]*"' | cut -d'"' -f4)
+
+	if [ -z "$PHOTO_LIST" ]; then
+		logger "Error: No photos found. HTTP Status: $HTTP_STATUS. Response snippet: $(echo "$RAW_RESPONSE" | head -c 100)"
+	else
 		logger "Downloading photos..."
 		
 		# Clear existing screensavers in the folder to avoid stale images
@@ -110,12 +118,15 @@ fi
 			)
 		fi
 
-		# 4. Force LinkSS to re-parse the screensavers folder on next sleep
+		# Force LinkSS to "see" the new images
 		touch /mnt/us/linkss/reboot
 	fi
 fi
 
-# 5. Disable wireless if we turned it on
+# 5. Restore default sleep behavior
+lipc-set-prop com.lab126.powerd preventScreenSaver 0
+
+# 6. Disable wireless if we turned it on
 if [ 1 -eq $DISABLE_WIFI ]; then
 	logger "Disabling WiFi"
 	lipc-set-prop com.lab126.cmd wirelessEnable 0
