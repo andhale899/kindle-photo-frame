@@ -51,20 +51,20 @@ def extract_image_urls(html: str) -> list[str]:
     We strip the size suffix so we can request our own dimensions.
     """
     # Pattern matches lh3.googleusercontent.com URLs inside JS data blobs
-    pattern = r'https://lh3\.googleusercontent\.com/[A-Za-z0-9_\-]+'
+    # We target the '/pw/' segment which indicates actual photo assets in shared albums
+    pattern = r'https://lh3\.googleusercontent\.com/pw/[A-Za-z0-9_\-]+'
     raw = re.findall(pattern, html)
 
     # Deduplicate while preserving order
     seen = set()
     unique = []
     for url in raw:
-        # Skip tiny thumbnails and avatars (they appear multiple times small)
         if url in seen:
             continue
         seen.add(url)
         unique.append(url)
 
-    log.info("Found %d unique image base URLs", len(unique))
+    log.info("Found %d unique image base URLs (photo assets)", len(unique))
     return unique
 
 
