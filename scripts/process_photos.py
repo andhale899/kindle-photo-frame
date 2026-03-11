@@ -4,19 +4,6 @@ process_photos.py
 -----------------
 Downloads images, converts to Kindle grayscale PNGs (1072x1448),
 overlays weather via wttr.in (no API key) + date/time.
-
-Local usage:
-    python3 scripts/process_photos.py \
-        --urls-file /tmp/urls.json \
-        --config    config/config.yml \
-        --output-dir ./output
-
-Dry-run (no downloads — generates grey test cards):
-    python3 scripts/process_photos.py \
-        --urls-file /tmp/urls.json \
-        --config    config/config.yml \
-        --output-dir ./output \
-        --dry-run
 """
 
 import io
@@ -63,40 +50,22 @@ def get_font(size: int):
 
 
 # ── Weather via wttr.in (no API key required) ─────────────────────────────────
-def fetch_weather(location: str, units: str) -> str:
+def fetch_weather_complex(location: str, units: str):
     """
-    Returns a one-line weather string using wttr.in free JSON endpoint.
-    Falls back to empty string on any failure.
+    Returns (temp, desc) using wttr.in.
     """
     unit_param = "m" if units == "metric" else "u"
     url = f"https://wttr.in/{urllib.parse.quote(location)}?format=j1&{unit_param}"
     try:
-        resp = requests.get(
-            url, timeout=10,
-            headers={"User-Agent": "kindle-photo-frame/1.0"},
-        )
+        resp = requests.get(url, timeout=10, headers={"User-Agent": "kindle-photo-frame/1.0"})
         resp.raise_for_status()
         data = resp.json()
-        current  = data["current_condition"][0]
-        temp     = current["temp_C"] if units == "metric" else current["temp_F"]
-        unit_sym = "C" if units == "metric" else "F"
-        desc     = current["weatherDesc"][0]["value"]
-        code     = int(current.get("weatherCode", 0))
-
-        if code == 113:                     icon = "Sunny"
-        elif code in (116, 119, 122):       icon = "Cloudy"
-        elif 176 <= code <= 308:            icon = "Rain"
-        elif code in (200, 386, 389):       icon = "Storm"
-        elif 179 <= code <= 377:            icon = "Snow"
-        elif code in (143, 248, 260):       icon = "Fog"
-        else:                               icon = ""
-
-        parts = [p for p in [icon, f"{temp}{unit_sym}", desc] if p]
-        return "  ".join(parts)
-
-    except Exception as e:
-        log.warning("wttr.in weather fetch failed (%s) — overlay skipped", e)
-        return ""
+        current = data["current_condition"][0]
+        temp = current["temp_C"] if units == "metric" else current["temp_F"]
+        desc = current["weatherDesc"][0]["value"]
+        return str(temp), str(desc)
+    except Exception:
+        return None, None
 
 
 # ── Image download ────────────────────────────────────────────────────────────
@@ -139,50 +108,62 @@ def to_kindle_grayscale(img: Image.Image) -> Image.Image:
     return gray.filter(ImageFilter.UnsharpMask(radius=1.2, percent=110, threshold=3))
 
 
-def draw_overlay(img: Image.Image, date_text: str, weather_text: str, cfg: dict, force_position=None) -> Image.Image:
+def draw_overlay(img: Image.Image, now: datetime, temp: str, desc: str, cfg: dict, force_position=None) -> Image.Image:
     draw = ImageDraw.Draw(img, "RGBA")
     w, h = img.size
     pad  = cfg["padding"]
     position = force_position or cfg["position"]
 
-    font_date    = get_font(cfg["font_size_date"])
-    font_weather = get_font(cfg["font_size_weather"])
+    # Font sizes
+    font_day     = get_font(cfg.get("font_size_date", 80))
+    font_date    = get_font(cfg.get("font_size_desc", 40)) 
+    font_temp    = get_font(cfg.get("font_size_weather", 150))
+    font_weather = get_font(cfg.get("font_size_desc", 40))
+    font_sync    = get_font(cfg.get("font_size_sync", 32))
 
-    _, _, _, date_h = draw.textbbox((0, 0), date_text or " ", font=font_date)
-    _, _, wx_w, wx_h = draw.textbbox((0, 0), weather_text or " ", font=font_weather)
+    shadow_fill = (0, 0, 0, 220)
+    white = (255, 255, 255, 255)
+    off_white = (230, 230, 230, 255)
 
-    has_weather = bool(weather_text)
-    # Estimate bar height for positioning
-    bar_h   = date_h + (wx_h if has_weather else 0) + pad * (2.5 if has_weather else 1.5)
-    
-    if position == "bottom":
-        y_start = h - bar_h - pad
-    else:
-        y_start = pad
-
-    # Draw shadow helper for aesthetics (no black bar needed)
-    def draw_text_with_shadow(draw, pos, text, font, fill, shadow_fill=(0, 0, 0, 200)):
+    def draw_text_with_shadow(draw, pos, text, font, fill, shadow_fill=(0, 0, 0, 220), anchor=None):
+        if not text: return
         x, y = pos
-        # Draw shadow in a thicker 2px radius for high-res Kindle screen
+        if anchor == "ra":
+            bbox = draw.textbbox((0, 0), text, font=font)
+            tw = bbox[2] - bbox[0]
+            x -= tw
+
         for dx in [-2, -1, 0, 1, 2]:
             for dy in [-2, -1, 0, 1, 2]:
                 if dx == 0 and dy == 0: continue
                 draw.text((x + dx, y + dy), text, font=font, fill=shadow_fill)
-        # Main text
-        draw.text(pos, text, font=font, fill=fill)
+        draw.text((x, y), text, font=font, fill=fill)
 
-    # Only draw rectangle if opacity is significant
-    alpha = int(cfg["background_opacity"] * 255)
-    if alpha > 10:
-        bar_top = h - bar_h if position == "bottom" else 0
-        draw.rectangle([(0, bar_top), (w, bar_top + bar_h)], fill=(0, 0, 0, alpha))
+    # Positioning logic
+    overlay_h = 240
+    if position == "bottom":
+        y_top = h - overlay_h - pad
+    else:
+        y_top = pad
 
-    y = y_start
-    if date_text:
-        draw_text_with_shadow(draw, (pad, y), date_text, font=font_date, fill=(255, 255, 255, 255))
-        y += date_h + pad // 2
-    if has_weather:
-        draw_text_with_shadow(draw, (pad, y), weather_text, font=font_weather, fill=(230, 230, 230, 255))
+    # 1. Left Side: Weekday & Date
+    day_str  = now.strftime("%A")
+    date_str = now.strftime("%B %d")
+    draw_text_with_shadow(draw, (pad, y_top), day_str, font=font_day, fill=white)
+    draw_text_with_shadow(draw, (pad, y_top + cfg.get("font_size_date", 80) - 5), date_str, font=font_date, fill=off_white)
+
+    # 2. Right Side: Temperature (Gigantic)
+    if temp:
+        temp_text = f"{temp}°"
+        draw_text_with_shadow(draw, (w - pad, y_top - 20), temp_text, font=font_temp, fill=white, anchor="ra")
+        if desc:
+            draw_text_with_shadow(draw, (w - pad, y_top + cfg.get("font_size_weather", 150) - 45), desc, font=font_weather, fill=off_white, anchor="ra")
+
+    # 3. Bottom Center: Sync Status
+    sync_str = f"Updated: {now.strftime('%H:%M')}"
+    bbox = draw.textbbox((0, 0), sync_str, font=font_sync)
+    sw = bbox[2] - bbox[0]
+    draw_text_with_shadow(draw, ((w - sw) // 2, h - pad), sync_str, font=font_sync, fill=(180, 180, 180, 160))
 
     return img
 
@@ -215,19 +196,18 @@ def main():
     # Date string
     tz        = pytz.timezone(dt_cfg["timezone"])
     now       = datetime.now(tz)
-    date_text = now.strftime(dt_cfg["format"]) if dt_cfg["enabled"] else ""
 
-    # Weather string — wttr.in, zero config
-    weather_text = ""
+    # Weather data
+    temp, desc = (None, None)
     if wx_cfg["enabled"]:
         if args.dry_run:
-            weather_text = "Sunny  28C  Clear sky (dry-run)"
+            temp, desc = ("28", "Clear sky (dry-run)")
         else:
-            weather_text = fetch_weather(wx_cfg["location"], wx_cfg["units"])
+            temp, desc = fetch_weather_complex(wx_cfg["location"], wx_cfg["units"])
 
     log.info("Mode    : %s", "DRY RUN" if args.dry_run else "live")
-    log.info("Date    : %s", date_text or "(disabled)")
-    log.info("Weather : %s", weather_text or "(none)")
+    log.info("Temp    : %s°", temp or "(none)")
+    log.info("Desc    : %s", desc or "(none)")
     log.info("Photos  : %d URLs", len(urls))
     log.info("Output  : %s", output_dir)
 
@@ -247,10 +227,9 @@ def main():
         img   = to_kindle_grayscale(img)
         img   = img.convert("RGBA")
 
-        if date_text or weather_text:
-            # Alternate position between top and bottom for screen burn prevention
-            current_pos = "top" if idx % 2 == 0 else "bottom"
-            img = draw_overlay(img, date_text, weather_text, ov_cfg, force_position=current_pos)
+        # Enhanced overlay
+        current_pos = "top" if idx % 2 == 0 else "bottom"
+        img = draw_overlay(img, now, temp, desc, ov_cfg, force_position=current_pos)
 
         final    = img.convert("L")
         out_path = output_dir / f"photo_{idx:02d}.{k_cfg['output_format']}"

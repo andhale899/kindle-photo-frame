@@ -31,9 +31,12 @@ datetime:
 overlay:
   position: "bottom"              # default, but script will now alternate
   background_opacity: 0.0         # 0.0 (clear) – no more black bar
-  font_size_date: 64              # increased for readability
-  font_size_weather: 52           # increased for readability
-  padding: 48                     # increased for better spacing
+  font_size_date: 80              # Larger for left side
+  font_size_weather: 150          # GIGANTIC for right side (temp)
+  font_size_desc: 40              # Small description below temp
+  font_size_calendar: 28          # Small readable calendar grid
+  font_size_sync: 32              # Subtle sync status
+  padding: 60                     # Roomy padding
 
 # --- Git output settings ---
 git:
