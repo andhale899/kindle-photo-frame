@@ -26,7 +26,22 @@ This document serves as a "Brain Dump" for future AI assistants working on this 
 - **secrets.sh**: All sensitive values live here and are ignored by Git. 
 - **Binding**: The screensaver is *bind-mounted* to avoid modifying the root partition unnecessarily.
 
-## 🛠️ Maintenance Commands
+## 🛠️ Maintenance & Developer Gotchas
+
+### ⚠️ Windows Line Endings (CRLF)
+- **The Issue**: Editing scripts on Windows adds `\r` characters that break the Kindle's shell.
+- **The Fix**: Always run `sed -i 's/\r$//' bin/*.sh` after scp-ing files. This is included in our main install command.
+
+### 🔐 Telegram Secrets Structure
+- **File**: `onlinescreensaver/bin/secrets.sh`
+- **Content**:
+  ```bash
+  TELEGRAM_TOKEN="12345:ABCDE..."
+  TELEGRAM_CHAT_ID="-12345678"
+  ```
+- **Note**: Ensure this file exists before running `install.sh` to avoid "missing secrets" warnings.
+
+## 📈 Monitoring & Logs
 - **Logs**: `/mnt/us/extensions/onlinescreensaver/logs/onlinescreensaver.txt` is the source of truth.
 - **Diagnostics**: `dev` mode prints real-time status to the bottom of the Kindle screen.
 - **Manual Kick**: `lipc-set-prop com.lab126.wifid cmState connect` can force a stuck radio.
