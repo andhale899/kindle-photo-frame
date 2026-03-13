@@ -3,7 +3,7 @@
 #############################################################################
 
 # Interval in MINUTES
-DEFAULTINTERVAL=5
+DEFAULTINTERVAL=15
 VERSION="2.5-stable"
 
 # load secrets if available (managed in gitignore)
