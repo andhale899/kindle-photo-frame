@@ -81,10 +81,12 @@ while [ 0 -eq $CONNECTED ]; do
             KICKED=1
         fi
 
-        # TURBO REASSOCIATE: Every 10s, tell the radio to stop searching and actually join
+        # TURBO REASSOCIATE & SCAN: Every 10s, force the radio to look and join
         if [ $(( $TIMER % 10 )) -eq 0 ]; then
-            logger "Turbo Reassociate: Forcing wlan0 to join SSID..."
+            logger "Turbo Scan/Sync: Forcing wlan0 to scan and join..."
+            /usr/bin/wpa_cli -i wlan0 scan >/dev/null 2>&1
             /usr/bin/wpa_cli -i wlan0 reassociate >/dev/null 2>&1
+            if [ "$RUN_MODE" = "dev" ]; then eips 0 38 "WiFi: Scan/Sync... ($TIMER s)"; fi
         fi
 
 		if [ 0 -eq $TIMER ]; then

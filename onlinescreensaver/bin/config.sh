@@ -4,7 +4,7 @@
 
 # Interval in MINUTES
 DEFAULTINTERVAL=5
-VERSION="2.1-stable"
+VERSION="2.2-stable"
 
 # load secrets if available (managed in gitignore)
 [ -e "secrets.sh" ] && source ./secrets.sh
@@ -28,7 +28,7 @@ LOGFILE=/mnt/us/extensions/onlinescreensaver/logs/onlinescreensaver.txt
 # WiFi management
 DISABLE_WIFI=0
 TEST_DOMAIN="www.google.com"
-NETWORK_TIMEOUT=90
+NETWORK_TIMEOUT=180
 
 #############################################################################
 # Environment & Telegram Alerts
