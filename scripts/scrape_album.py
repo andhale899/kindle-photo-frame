@@ -20,27 +20,30 @@ logging.basicConfig(level=logging.INFO, format="[scrape] %(message)s")
 log = logging.getLogger(__name__)
 
 
-def fetch_page(url: str) -> str:
-    """Download the HTML of a shared Google Photos album page."""
-    req = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": (
-                "Mozilla/5.0 (X11; Linux x86_64) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/122.0.0.0 Safari/537.36"
-            )
-        },
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            return resp.read().decode("utf-8", errors="replace")
-    except urllib.error.HTTPError as e:
-        log.error("HTTP %s fetching album: %s", e.code, url)
-        sys.exit(1)
-    except urllib.error.URLError as e:
-        log.error("URL error fetching album: %s", e.reason)
-        sys.exit(1)
+def fetch_page(url: str, retries: int = 3) -> str:
+    """Download the HTML of a shared Google Photos album page with retries."""
+    for i in range(retries):
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": (
+                    "Mozilla/5.0 (X11; Linux x86_64) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/122.0.0.0 Safari/537.36"
+                )
+            },
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return resp.read().decode("utf-8", errors="replace")
+        except (urllib.error.HTTPError, urllib.error.URLError) as e:
+            if i == retries - 1:
+                log.error("Failed to fetch album after %d attempts: %s", retries, str(e))
+                sys.exit(1)
+            log.warning("Attempt %d failed, retrying in 5s... (%s)", i + 1, str(e))
+            import time
+            time.sleep(5)
+    return ""  # Should be unreachable due to sys.exit(1) above
 
 
 def extract_image_urls(html: str) -> list[str]:

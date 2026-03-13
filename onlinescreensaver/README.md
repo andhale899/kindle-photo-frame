@@ -1,122 +1,38 @@
-Info
-----
-Original README below. I've just made few modifications to adapt what found here:  
-https://www.mobileread.com/forums/showthread.php?t=236104  
-to have it running in my old Kindle Touch.
-In particular:
-- Changed RTC=**1** in utils.sh
-- Changed SCREENSAVERFILE=$SCREENSAVERFOLDER/**bg_xsmall_ss00**.png
-- Included some changes proposed in the thread
-- Added webhook to have the battery status in Home Assistant, described below  
+# Standalone OnlineScreensaver with Telegram Alerts
 
-I'm using this hack in combination with: https://github.com/sibbl/hass-lovelace-kindle-screensaver
+This is a robust, standalone screensaver for jailbroken Kindles. It replaces the default lockscreen using a lightweight bind-mount strategy, avoiding the complexity and instability of the older `linkss` hack.
 
+## Key Features
+- **Standalone**: No dependency on the ScreenSavers hack.
+- **Telegram Alerts**: Receive live status updates and error reports on your phone.
+- **Environment Modes**: Switch between `dev` (verbose) and `prod` (minimal) logging via KUAL.
+- **Epic On-Screen Logs**: Diagnostic info (Battery, WiFi, Errors) printed directly on the Kindle screen.
+- **Safe Binding**: Hardened against system flash pollution; refuses to write if mount is not active.
 
-Online Screensaver
------------------- 
-v0.3
-by peterson, via mobileread.com
-thanks to the great folks in the Kindle developer corner
+## Installation
+1. Copy the `onlinescreensaver` folder to `/mnt/us/extensions/`.
+2. **IMPORTANT (Windows Users)**: Connect via SSH and fix line endings:
+   ```bash
+   sed -i 's/\r$//' /mnt/us/extensions/onlinescreensaver/bin/*.sh && chmod +x /mnt/us/extensions/onlinescreensaver/bin/*.sh
+   ```
+3. Open KUAL -> Online-Screensaver -> Maintenance -> **[WARNING] Install Standalone**.
+4. The Kindle will reboot automatically.
 
-The Online Screensaver automatically fetches a new screensaver image from a
-user-specified URL at a user-specified interval. If a screensaver is shown
-at download time, the downloaded image will be displayed.
+## Configuration
+1. **Secrets**: Create or edit `bin/secrets.sh`. This file is hidden from Git to protect your privacy:
+   ```bash
+   TELEGRAM_TOKEN="your_token_here"
+   TELEGRAM_CHAT_ID="your_id_here"
+   ```
+2. **Main Settings**: Edit `bin/config.sh` to set your:
+   - `IMAGE_URI`: Your photo source URL.
+   - `RUN_MODE`: `dev` (verbose) or `prod` (stable).
 
-This extension supports updating the screensaver even when the Kindle is 
-asleep (obviously it won't work if you have really powered the Kindle down
-by pressing the power button for many seconds). As such, it will use 
-additional battery as it will un-suspend your Kindle at the configured
-intervals for one or two minutes.
+## Usage
+- **Update Now**: Triggers an immediate download and screen refresh.
+- **Set Interval**: Choose your update frequency (e.g., 5 min, 1 hour).
+- **Toggle Mode**: Switch between Dev and Prod settings for Telegram.
+- **Check Status**: Verifies if the mount, scheduler, and logs are working properly.
 
-The image should be in the correct resolution of your device, otherwise the
-results may not look so pretty :-) The image also needs to be a "clean" png,
-as otherwise you may only get a white screen (you can test whether an image
-is working by calling "eips -f -g image.png" on your Kindle).
-
-Possible use cases:
- - download the latest weather report (this was the initial reason this
-   extension was developed), you need a server to automatically create this
-   image - see for example https://github.com/mpetroff/kindle-weather-display
- - download the latest comic each day as your screensaver
- - download inspirational images/messages each day
- - etc
-
-
-Disclaimer
-----------
-
-As of version 0.3, this extension has only been tested on a Kindle
-Paperwhite 2 with WiFi. The auto-update script is currently only enabled
-for devices with firmware 5 or newer (which should cover the devices that
-actually have a front light).
-
-If you get this extension to run on your device, please provide feedback
-at http://www.mobileread.com/forums/showthread.php?t=236104 where you will
-also find the latest version.
-
-How this script interacts with 3G models is also unknown.
-
-It is recommended to test the extension manually prior to activating auto
-updates. To do so, connect to your Kindle via SSH (ref. USBNet) and run
-
-	/mnt/us/extensions/onlinescreensaver/bin/scheduler.sh &
-
-and then exit. If anything should go wrong, rebooting the Kindle should fix
-any problem.
-
-Either way, as usual please be advised that you are using this extension on
-your own risk. 
-
-
-Prerequisites
--------------
-
-* You must have KUAL v2 or later installed.
-* You must have linkss installed ("screensavers hack")
-* By default, the extension copies the screensaver image to /mnt/us/linkss/screensavers
-  as bg_medium_ss00.png. On Paperwhite 2, you most likely already have a
-  file of that name - if you don't want it overwritten, please make a
-  backup. It is advisable to only have one screensaver image, as otherwise
-  the results may become unpredictable.
-
-
-Installation
-------------
-
-Unzip the downloaded file into the extensions folder (/mnt/us/extensions
-when using SSH, otherwise the extensions folder at root of the Kindle volume
-when connected to your PC).
-
-
-Configuration
--------------
-
-Edit onlinescreensaver/bin/config.sh, all available options are described
-here. Note that you MUST use an editor that supports Unix line endings. On
-Windows, use e.g. the free notepad++ application.
-
-**EDIT**: Variable WEBHOOKADR sets the possibility to send battery status as json via curl.
-In Home Assistant set the following in configuration.yaml:
-```
-template:
-  - trigger:
-    - platform: webhook
-      webhook_id: kindle-battery-update-hook # Or whatever you prefer, as defined in config.sh
-    sensor:
-    - name: "Kindle Battery"
-      state: '{{ trigger.json[''kindle_battery''] }}'
-```
-
-Use
----
-
-Run KUAL and enter the "Online-Screensaver" section. Here you have an item
-to update the screensaver right away (one time), and you can also enable or
-disable the auto-download.
-
-
-Uninstalling
-------------
-
-It is recommended to disable auto-updates prior to deleting the folder
-from the extensions directory.
+## Acknowledgements
+Based on the original `onlinescreensaver` v0.3 by peterson, refactored for modern standalone operation.

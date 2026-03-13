@@ -2,13 +2,34 @@
 	"items": [
 		{"name": "Online-Screensaver",
 			"items" : [
-				{"name": "Update now",            "priority":0, "action": "bin/update.sh"},
-				{"name": "Enable (Schedule)",     "priority":0, "action": "bin/enable.sh"},
-				{"name": "Enable (5 min)",        "priority":0, "action": "bin/enable.sh 5"},
-				{"name": "Enable (10 min)",       "priority":0, "action": "bin/enable.sh 10"},
-				{"name": "Enable (1 hour)",       "priority":0, "action": "bin/enable.sh 60"},
-				{"name": "Enable (10 hours)",      "priority":0, "action": "bin/enable.sh 600"},
-				{"name": "Disable",               "priority":0, "action": "bin/disable.sh"}
+				{"name": "Update Screen Now",     "priority":0, "action": "sh bin/update.sh"},
+				{"name": "Auto-Update Control",
+					"items": [
+						{"name": "Enable Scheduler",  "priority":0, "action": "sh bin/enable.sh",  "if": "\"/etc/upstart/onlinescreensaver.conf\" -f !" },
+						{"name": "Disable Scheduler", "priority":0, "action": "sh bin/disable.sh", "if": "\"/etc/upstart/onlinescreensaver.conf\" -f" },
+						{"name": "Set Update Interval",
+							"items": [
+								{"name": "5 Min (Fast/Test)", "action": "sh bin/set_interval.sh 5"},
+								{"name": "15 Minutes",        "action": "sh bin/set_interval.sh 15"},
+								{"name": "30 Minutes",        "action": "sh bin/set_interval.sh 30"},
+								{"name": "1 Hour (Normal)",   "action": "sh bin/set_interval.sh 60"},
+								{"name": "3 Hours",           "action": "sh bin/set_interval.sh 180"},
+								{"name": "6 Hours",           "action": "sh bin/set_interval.sh 360"},
+								{"name": "12 Hours",          "action": "sh bin/set_interval.sh 720"},
+								{"name": "24 Hours (Daily)",  "action": "sh bin/set_interval.sh 1440"}
+							]
+						},
+						{"name": "Switch Dev/Prod Mode", "action": "sh bin/toggle_mode.sh"}
+					]
+				},
+				{"name": "Maintenance",
+					"items": [
+						{"name": "Check Status",                   "priority":0, "action": "sh bin/status.sh"},
+						{"name": "Test Telegram Bot",              "priority":0, "action": "sh bin/test_telegram.sh"},
+						{"name": "[WARNING] Install Standalone",   "priority":0, "action": "sh bin/install.sh"},
+						{"name": "[WARNING] Uninstall Standalone", "priority":0, "action": "sh bin/uninstall.sh"}
+					]
+				}
 			]
 		}
 	]

@@ -2,131 +2,168 @@
 #
 ##############################################################################
 #
-# Fetch screensaver image from the configured URL and update the Kindle screensaver.
-#
-# - Enables WiFi if off, waits for connection
-# - Downloads image via curl to a temp file
-# - Moves to the screensaver folder (linkss watches this)
-# - If screen is currently showing a screensaver, refreshes it with eips
+# Fetch weather screensaver from a configurable URL.
 
-# Change to directory of this script
+# change to directory of this script
 cd "$(dirname "$0")"
 
-# Load configuration
+# load configuration
 if [ -e "config.sh" ]; then
 	source ./config.sh
-else
-	TMPFILE=/tmp/tmp.onlinescreensaver.png
 fi
 
-# Load utils
+# Ensure basic defaults if config is missing or partial
+[ -z "$LOGFILE" ] && LOGFILE="/mnt/us/extensions/onlinescreensaver/logs/onlinescreensaver.txt"
+[ -z "$TMPFILE" ] && TMPFILE="/tmp/tmp.onlinescreensaver.png"
+[ -z "$LOGGING" ] && LOGGING=1
+
+# Function to log to file and system log
+log() {
+    # Ensure log directory exists just in case
+    mkdir -p "$(dirname "$LOGFILE")"
+    echo "$(date) : $1" >> "$LOGFILE"
+    logger "$1"
+}
+
+# load utils
 if [ -e "utils.sh" ]; then
 	source ./utils.sh
 else
-	echo "Could not find utils.sh in $(pwd)"
+    # Fallback log if utils.sh is missing
+    mkdir -p "$(dirname "$LOGFILE")"
+    echo "$(date) : Error: utils.sh not found" >> "$LOGFILE"
 	exit 1
 fi
 
-# 1. Prevent the Kindle from sleeping while we are working
-# This is critical to ensure the network stays active
-lipc-set-prop com.lab126.powerd preventScreenSaver 1
+# Fetch system status
+BATT=$(powerd_test -s | grep "Battery Level" | awk '{print $3}')
+# ensure sleep is inhibited
+toggle_inhibit 1
 
-# 2. Enable wireless if it is currently off
-if [ 0 -eq $(lipc-get-prop com.lab126.cmd wirelessEnable) ]; then
-	logger "WiFi is off, turning it on now"
+# v2.0 TURBO RADIO IGNITION
+WIFI_STATE=$(lipc-get-prop com.lab126.cmd wirelessEnable)
+logger "v2.0 Check: WiFi state is $WIFI_STATE"
+
+# FORCE Airplane Mode OFF (in case it got stuck)
+lipc-set-prop com.lab126.cmd airplaneMode 0 2>/dev/null
+
+if [ "$WIFI_STATE" -eq 0 ]; then
+	logger "WiFi is off, forcing ignition"
 	lipc-set-prop com.lab126.cmd wirelessEnable 1
 	DISABLE_WIFI=1
+    sleep 5
 fi
 
-# 3. Wait for network to be up
-TIMER=60 # Increased to 60s for better reliability on wake-up
+# wait for network to be up
+TIMER=${NETWORK_TIMEOUT}
 CONNECTED=0
+KICKED=0
+TURBO_THRESHOLD=20 # Reset radio early if it's stubborn
+
+if [ "$RUN_MODE" = "dev" ]; then
+    eips 0 38 "WiFi: Searching... (v$VERSION)"
+fi
+
 while [ 0 -eq $CONNECTED ]; do
-	# Try to ping. If it fails, maybe nudge the wifi
-	if /bin/ping -c 1 $TEST_DOMAIN > /dev/null; then
-		CONNECTED=1
-	else
-		# Every 10 seconds, if not connected, try to nudge the wifi association
-		if [ $(( $TIMER % 10 )) -eq 0 ]; then
-			logger "Waiting for Wi-Fi... (${TIMER}s left)"
-		fi
-		
+	# test whether we can ping outside
+	/bin/ping -c 1 $TEST_DOMAIN > /dev/null && CONNECTED=1
+
+	if [ 0 -eq $CONNECTED ]; then
 		TIMER=$(($TIMER-1))
+		
+        # TURBO RESET: If we've waited 20s and still nothing, force-restart the radio
+        if [ $(( $NETWORK_TIMEOUT - $TIMER )) -ge $TURBO_THRESHOLD ] && [ $KICKED -eq 0 ]; then
+            logger "TURBO RESET: Stubborn radio detected. Cycling WiFi power..."
+            if [ "$RUN_MODE" = "dev" ]; then eips 0 38 "WiFi: Stubborn radio... Cycling!"; fi
+            lipc-set-prop com.lab126.cmd wirelessEnable 0
+            sleep 3
+            lipc-set-prop com.lab126.cmd wirelessEnable 1
+            KICKED=1
+        fi
+
+        # TURBO REASSOCIATE: Every 10s, tell the radio to stop searching and actually join
+        if [ $(( $TIMER % 10 )) -eq 0 ]; then
+            logger "Turbo Reassociate: Forcing wlan0 to join SSID..."
+            /usr/bin/wpa_cli -i wlan0 reassociate >/dev/null 2>&1
+        fi
+
 		if [ 0 -eq $TIMER ]; then
-			logger "No internet connection after 60 seconds, aborting."
+			log "No internet/DNS connection after ${NETWORK_TIMEOUT} seconds, aborting."
+            if [ "$RUN_MODE" = "dev" ]; then
+                eips -f -g /usr/share/blanket/screensaver/bg_ss00.png 2>/dev/null
+                eips 0 38 "!!! WIFI FAILED (v$VERSION) !!!"
+            fi
 			break
-		else
-			sleep 1
 		fi
+        # Periodic on-screen heartbeat
+        if [ $(( $TIMER % 10 )) -eq 0 ] && [ "$RUN_MODE" = "dev" ]; then
+            eips 0 38 "WiFi: Still waiting... ($TIMER s)"
+        fi
+		sleep 1
 	fi
 done
 
 if [ 1 -eq $CONNECTED ]; then
-	# 4. Get the list of photos from the GitHub repository
-	logger "Fetching photo list from GitHub repository: $REPO_USER/$REPO_NAME ($REPO_BRANCH)"
-	REPO_API_URL="https://api.github.com/repos/${REPO_USER}/${REPO_NAME}/contents/${REPO_PATH}?ref=${REPO_BRANCH}"
+    # ONLY log the start once we have internet to avoid Telegram timeouts
+    # We use eips to show progress on screen
+    eips 0 0 "Updating Screen v$VERSION... (Batt: $BATT)"
+    log "--- Update Started v$VERSION (Battery: $BATT) ---" "dev_only"
 
-	# GitHub API requires a User-Agent. Adding -k for insecure/old Kindle certs.
-	# Using -w to capture HTTP status code
-	RAW_RESPONSE=$(curl -s -k -H "User-Agent: Kindle-Photo-Frame" "$REPO_API_URL")
-	HTTP_STATUS=$(curl -s -k -H "User-Agent: Kindle-Photo-Frame" -o /dev/null -w "%{http_code}" "$REPO_API_URL")
-
-	# Extract download_urls more robustly using grep -o and cut
-	PHOTO_LIST=$(echo "$RAW_RESPONSE" | grep -o '"download_url":"[^"]*"' | cut -d'"' -f4)
-
-	if [ -z "$PHOTO_LIST" ]; then
-		logger "Error: No photos found. HTTP Status: $HTTP_STATUS. Response snippet: $(echo "$RAW_RESPONSE" | head -c 100)"
-	else
-		logger "Downloading photos..."
+	if curl -kl $IMAGE_URI -o $TMPFILE; then
+		mkdir -p $(dirname $SCREENSAVERFILE)
+		mv -f $TMPFILE $SCREENSAVERFILE
 		
-		# Clear existing screensavers in the folder to avoid stale images
-		# Only delete files matching our pattern
-		rm -f "$SCREENSAVERFOLDER/${SCREENSAVERNAME}"*.png
-
-		COUNT=1
-		# Clean up folder path (remove trailing slash if present to avoid //)
-		CLEAN_FOLDER=$(echo "$SCREENSAVERFOLDER" | sed 's/\/$//')
-
-		for PHOTO_URL in $PHOTO_LIST; do
-			# Format the filename with leading zero (e.g. 01, 02)
-			SUFFIX=$(printf "%02d" $COUNT)
-			TARGET_FILE="$CLEAN_FOLDER/${SCREENSAVERNAME}${SUFFIX}.png"
-			
-			logger "Downloading image $COUNT: $TARGET_FILE"
-			
-			if curl -L -k --max-time 30 "$PHOTO_URL" -o "$TMPFILE"; then
-				cp "$TMPFILE" "$TARGET_FILE"
-				rm "$TMPFILE"
-				logger "Success."
-			else
-				logger "Error: failed to download $PHOTO_URL"
-			fi
-			
-			COUNT=$((COUNT+1))
+		# Kindle framework often looks for various prefixed/numbered files
+		# We'll populate a wider range to cover all Kindle models
+		for i in 00 01 02 03 04 05 06 07 08 09 10; do
+			cp "$SCREENSAVERFILE" "$(dirname "$SCREENSAVERFILE")/bg_ss$i.png"
+			cp "$SCREENSAVERFILE" "$(dirname "$SCREENSAVERFILE")/bg_xsmall_ss$i.png"
+			cp "$SCREENSAVERFILE" "$(dirname "$SCREENSAVERFILE")/bg_medium_ss$i.png"
+			cp "$SCREENSAVERFILE" "$(dirname "$SCREENSAVERFILE")/bg_large_ss$i.png"
 		done
-
-		# If the screensaver is currently active, refresh screen with the first image
-		FIRST_SS="$CLEAN_FOLDER/${SCREENSAVERNAME}01.png"
-		if [ -e "$FIRST_SS" ]; then
-			lipc-get-prop com.lab126.powerd status | grep "Screen Saver" && (
-				logger "Screensaver is active — refreshing screen with $FIRST_SS"
-				eips -f -g "$FIRST_SS"
-
-				# Show battery on screen
-				batt=$(powerd_test -s | awk -F: '/Battery Level: / {print $2}' | awk -F' |%' '{print $2}')
-				eips 40 39 "Batt:${batt}%"
-			)
+		
+		log "Screen saver image file updated v$VERSION (cloned 00-10)" "success"
+                # refresh screen if in screensaver mode
+                lipc-get-prop com.lab126.powerd status | grep "Screen Saver" && (
+                     log "Updating image on screen via eips" "dev_only"
+                     eips -f -g $SCREENSAVERFILE
+                     
+                     # Force framework to reload screensaver (PW3 specific)
+                     log "Force-reloading screensaver framework..." "dev_only"
+                     lipc-set-prop com.lab126.blanket unload 1 2>/dev/null
+                     lipc-set-prop com.lab126.blanket load 1 2>/dev/null
+                     
+                     batt=`powerd_test -s | awk -F: '/Battery Level: / {print $2}' | awk -F' |%' '{print $2}'`
+# Create json for POST
+generate_post_data()
+{
+  cat<<EOF
+{
+  "kindle_battery":"$batt"
+}
+EOF
+}
+                     # If WEBHOOKADR has been defined, send data
+					 if [ "" != $WEBHOOKADR ]; then
+                       curl -X POST -k -d "$(generate_post_data)" -H 'Content-Type: application/json' $WEBHOOKADR
+                     fi
+                     eips 40 39 "Batt:${batt}%"
+                )
+	else
+		log "Error downloading image: $(tail -n 1 $LOGFILE)"
+		if [ 1 -eq $DONOTRETRY ]; then
+			touch $SCREENSAVERFILE
 		fi
 	fi
 fi
 
-# 5. Restore default sleep behavior
-lipc-set-prop com.lab126.powerd preventScreenSaver 0
+# release suspension inhibitor
+toggle_inhibit 0
 
-# 6. Disable wireless if we turned it on
+# disable wireless if necessary
 if [ 1 -eq $DISABLE_WIFI ]; then
-	logger "Disabling WiFi"
+	log "Disabling WiFi"
 	lipc-set-prop com.lab126.cmd wirelessEnable 0
 fi
 
-logger "Done."
+exit 0

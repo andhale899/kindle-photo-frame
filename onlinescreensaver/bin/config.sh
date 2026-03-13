@@ -1,60 +1,49 @@
 #############################################################################
-### ONLINE-SCREENSAVER CONFIGURATION SETTINGS
-### Configured for Kindle Paperwhite 7th Gen
+### ONLINE-SCREENSAVER CONFIGURATION SETTINGS (v2.1-stable)
 #############################################################################
 
-# Interval in MINUTES in which to update the screensaver by default.
-# Used when no schedule entry matches.
-DEFAULTINTERVAL=60
+# Interval in MINUTES
+DEFAULTINTERVAL=5
+VERSION="2.1-stable"
+
+# load secrets if available (managed in gitignore)
+[ -e "secrets.sh" ] && source ./secrets.sh
+[ -e "/mnt/us/extensions/onlinescreensaver/bin/secrets.sh" ] && source /mnt/us/extensions/onlinescreensaver/bin/secrets.sh
 
 # Schedule for updating the screensaver.
-# Format: "STARTHOUR:STARTMINUTE-ENDHOUR:ENDMINUTE=INTERVAL_IN_MINUTES"
-SCHEDULE="00:00-06:00=240 06:00-23:00=30 23:00-24:00=240"
+SCHEDULE="00:00-24:00=5"
 
-# Forced interval (optional). If set, this overrides the schedule.
-# Set via KUAL menu (e.g., 5, 10, 60). Leave empty to use SCHEDULE.
-FORCE_INTERVAL=
+# URL of screensaver image (MUST be PNG)
+IMAGE_URI="https://raw.githubusercontent.com/andhale899/kindle-photo-frame/processed-photos/photos/photo_01.png"
 
-# --- GitHub Repository Settings ---
-# Where to fetch processed photos from
-REPO_USER="andhale899"
-REPO_NAME="kindle-photo-frame"
-REPO_BRANCH="processed-photos"
-REPO_PATH="photos"
+# folder that holds the screensavers
+SCREENSAVERFOLDER=/mnt/us/onlinescreensaver/screensaver
+# In which file to store the downloaded image.
+SCREENSAVERFILE=$SCREENSAVERFOLDER/bg_ss.png
 
-# Folder that holds the screensavers (linkss screensaver hack folder)
-SCREENSAVERFOLDER=/mnt/us/linkss/screensavers/
-
-# Screensaver file format to overwrite.
-# We will use sequential naming: bg_ss01.png, bg_ss02.png, etc.
-SCREENSAVERNAME=bg_ss
-
-# Whether to create log output (1) or not (0)
+# Logging configuration
 LOGGING=1
+LOGFILE=/mnt/us/extensions/onlinescreensaver/logs/onlinescreensaver.txt
 
-# Where to log to (relative to this bin folder)
-LOGFILE=../onlinescreensaver.log
-
-# Whether to disable WiFi after the script has finished
-# (if WiFi was off when script started, it will always turn it off)
+# WiFi management
 DISABLE_WIFI=0
-
-# Domain to ping to test network connectivity
 TEST_DOMAIN="www.google.com"
+NETWORK_TIMEOUT=90
 
-# How long (in seconds) to wait for internet connection to be established
-NETWORK_TIMEOUT=30
+#############################################################################
+# Environment & Telegram Alerts
+#############################################################################
+
+# RUN_MODE: dev (verbose) or prod (success only)
+RUN_MODE="dev"
+
+# Telegram Bot Integration (Credentials in secrets.sh)
+ENABLE_TELEGRAM=1
 
 #############################################################################
 # Advanced
 #############################################################################
 
-# The real-time clock to use (0, 1 or 2)
-# RTC=1 is required for Kindle Paperwhite / Touch
 RTC=1
-
-# Temporary file to download the screensaver image to
 TMPFILE=/tmp/tmp.onlinescreensaver.png
-
-# Webhook address for battery reporting (leave empty to disable)
 WEBHOOKADR=""

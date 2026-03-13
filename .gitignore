@@ -8,8 +8,9 @@ venv/
 
 # Project specific
 output_local/
-image_urls.json
-temp/
+# Kindle Secrets
+onlinescreensaver/bin/secrets.sh
+kindle_logs.txt
 
 # OS specific
 .DS_Store

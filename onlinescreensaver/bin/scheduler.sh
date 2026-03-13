@@ -2,33 +2,40 @@
 #
 ##############################################################################
 #
-# Loops forever, calling update.sh at the interval defined in config.sh.
-# Uses schedule-aware sleep via Kindle power events (RTC wakeup).
+# Fetch weather screensaver from a configurable URL at configurable intervals.
+#
+# Features:
+#   - updates even when device is suspended
+#   - refreshes screensaver image if active
+#   - turns WiFi on and back off if necessary
+#   - tries to use as little CPU as possible
+#
+##############################################################################
 
-# Change to directory of this script
+# change to directory of this script
 cd "$(dirname "$0")"
 
-# Load configuration
-# Moved into the loop to pick up changes dynamically
-# if [ -e "config.sh" ]; then
-# 	source ./config.sh
-# else
-# 	DEFAULTINTERVAL=60
-# 	RTC=1
-# fi
+# load configuration
+if [ -e "config.sh" ]; then
+	source ./config.sh
+else
+	# set default values
+	INTERVAL=240
+	RTC=0
+fi
 
-# Load utils
+# load utils
 if [ -e "utils.sh" ]; then
 	source ./utils.sh
 else
-	echo "Could not find utils.sh in $(pwd)"
-	exit 1
+	echo "Could not find utils.sh in `pwd`"
+	exit
 fi
 
 
 ###############################################################################
-# Build a full two-day schedule to handle day boundaries cleanly
 
+# create a two day filling schedule
 extend_schedule () {
 	SCHEDULE_ONE=""
 	SCHEDULE_TWO=""
@@ -43,6 +50,8 @@ EOF
 		START=$(( 60*$STARTHOUR + $STARTMINUTE ))
 		END=$(( 60*$ENDHOUR + $ENDMINUTE ))
 
+		# if the previous schedule entry ended before this one starts,
+		# create a filler
 		if [ $LASTEND -lt $START ]; then
 			SCHEDULE_ONE="$SCHEDULE_ONE $LASTENDHOUR:$LASTENDMINUTE-$STARTHOUR:$STARTMINUTE=$DEFAULTINTERVAL"
 			SCHEDULE_TWO="$SCHEDULE_TWO $(($LASTENDHOUR+24)):$LASTENDMINUTE-$(($STARTHOUR+24)):$STARTMINUTE=$DEFAULTINTERVAL"
@@ -55,21 +64,23 @@ EOF
 		LASTEND=$END
 	done
 
+	# check that the schedule goes to midnight
 	if [ $LASTEND -lt $(( 24*60 )) ]; then
 		SCHEDULE_ONE="$SCHEDULE_ONE $LASTENDHOUR:$LASTENDMINUTE-24:00=$DEFAULTINTERVAL"
 		SCHEDULE_TWO="$SCHEDULE_TWO $(($LASTENDHOUR+24)):$LASTENDMINUTE-48:00=$DEFAULTINTERVAL"
 	fi
 	
+	# to handle the day overlap, append the schedule again for hours 24-48.
 	SCHEDULE="$SCHEDULE_ONE $SCHEDULE_TWO"
-	logger "Full two-day schedule: $SCHEDULE"
+	logger "Full two day schedule: $SCHEDULE"
 }
 
 
-###############################################################################
-# Returns the number of minutes until the next update
+##############################################################################
 
+# return number of minutes until next update
 get_time_to_next_update () {
-	CURRENTMINUTE=$(( 60*$(date +%-H) + $(date +%-M) ))
+	CURRENTMINUTE=$(( 60*`date +%-H` + `date +%-M` ))
 
 	for schedule in $SCHEDULE; do
 		read STARTHOUR STARTMINUTE ENDHOUR ENDMINUTE INTERVAL << EOF
@@ -78,47 +89,50 @@ EOF
 		START=$(( 60*$STARTHOUR + $STARTMINUTE ))
 		END=$(( 60*$ENDHOUR + $ENDMINUTE ))
 
+		# ignore schedule entries that end prior to the current time
 		if [ $CURRENTMINUTE -gt $END ]; then
 			continue
+
+		# if this schedule entry covers the current time, use it
 		elif [ $CURRENTMINUTE -ge $START ] && [ $CURRENTMINUTE -lt $END ]; then
 			logger "Schedule $schedule used, next update in $INTERVAL minutes"
 			NEXTUPDATE=$(( $CURRENTMINUTE + $INTERVAL))
+
+		# if the next update falls into (or overlaps) a following schedule
+		# entry, apply this schedule entry instead if it would trigger earlier
 		elif [ $(( $START + $INTERVAL )) -lt $NEXTUPDATE ]; then
-			logger "Selected timeout overlaps $schedule, applying it"
+			logger "Selected timeout will overlap $schedule, applying it instead"
 			NEXTUPDATE=$(( $START + $INTERVAL ))
 		fi
 	done
 
-	WAITMINUTES=$(( $NEXTUPDATE - $CURRENTMINUTE ))
-	logger "Next update in $WAITMINUTES minutes"
-	echo $WAITMINUTES
+	logger "Next update in $(( $NEXTUPDATE - $CURRENTMINUTE )) minutes"
+	echo $(( $NEXTUPDATE - $CURRENTMINUTE ))
 }
 
 
-###############################################################################
+##############################################################################
 
-# Build two-day schedule
+# use a 48 hour schedule
 extend_schedule
 
-logger "Scheduler started"
-
-# Loop forever
-while [ 1 -eq 1 ]; do
-	# Re-load configuration to pick up changes (like FORCE_INTERVAL)
-	if [ -e "config.sh" ]; then
-		source ./config.sh
-	fi
-
+# forever and ever, try to update the screensaver
+while [ 1 -eq 1 ]; do 
+    logger "--- Background Loop Start ---"
 	sh ./update.sh
+    logger "--- Heartbeat: Update Cycle Complete v$VERSION ---"
 	
-	# Wait until next scheduled update time
-	if [ -n "$FORCE_INTERVAL" ] && [ "$FORCE_INTERVAL" -eq "$FORCE_INTERVAL" ] 2>/dev/null; then
-		WAITMINUTES=$FORCE_INTERVAL
-		logger "Forced interval active: next update in $WAITMINUTES minutes"
-	else
-		WAITMINUTES=$(get_time_to_next_update)
-	fi
-	
-	logger "Sleeping for $WAITMINUTES minutes"
-	wait_for $(( 60 * $WAITMINUTES ))
+	# wait for the next trigger time
+    # v2.0 EARLY BIRD WAKEUP: Wake up 60s early to allow WiFi and hardware to "warm up"
+    # This ensures we are connected and ready to download EXACTLY at the 5-minute mark.
+    WAIT_TIME=$(( 60 * $(get_time_to_next_update) ))
+    if [ $WAIT_TIME -gt 120 ]; then
+        EARLY_WAIT=$(( $WAIT_TIME - 60 ))
+        logger "Early Bird: Waking 60s early ($EARLY_WAIT s) for WiFi warmup."
+        wait_for $EARLY_WAIT
+    else
+        logger "Interval too short for Early Bird, waiting full $WAIT_TIME s."
+        wait_for $WAIT_TIME
+    fi
+    logger "Background scheduler woke up from wait."
 done
