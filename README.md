@@ -1,102 +1,60 @@
-# Kindle Photo Frame — GitHub App
+# 🖼️ Kindle Photo Frame (v2.1 Stable)
 
-Scrapes a Google Photos shared album, picks 15 random photos each hour,
-converts them to Kindle Paperwhite 7th gen grayscale PNGs (1072×1448),
-overlays weather + date, and pushes them to a `processed-photos` branch
-via GitHub Actions.
-
-**No API keys required.** Weather is fetched from [wttr.in](https://wttr.in) for free.
+A complete end-to-end system to turn your jailbroken Kindle into a dynamic digital photo frame with weather, time, and live Telegram alerts.
 
 ---
 
-## Files
+## 🏗️ Architecture
 
-```
-├── .github/workflows/refresh_photos.yml   ← hourly GitHub Actions job
-├── config/config.yml                       ← all settings live here
-├── scripts/
-│   ├── scrape_album.py                     ← Google Photos scraper
-│   └── process_photos.py                   ← image processor
-├── run_local.py                            ← local test runner (Windows/Mac/Linux)
-└── requirements.txt
-```
+### 1. 🐍 The Backend (GitHub Actions)
+Scrapes a Google Photos shared album, processes images for the Kindle E-Ink screen (1072×1448 grayscale), overlays weather/time, and hosts the results on the `processed-photos` branch.
+- **Location**: `.github/workflows/` and `scripts/`
+- **Features**: No API keys, free weather (wttr.in), hourly auto-refresh.
 
----
-
-## Local Testing (Windows)
-
-Requires **Python 3.10+**. Check with: `python --version`
-
-```bat
-# Clone / download the repo, then open a terminal in the folder
-
-# Dry run — generates grey test cards, no internet needed
-python run_local.py --dry-run
-
-# Full run — scrapes album and downloads real photos
-python run_local.py
-
-# Process only 3 photos (faster for testing)
-python run_local.py --dry-run --count 3
-```
-
-Output lands in `output_local\` — the folder opens automatically when done.
+### 2. 📡 The Frontend (Kindle Extension)
+A standalone, robust screensaver extension for the Kindle that downloads the latest photo and handles the display.
+- **Location**: `onlinescreensaver/`
+- **Features**: **Turbo Early Bird** (fast WiFi), **Telegram Alerts**, **Dev/Prod modes**, and **Epic on-screen logs**.
 
 ---
 
-## GitHub Setup (2 steps)
+## 🚀 Quick Start (Deployment)
 
-### 1. Push this repo to GitHub
+### 1. Backend Setup
+1. Push this repo to your GitHub.
+2. Go to **Actions** and click **"Enable workflows"**.
+3. Edit `config/config.yml` with your Google Photos album URL.
 
-### 2. Enable Actions
-
-Go to the **Actions** tab → click **"I understand my workflows, enable them"**
-
-The workflow runs **every hour automatically**. You can also run it on-demand:
-**Actions → Kindle Photo Refresh → Run workflow** (with optional dry-run toggle).
-
----
-
-## Configuration
-
-Everything is in `config/config.yml`:
-
-```yaml
-album:
-  url: "https://photos.app.goo.gl/..."   # your Google Photos shared album
-  pick_count: 15
-
-weather:
-  location: "Mumbai, IN"    # change to your city
-  units: "metric"           # metric = C, imperial = F
-
-datetime:
-  timezone: "Asia/Kolkata"  # IANA timezone
-  format: "%d %b %Y  |  %H:%M"
-
-overlay:
-  position: "bottom"        # top | bottom
-  background_opacity: 0.55
+### 2. Kindle Setup
+Run this in PowerShell to install the **v2.1-stable** extension:
+```powershell
+# Replace <KINDLE_IP> with yours
+scp -r .\onlinescreensaver root@<KINDLE_IP>:/mnt/us/extensions/; ssh root@<KINDLE_IP> "sed -i 's/\r$//' /mnt/us/extensions/onlinescreensaver/bin/*.sh && chmod +x /mnt/us/extensions/onlinescreensaver/bin/*.sh && /mnt/us/extensions/onlinescreensaver/bin/install.sh"
 ```
 
 ---
 
-## Kindle Integration
-
-Processed photos are pushed to the `processed-photos` branch under `photos/`.
-
-For a public repo, raw URLs follow this pattern:
-```
-https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/processed-photos/photos/photo_01.png
-```
-
-Point your Kindle's hourly poll at these URLs (or at a Cloudflare R2 bucket
-if you're using the composite-image pipeline).
+## 🔐 Security
+Your Telegram credentials are kept secure in `onlinescreensaver/bin/secrets.sh` (ignored by Git). See the [Kindle Extension README](onlinescreensaver/README.md) for setup details.
 
 ---
 
-## Google Photos Scraping Note
+## 🛠️ File Structure
+```
+├── .github/workflows/   ← Backend: Hourly refresh job
+├── config/              ← Backend: Scraper/Weather settings
+├── scripts/             ← Backend: Image processing logic
+├── onlinescreensaver/   ← Frontend: The Kindle Extension (v2.1)
+│   ├── bin/             ← Shell scripts & secrets
+│   └── menu.json        ← KUAL Menu definition
+└── run_local.py         ← Test the photo scraper locally
+```
 
-The scraper parses `lh3.googleusercontent.com` URLs from the album's HTML.
-This is best-effort — if Google changes their page structure it may break.
-Check the Actions logs (`[scrape]` lines) if photos stop updating.
+---
+
+## 📈 Monitoring
+- **Telegram**: Enable `dev` mode to get live "Heartbeat" pings on your phone.
+- **Kindle Screen**: Errors and WiFi status are printed at the bottom of the screen in `dev` mode.
+
+---
+*Based onpeterson's onlinescreensaver, redesigned for stability and modern developer features.*
