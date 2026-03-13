@@ -91,17 +91,21 @@ while [ 0 -eq $CONNECTED ]; do
             # 2. Check Kindle Connection Manager State
             KSTATE=$(lipc-get-prop com.lab126.wifid cmState 2>/dev/null)
             
-            # 3. Aggressive Framework Kick (Adrenaline Shot)
-            # Force a system-level scan which is deeper than wpa_cli
+            # 3. Aggressive Framework Kick
             lipc-set-prop com.lab126.wifid scan 1 2>/dev/null
+            lipc-set-prop com.lab126.cmd ensureConnection "any" 2>/dev/null
             
-            # If we don't have an IP, force the connection manager to try harder
-            if [ -z "$IP" ]; then
-                logger "Adrenaline: Forcing CM to connect..."
-                lipc-set-prop com.lab126.wifid cmState connect 2>/dev/null
+            # 4. EMERGENCY SLEDGEHAMMER (Wait 60s before being nuclear)
+            # If still blind after 60s, simulate power button press
+            if [ $(( $NETWORK_TIMEOUT - $TIMER )) -ge 60 ] && [ -z "$IP" ] && [ "$SSIDS" = "" ]; then
+                logger "SLEDGEHAMMER: Radio is ZOMBIE. Simulating Power Button Press..."
+                if [ "$RUN_MODE" = "dev" ]; then eips 0 38 "!!! SLEDGEHAMMER WAKE !!!"; fi
+                powerd_test -p 2>/dev/null
+                # Wait a bit for the framework to react to the button
+                sleep 5
             fi
             
-            # 4. Low-level Scan for visibility
+            # 5. Low-level Scan for visibility
             /usr/bin/wpa_cli -i wlan0 scan >/dev/null 2>&1
             sleep 2
             SSIDS=$(/usr/bin/wpa_cli -i wlan0 scan_results | awk -F'\t' '/[0-9a-f]{2:}/{print $5}' | tr '\n' ',' | sed 's/,$//')
