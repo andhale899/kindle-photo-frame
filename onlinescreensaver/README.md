@@ -4,10 +4,13 @@ This is a robust, standalone screensaver for jailbroken Kindles. It replaces the
 
 ## Key Features
 - **Standalone**: No dependency on the ScreenSavers hack.
+- **Turbo Recovery (v2.5)**: 
+  - **Early Bird**: Lead-time wake for hardware warm-up.
+  - **Adrenaline**: Framework-level `lipc` kicks for the connection manager.
+  - **Sledgehammer**: Simulates physical power button press if radio is "Zombie."
 - **Telegram Alerts**: Receive live status updates and error reports on your phone.
-- **Environment Modes**: Switch between `dev` (verbose) and `prod` (minimal) logging via KUAL.
-- **Epic On-Screen Logs**: Diagnostic info (Battery, WiFi, Errors) printed directly on the Kindle screen.
-- **Safe Binding**: Hardened against system flash pollution; refuses to write if mount is not active.
+- **Epic On-Screen Logs**: Diagnostic info printed directly on the Kindle screen.
+- **Environment Modes**: Switch between `dev` (verbose) and `prod` (minimal).
 
 ## Installation
 1. Copy the `onlinescreensaver` folder to `/mnt/us/extensions/`.

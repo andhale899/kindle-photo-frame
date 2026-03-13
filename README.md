@@ -1,4 +1,4 @@
-# 🖼️ Kindle Photo Frame (v2.1 Stable)
+# 🖼️ Kindle Photo Frame (v2.5 Stable)
 
 A complete end-to-end system to turn your jailbroken Kindle into a dynamic digital photo frame with weather, time, and live Telegram alerts.
 
@@ -14,7 +14,12 @@ Scrapes a Google Photos shared album, processes images for the Kindle E-Ink scre
 ### 2. 📡 The Frontend (Kindle Extension)
 A standalone, robust screensaver extension for the Kindle that downloads the latest photo and handles the display.
 - **Location**: `onlinescreensaver/`
-- **Features**: **Turbo Early Bird** (fast WiFi), **Telegram Alerts**, **Dev/Prod modes**, and **Epic on-screen logs**.
+- **Features**: 
+  - **Turbo Early Bird**: Wakes up 60s early to warm up WiFi.
+  - **Adrenaline Shot**: Forced framework-level WiFi kicks.
+  - **The Sledgehammer**: Emergency power-button simulation for deep sleep recovery.
+  - **Deep Diagnostics**: Live SSID/IP/State logging in `dev` mode.
+  - **Telegram Alerts**: Push notifications for status and errors.
 
 ---
 
@@ -25,8 +30,7 @@ A standalone, robust screensaver extension for the Kindle that downloads the lat
 2. Go to **Actions** and click **"Enable workflows"**.
 3. Edit `config/config.yml` with your Google Photos album URL.
 
-### 2. Kindle Setup
-Run this in PowerShell to install the **v2.1-stable** extension:
+Run this in PowerShell to install the **v2.5-stable** extension:
 ```powershell
 # Replace <KINDLE_IP> with yours
 scp -r .\onlinescreensaver root@<KINDLE_IP>:/mnt/us/extensions/; ssh root@<KINDLE_IP> "sed -i 's/\r$//' /mnt/us/extensions/onlinescreensaver/bin/*.sh && chmod +x /mnt/us/extensions/onlinescreensaver/bin/*.sh && /mnt/us/extensions/onlinescreensaver/bin/install.sh"
@@ -44,7 +48,7 @@ Your Telegram credentials are kept secure in `onlinescreensaver/bin/secrets.sh` 
 ├── .github/workflows/   ← Backend: Hourly refresh job
 ├── config/              ← Backend: Scraper/Weather settings
 ├── scripts/             ← Backend: Image processing logic
-├── onlinescreensaver/   ← Frontend: The Kindle Extension (v2.1)
+├── onlinescreensaver/   ← Frontend: The Kindle Extension (v2.5)
 │   ├── bin/             ← Shell scripts & secrets
 │   └── menu.json        ← KUAL Menu definition
 └── run_local.py         ← Test the photo scraper locally
