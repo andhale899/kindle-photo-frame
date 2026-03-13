@@ -4,9 +4,9 @@ name: Kindle Photo Refresh
 #   schedule:
 #     - cron: "0 * * * *"   # every hour
 on:
-  push:
-    branches:
-      - master
+  # push:
+  #   branches:
+  #     - master
   schedule:
     - cron: "0 * * * *"
 

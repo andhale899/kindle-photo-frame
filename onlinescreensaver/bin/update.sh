@@ -83,10 +83,23 @@ while [ 0 -eq $CONNECTED ]; do
 
         # TURBO REASSOCIATE & SCAN: Every 10s, force the radio to look and join
         if [ $(( $TIMER % 10 )) -eq 0 ]; then
-            logger "Turbo Scan/Sync: Forcing wlan0 to scan and join..."
+            logger "Turbo Scan/Sync: Checking Radio Health... ($TIMER s)"
+            
+            # 1. Check Physical Interface
+            IP=$(/sbin/ifconfig wlan0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}')
+            
+            # 2. Check Kindle Connection Manager State
+            KSTATE=$(lipc-get-prop com.lab126.wifid cmState 2>/dev/null)
+            
+            # 3. Force Scan for visibility
             /usr/bin/wpa_cli -i wlan0 scan >/dev/null 2>&1
+            sleep 2
+            SSIDS=$(/usr/bin/wpa_cli -i wlan0 scan_results | awk -F'\t' '/[0-9a-f]{2:}/{print $5}' | tr '\n' ',' | sed 's/,$//')
+            
+            logger "Diagnostic: IP=[${IP:-none}] State=[$KSTATE] SSIDs=[${SSIDS:-none}]"
+            
             /usr/bin/wpa_cli -i wlan0 reassociate >/dev/null 2>&1
-            if [ "$RUN_MODE" = "dev" ]; then eips 0 38 "WiFi: Scan/Sync... ($TIMER s)"; fi
+            if [ "$RUN_MODE" = "dev" ]; then eips 0 38 "WiFi: $KSTATE... ($TIMER s)"; fi
         fi
 
 		if [ 0 -eq $TIMER ]; then

@@ -66,3 +66,14 @@ if [ -d "/usr/share/blanket/screensaver" ]; then
 fi
 
 screen_log 9 "Press any key/button to exit."
+
+# 7. WiFi Console Diagnostics (Console Only)
+echo ""
+echo "==== WIFI HEALTH CHECK ===="
+echo "Current State: $(lipc-get-prop com.lab126.wifid cmState)"
+echo "Current IP:    $(/sbin/ifconfig wlan0 | grep 'inet addr' | awk -F: '{print $2}' | awk '{print $1}')"
+echo ""
+echo "Visible SSIDs (Scan):"
+/usr/bin/wpa_cli -i wlan0 scan >/dev/null 2>&1 && sleep 2
+/usr/bin/wpa_cli -i wlan0 scan_results | head -n 10
+echo "==========================="
