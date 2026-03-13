@@ -10,7 +10,7 @@ venv/
 output_local/
 # Kindle Secrets
 onlinescreensaver/bin/secrets.sh
-kindle_logs.txt
+# kindle_logs.txt
 
 # OS specific
 .DS_Store
