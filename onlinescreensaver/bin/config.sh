@@ -4,7 +4,7 @@
 
 # Interval in MINUTES
 DEFAULTINTERVAL=15
-VERSION="2.6-stable"
+VERSION="2.7-stable"
 
 # load secrets if available (managed in gitignore)
 [ -e "secrets.sh" ] && source ./secrets.sh
