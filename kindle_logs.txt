@@ -3161,3 +3161,906 @@ Sat Mar 14 10:55:49 GMT+5:30100 2026 : Install complete. Rebooting now...
 2026-03-14 13:34:44 GMT+5:30100 [v2.7-stable-L]: Early Bird: Waking 60s early (840 s) for WiFi warmup.
 2026-03-14 13:34:44 GMT+5:30100 [v2.7-stable-L]: Starting to wait for timeout to expire: 840
 2026-03-14 13:34:44 GMT+5:30100 [v2.7-stable-L]: wait_for: checking events (timeout 840)...
+2026-03-14 13:48:44 GMT+5:30100 [v2.7-stable-L]: wait_for: received event ''
+2026-03-14 13:48:44 GMT+5:30100 [v2.7-stable-L]: wait_for: timed out naturally
+2026-03-14 13:48:44 GMT+5:30100 [v2.7-stable-L]: wait_for: finished
+2026-03-14 13:48:44 GMT+5:30100 [v2.7-stable-L]: Background scheduler woke up from wait.
+2026-03-14 13:48:44 GMT+5:30100 [v2.7-stable-L]: --- Background Loop Start ---
+2026-03-14 13:48:44 GMT+5:30100 [v2.7-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 13:48:44 GMT+5:30100 [v2.7-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 13:48:44 GMT+5:30100 [v2.7-stable]: --- Update Started v2.7-stable (Battery: 67%) ---
+2026-03-14 13:48:47 GMT+5:30100 [v2.7-stable]: Screen saver image file updated v2.7-stable (cloned 00-10)
+2026-03-14 13:48:50 GMT+5:30100 [v2.7-stable-L]: Releasing suspension inhibit.
+2026-03-14 13:48:50 GMT+5:30100 [v2.7-stable-L]: --- Heartbeat: Update Cycle Complete v2.7-stable ---
+2026-03-14 13:48:50 GMT+5:30100 [v2.7-stable-L]: Schedule 0:0-24:00=15 used, next update in 15 minutes
+2026-03-14 13:48:50 GMT+5:30100 [v2.7-stable-L]: Next update in 15 minutes
+2026-03-14 13:48:50 GMT+5:30100 [v2.7-stable-L]: Early Bird: Waking 60s early (840 s) for WiFi warmup.
+2026-03-14 13:48:50 GMT+5:30100 [v2.7-stable-L]: Starting to wait for timeout to expire: 840
+2026-03-14 13:48:50 GMT+5:30100 [v2.7-stable-L]: wait_for: checking events (timeout 840)...
+Sat Mar 14 13:51:19 GMT+5:30100 2026 : Installing OnlineScreensaver...
+2026-03-14 13:51:19 GMT+5:30100 [v2.8-stable-L]: INSTALL: Installing OnlineScreensaver...
+Sat Mar 14 13:51:19 GMT+5:30100 2026 : Remounting root RW...
+2026-03-14 13:51:19 GMT+5:30100 [v2.8-stable-L]: INSTALL: Remounting root RW...
+Sat Mar 14 13:51:19 GMT+5:30100 2026 : Copying upstart jobs...
+2026-03-14 13:51:19 GMT+5:30100 [v2.8-stable-L]: INSTALL: Copying upstart jobs...
+Sat Mar 14 13:51:19 GMT+5:30100 2026 : Remounting root RO...
+2026-03-14 13:51:19 GMT+5:30100 [v2.8-stable-L]: INSTALL: Remounting root RO...
+Sat Mar 14 13:51:19 GMT+5:30100 2026 : Install complete. Rebooting now...
+2026-03-14 13:51:19 GMT+5:30100 [v2.8-stable-L]: INSTALL: Install complete. Rebooting now...
+2026-03-14 13:52:21 GMT+5:30100 [v2.8-stable-L]: Full two day schedule:  00:00-24:00=5  24:0-48:0=5
+2026-03-14 13:52:21 GMT+5:30100 [v2.8-stable-L]: --- Background Loop Start ---
+2026-03-14 13:52:21 GMT+5:30100 [v2.8-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 13:52:22 GMT+5:30100 [v2.8-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 13:52:30 GMT+5:30100 [v2.8-stable]: --- Update Started v2.8-stable (Battery: 67%) ---
+2026-03-14 13:52:33 GMT+5:30100 [v2.8-stable]: Screen saver image file updated v2.8-stable (cloned 00-10)
+2026-03-14 13:52:34 GMT+5:30100 [v2.8-stable-L]: --- Heartbeat: Update Cycle Complete v2.8-stable ---
+2026-03-14 13:52:35 GMT+5:30100 [v2.8-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 13:52:35 GMT+5:30100 [v2.8-stable-L]: Next update in 5 minutes
+2026-03-14 13:52:35 GMT+5:30100 [v2.8-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 13:52:35 GMT+5:30100 [v2.8-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 13:52:35 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 13:56:35 GMT+5:30100 [v2.8-stable-L]: wait_for: received event ''
+2026-03-14 13:56:35 GMT+5:30100 [v2.8-stable-L]: wait_for: timed out naturally
+2026-03-14 13:56:35 GMT+5:30100 [v2.8-stable-L]: wait_for: finished
+2026-03-14 13:56:35 GMT+5:30100 [v2.8-stable-L]: Background scheduler woke up from wait.
+2026-03-14 13:56:35 GMT+5:30100 [v2.8-stable-L]: --- Background Loop Start ---
+2026-03-14 13:56:35 GMT+5:30100 [v2.8-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 13:56:35 GMT+5:30100 [v2.8-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 13:56:35 GMT+5:30100 [v2.8-stable]: --- Update Started v2.8-stable (Battery: 66%) ---
+2026-03-14 13:56:39 GMT+5:30100 [v2.8-stable]: Screen saver image file updated v2.8-stable (cloned 00-10)
+2026-03-14 13:56:40 GMT+5:30100 [v2.8-stable-L]: --- Heartbeat: Update Cycle Complete v2.8-stable ---
+2026-03-14 13:56:40 GMT+5:30100 [v2.8-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 13:56:40 GMT+5:30100 [v2.8-stable-L]: Next update in 5 minutes
+2026-03-14 13:56:40 GMT+5:30100 [v2.8-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 13:56:40 GMT+5:30100 [v2.8-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 13:56:40 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 14:00:40 GMT+5:30100 [v2.8-stable-L]: wait_for: received event ''
+2026-03-14 14:00:40 GMT+5:30100 [v2.8-stable-L]: wait_for: timed out naturally
+2026-03-14 14:00:40 GMT+5:30100 [v2.8-stable-L]: wait_for: finished
+2026-03-14 14:00:40 GMT+5:30100 [v2.8-stable-L]: Background scheduler woke up from wait.
+2026-03-14 14:00:40 GMT+5:30100 [v2.8-stable-L]: --- Background Loop Start ---
+2026-03-14 14:00:40 GMT+5:30100 [v2.8-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:00:40 GMT+5:30100 [v2.8-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:00:40 GMT+5:30100 [v2.8-stable]: --- Update Started v2.8-stable (Battery: 66%) ---
+2026-03-14 14:00:43 GMT+5:30100 [v2.8-stable]: Screen saver image file updated v2.8-stable (cloned 00-10)
+2026-03-14 14:00:44 GMT+5:30100 [v2.8-stable-L]: --- Heartbeat: Update Cycle Complete v2.8-stable ---
+2026-03-14 14:00:44 GMT+5:30100 [v2.8-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:00:45 GMT+5:30100 [v2.8-stable-L]: Next update in 5 minutes
+2026-03-14 14:00:45 GMT+5:30100 [v2.8-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:00:45 GMT+5:30100 [v2.8-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:00:45 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 14:03:56 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 10 '
+2026-03-14 14:03:56 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 49
+2026-03-14 14:03:56 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 49)...
+2026-03-14 14:04:01 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 8 '
+2026-03-14 14:04:01 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 44
+2026-03-14 14:04:01 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 44)...
+2026-03-14 14:04:06 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 14:04:06 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 39
+2026-03-14 14:04:06 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 39)...
+2026-03-14 14:04:26 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 14:04:26 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 19
+2026-03-14 14:04:26 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 19)...
+2026-03-14 14:04:31 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 6 '
+2026-03-14 14:04:31 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 14
+2026-03-14 14:04:31 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 14)...
+2026-03-14 14:04:36 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 2 '
+2026-03-14 14:04:36 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 9
+2026-03-14 14:04:36 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 9)...
+2026-03-14 14:04:41 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 1 '
+2026-03-14 14:04:41 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 4
+2026-03-14 14:04:41 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 4)...
+2026-03-14 14:04:45 GMT+5:30100 [v2.8-stable-L]: wait_for: received event ''
+2026-03-14 14:04:45 GMT+5:30100 [v2.8-stable-L]: wait_for: timed out naturally
+2026-03-14 14:04:45 GMT+5:30100 [v2.8-stable-L]: wait_for: finished
+2026-03-14 14:04:45 GMT+5:30100 [v2.8-stable-L]: Background scheduler woke up from wait.
+2026-03-14 14:04:46 GMT+5:30100 [v2.8-stable-L]: --- Background Loop Start ---
+2026-03-14 14:04:46 GMT+5:30100 [v2.8-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:04:46 GMT+5:30100 [v2.8-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:04:55 GMT+5:30100 [v2.8-stable-L]: Turbo Scan/Sync: Checking Radio Health... (170 s)
+2026-03-14 14:04:57 GMT+5:30100 [v2.8-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:05:08 GMT+5:30100 [v2.8-stable-L]: TURBO RESET: Stubborn radio detected. Cycling WiFi power...
+2026-03-14 14:05:12 GMT+5:30100 [v2.8-stable-L]: Turbo Scan/Sync: Checking Radio Health... (160 s)
+2026-03-14 14:05:14 GMT+5:30100 [v2.8-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:05:25 GMT+5:30100 [v2.8-stable-L]: Turbo Scan/Sync: Checking Radio Health... (150 s)
+2026-03-14 14:05:27 GMT+5:30100 [v2.8-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:05:38 GMT+5:30100 [v2.8-stable-L]: Turbo Scan/Sync: Checking Radio Health... (140 s)
+2026-03-14 14:05:40 GMT+5:30100 [v2.8-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:05:51 GMT+5:30100 [v2.8-stable]: --- Update Started v2.8-stable (Battery: 66%) ---
+2026-03-14 14:05:56 GMT+5:30100 [v2.8-stable]: Screen saver image file updated v2.8-stable (cloned 00-10)
+2026-03-14 14:05:57 GMT+5:30100 [v2.8-stable-L]: --- Heartbeat: Update Cycle Complete v2.8-stable ---
+2026-03-14 14:05:57 GMT+5:30100 [v2.8-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:05:57 GMT+5:30100 [v2.8-stable-L]: Next update in 5 minutes
+2026-03-14 14:05:57 GMT+5:30100 [v2.8-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:05:57 GMT+5:30100 [v2.8-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:05:57 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 14:09:57 GMT+5:30100 [v2.8-stable-L]: wait_for: received event ''
+2026-03-14 14:09:57 GMT+5:30100 [v2.8-stable-L]: wait_for: timed out naturally
+2026-03-14 14:09:57 GMT+5:30100 [v2.8-stable-L]: wait_for: finished
+2026-03-14 14:09:57 GMT+5:30100 [v2.8-stable-L]: Background scheduler woke up from wait.
+2026-03-14 14:09:57 GMT+5:30100 [v2.8-stable-L]: --- Background Loop Start ---
+2026-03-14 14:09:57 GMT+5:30100 [v2.8-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:09:57 GMT+5:30100 [v2.8-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:09:57 GMT+5:30100 [v2.8-stable]: --- Update Started v2.8-stable (Battery: 66%) ---
+2026-03-14 14:10:00 GMT+5:30100 [v2.8-stable]: Screen saver image file updated v2.8-stable (cloned 00-10)
+2026-03-14 14:10:01 GMT+5:30100 [v2.8-stable]: Updating image on screen via eips
+2026-03-14 14:10:03 GMT+5:30100 [v2.8-stable]: Force-reloading screensaver framework...
+2026-03-14 14:10:04 GMT+5:30100 [v2.8-stable-L]: --- Heartbeat: Update Cycle Complete v2.8-stable ---
+2026-03-14 14:10:04 GMT+5:30100 [v2.8-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:10:04 GMT+5:30100 [v2.8-stable-L]: Next update in 5 minutes
+2026-03-14 14:10:04 GMT+5:30100 [v2.8-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:10:04 GMT+5:30100 [v2.8-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:10:04 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 14:10:10 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 10 '
+2026-03-14 14:10:10 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 234
+2026-03-14 14:10:10 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 234)...
+2026-03-14 14:10:15 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 8 '
+2026-03-14 14:10:15 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 229
+2026-03-14 14:10:15 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 229)...
+2026-03-14 14:10:20 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 14:10:20 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 224
+2026-03-14 14:10:20 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 224)...
+2026-03-14 14:10:40 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 14:10:40 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 204
+2026-03-14 14:10:40 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 204)...
+2026-03-14 14:10:45 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 6 '
+2026-03-14 14:10:45 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 199
+2026-03-14 14:10:45 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 199)...
+2026-03-14 14:10:50 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 2 '
+2026-03-14 14:10:50 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 194
+2026-03-14 14:10:50 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 194)...
+2026-03-14 14:10:55 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'readyToSuspend 1 '
+2026-03-14 14:10:55 GMT+5:30100 [v2.8-stable-L]: rtcWakeup has been set to 189
+2026-03-14 14:10:55 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 189)...
+2026-03-14 14:13:55 GMT+5:30100 [v2.8-stable-L]: wait_for: received event 'wakeupFromSuspend 169 '
+2026-03-14 14:13:55 GMT+5:30100 [v2.8-stable-L]: wait_for: woke up from suspend, breaking loop
+2026-03-14 14:13:55 GMT+5:30100 [v2.8-stable-L]: wait_for: finished
+2026-03-14 14:13:55 GMT+5:30100 [v2.8-stable-L]: Background scheduler woke up from wait.
+2026-03-14 14:13:55 GMT+5:30100 [v2.8-stable-L]: --- Background Loop Start ---
+2026-03-14 14:13:55 GMT+5:30100 [v2.8-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:13:55 GMT+5:30100 [v2.8-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:14:04 GMT+5:30100 [v2.8-stable-L]: Turbo Scan/Sync: Checking Radio Health... (170 s)
+2026-03-14 14:14:06 GMT+5:30100 [v2.8-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:14:17 GMT+5:30100 [v2.8-stable-L]: TURBO RESET: Stubborn radio detected. Cycling WiFi power...
+2026-03-14 14:14:20 GMT+5:30100 [v2.8-stable-L]: Turbo Scan/Sync: Checking Radio Health... (160 s)
+2026-03-14 14:14:22 GMT+5:30100 [v2.8-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:14:32 GMT+5:30100 [v2.8-stable-L]: Turbo Scan/Sync: Checking Radio Health... (150 s)
+2026-03-14 14:14:34 GMT+5:30100 [v2.8-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:14:45 GMT+5:30100 [v2.8-stable-L]: Turbo Scan/Sync: Checking Radio Health... (140 s)
+2026-03-14 14:14:47 GMT+5:30100 [v2.8-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:14:57 GMT+5:30100 [v2.8-stable-L]: Turbo Scan/Sync: Checking Radio Health... (130 s)
+2026-03-14 14:14:59 GMT+5:30100 [v2.8-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:15:09 GMT+5:30100 [v2.8-stable-L]: Turbo Scan/Sync: Checking Radio Health... (120 s)
+2026-03-14 14:15:10 GMT+5:30100 [v2.8-stable-L]: SLEDGEHAMMER: Radio is ZOMBIE. Simulating Power Button Press...
+2026-03-14 14:15:17 GMT+5:30100 [v2.8-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:15:18 GMT+5:30100 [v2.8-stable]: --- Update Started v2.8-stable (Battery: 65%) ---
+2026-03-14 14:15:22 GMT+5:30100 [v2.8-stable]: Screen saver image file updated v2.8-stable (cloned 00-10)
+2026-03-14 14:15:24 GMT+5:30100 [v2.8-stable-L]: SLEEPWALKER: Automatic Re-suspend triggered (v2.8).
+2026-03-14 14:15:29 GMT+5:30100 [v2.8-stable-L]: --- Heartbeat: Update Cycle Complete v2.8-stable ---
+2026-03-14 14:15:29 GMT+5:30100 [v2.8-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:15:29 GMT+5:30100 [v2.8-stable-L]: Next update in 5 minutes
+2026-03-14 14:15:29 GMT+5:30100 [v2.8-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:15:29 GMT+5:30100 [v2.8-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:15:29 GMT+5:30100 [v2.8-stable-L]: wait_for: checking events (timeout 240)...
+Sat Mar 14 14:16:30 GMT+5:30100 2026 : Installing OnlineScreensaver...
+2026-03-14 14:16:30 GMT+5:30100 [v3.0-stable-L]: INSTALL: Installing OnlineScreensaver...
+Sat Mar 14 14:16:30 GMT+5:30100 2026 : Remounting root RW...
+2026-03-14 14:16:30 GMT+5:30100 [v3.0-stable-L]: INSTALL: Remounting root RW...
+Sat Mar 14 14:16:30 GMT+5:30100 2026 : Copying upstart jobs...
+2026-03-14 14:16:30 GMT+5:30100 [v3.0-stable-L]: INSTALL: Copying upstart jobs...
+Sat Mar 14 14:16:30 GMT+5:30100 2026 : Remounting root RO...
+2026-03-14 14:16:30 GMT+5:30100 [v3.0-stable-L]: INSTALL: Remounting root RO...
+Sat Mar 14 14:16:30 GMT+5:30100 2026 : Install complete. Rebooting now...
+2026-03-14 14:16:30 GMT+5:30100 [v3.0-stable-L]: INSTALL: Install complete. Rebooting now...
+2026-03-14 14:17:28 GMT+5:30100 [v3.0-stable-L]: Full two day schedule:  00:00-24:00=5  24:0-48:0=5
+2026-03-14 14:17:28 GMT+5:30100 [v3.0-stable-L]: --- Background Loop Start ---
+2026-03-14 14:17:28 GMT+5:30100 [v3.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:17:29 GMT+5:30100 [v3.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:17:38 GMT+5:30100 [v3.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (170 s)
+2026-03-14 14:17:42 GMT+5:30100 [v3.0-stable-L]: Diagnostic: IP=[none] State=[CONNECTED] SSIDs=[none] Strikes=[0]
+2026-03-14 14:17:44 GMT+5:30100 [v3.0-stable-L]: --- Heartbeat: Update Cycle Complete v3.0-stable ---
+2026-03-14 14:17:44 GMT+5:30100 [v3.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:17:44 GMT+5:30100 [v3.0-stable-L]: Next update in 5 minutes
+2026-03-14 14:17:44 GMT+5:30100 [v3.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:17:44 GMT+5:30100 [v3.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:17:44 GMT+5:30100 [v3.0-stable-L]: wait_for: checking events (timeout 240)...
+Sat Mar 14 14:19:40 GMT+5:30100 2026 : Installing OnlineScreensaver...
+2026-03-14 14:19:40 GMT+5:30100 [v3.0-stable-L]: INSTALL: Installing OnlineScreensaver...
+Sat Mar 14 14:19:40 GMT+5:30100 2026 : Remounting root RW...
+2026-03-14 14:19:40 GMT+5:30100 [v3.0-stable-L]: INSTALL: Remounting root RW...
+Sat Mar 14 14:19:40 GMT+5:30100 2026 : Copying upstart jobs...
+2026-03-14 14:19:40 GMT+5:30100 [v3.0-stable-L]: INSTALL: Copying upstart jobs...
+Sat Mar 14 14:19:40 GMT+5:30100 2026 : Remounting root RO...
+2026-03-14 14:19:40 GMT+5:30100 [v3.0-stable-L]: INSTALL: Remounting root RO...
+Sat Mar 14 14:19:40 GMT+5:30100 2026 : Install complete. Rebooting now...
+2026-03-14 14:19:40 GMT+5:30100 [v3.0-stable-L]: INSTALL: Install complete. Rebooting now...
+2026-03-14 14:20:39 GMT+5:30100 [v3.0-stable-L]: Full two day schedule:  00:00-24:00=5  24:0-48:0=5
+2026-03-14 14:20:39 GMT+5:30100 [v3.0-stable-L]: --- Background Loop Start ---
+2026-03-14 14:20:39 GMT+5:30100 [v3.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:20:40 GMT+5:30100 [v3.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:20:48 GMT+5:30100 [v3.0-stable-L]: --- Heartbeat: Update Cycle Complete v3.0-stable ---
+2026-03-14 14:20:48 GMT+5:30100 [v3.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:20:48 GMT+5:30100 [v3.0-stable-L]: Next update in 5 minutes
+2026-03-14 14:20:48 GMT+5:30100 [v3.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:20:48 GMT+5:30100 [v3.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:20:48 GMT+5:30100 [v3.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: wait_for: received event ''
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: wait_for: timed out naturally
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: wait_for: finished
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: --- Background Loop Start ---
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: --- Heartbeat: Update Cycle Complete v3.0-stable ---
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: Next update in 5 minutes
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:24:49 GMT+5:30100 [v3.0-stable-L]: wait_for: checking events (timeout 240)...
+Sat Mar 14 14:25:07 GMT+5:30100 2026 : Installing OnlineScreensaver...
+2026-03-14 14:25:07 GMT+5:30100 [v4.0-stable-L]: INSTALL: Installing OnlineScreensaver...
+Sat Mar 14 14:25:07 GMT+5:30100 2026 : Remounting root RW...
+2026-03-14 14:25:07 GMT+5:30100 [v4.0-stable-L]: INSTALL: Remounting root RW...
+Sat Mar 14 14:25:07 GMT+5:30100 2026 : Copying upstart jobs...
+2026-03-14 14:25:07 GMT+5:30100 [v4.0-stable-L]: INSTALL: Copying upstart jobs...
+Sat Mar 14 14:25:08 GMT+5:30100 2026 : Remounting root RO...
+2026-03-14 14:25:08 GMT+5:30100 [v4.0-stable-L]: INSTALL: Remounting root RO...
+Sat Mar 14 14:25:08 GMT+5:30100 2026 : Install complete. Rebooting now...
+2026-03-14 14:25:08 GMT+5:30100 [v4.0-stable-L]: INSTALL: Install complete. Rebooting now...
+2026-03-14 14:26:07 GMT+5:30100 [v4.0-stable-L]: Full two day schedule:  00:00-24:00=5  24:0-48:0=5
+2026-03-14 14:26:07 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 14:26:07 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:26:08 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:26:16 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 14:26:16 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:26:16 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 14:26:16 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:26:16 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:26:16 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 14:28:59 GMT+5:30100 [v4.0-stable]: PHOENIX: Starting Remote Self-Update...
+2026-03-14 14:29:09 GMT+5:30100 [v4.0-stable]: PHOENIX: Downloading latest source from GitHub...
+2026-03-14 14:29:10 GMT+5:30100 [v4.0-stable]: PHOENIX: Unpacking update...
+2026-03-14 14:29:10 GMT+5:30100 [v4.0-stable]: PHOENIX: Deploying files (preserving secrets)...
+2026-03-14 14:29:10 GMT+5:30100 [v4.0-stable]: PHOENIX: Self-Update SUCCESSFUL! System rebooting in 5s...
+2026-03-14 14:29:57 GMT+5:30100 [v2.8-stable]: PHOENIX: Starting Remote Self-Update...
+2026-03-14 14:30:07 GMT+5:30100 [v2.8-stable]: PHOENIX: Downloading latest source from GitHub...
+2026-03-14 14:30:08 GMT+5:30100 [v2.8-stable]: PHOENIX: Unpacking update...
+2026-03-14 14:30:08 GMT+5:30100 [v2.8-stable]: PHOENIX: Deploying files (preserving secrets)...
+2026-03-14 14:30:08 GMT+5:30100 [v2.8-stable]: PHOENIX: Self-Update SUCCESSFUL! System rebooting in 5s...
+2026-03-14 14:30:17 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 14:30:17 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 14:30:17 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 14:30:17 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 14:30:17 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 14:30:17 GMT+5:30100 [v2.8-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:30:17 GMT+5:30100 [v2.8-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:30:17 GMT+5:30100 [v2.8-stable]: --- Update Started v2.8-stable (Battery: 63%) ---
+2026-03-14 14:30:21 GMT+5:30100 [v2.8-stable]: Screen saver image file updated v2.8-stable (cloned 00-10)
+2026-03-14 14:30:22 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 14:30:22 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:30:22 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 14:30:22 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:30:22 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:30:22 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 14:33:18 GMT+5:30100 [v2.8-stable]: PHOENIX: Starting Remote Self-Update...
+2026-03-14 14:33:28 GMT+5:30100 [v2.8-stable]: PHOENIX: Downloading latest source from GitHub...
+Sat Mar 14 14:33:29 GMT+5:30100 2026 : Installing OnlineScreensaver...
+2026-03-14 14:33:29 GMT+5:30100 [v2.8-stable-L]: INSTALL: Installing OnlineScreensaver...
+Sat Mar 14 14:33:29 GMT+5:30100 2026 : Remounting root RW...
+2026-03-14 14:33:29 GMT+5:30100 [v2.8-stable-L]: INSTALL: Remounting root RW...
+Sat Mar 14 14:33:29 GMT+5:30100 2026 : Copying upstart jobs...
+2026-03-14 14:33:29 GMT+5:30100 [v2.8-stable-L]: INSTALL: Copying upstart jobs...
+Sat Mar 14 14:33:29 GMT+5:30100 2026 : Remounting root RO...
+2026-03-14 14:33:29 GMT+5:30100 [v2.8-stable-L]: INSTALL: Remounting root RO...
+Sat Mar 14 14:33:29 GMT+5:30100 2026 : Install complete. Rebooting now...
+2026-03-14 14:33:29 GMT+5:30100 [v2.8-stable-L]: INSTALL: Install complete. Rebooting now...
+2026-03-14 14:33:30 GMT+5:30100 [v2.8-stable]: PHOENIX: Unpacking update...
+2026-03-14 14:33:30 GMT+5:30100 [v2.8-stable]: PHOENIX: Deploying files (preserving secrets)...
+2026-03-14 14:33:30 GMT+5:30100 [v2.8-stable]: PHOENIX: Self-Update SUCCESSFUL! System rebooting in 5s...
+2026-03-14 14:34:28 GMT+5:30100 [v4.0-stable-L]: Full two day schedule:  00:00-24:00=5  24:0-48:0=5
+2026-03-14 14:34:28 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 14:34:29 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:34:29 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:34:37 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 14:34:37 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:34:38 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 14:34:38 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:34:38 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:34:38 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:38:38 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 14:42:38 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 14:42:38 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 14:42:38 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 14:42:38 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 14:42:38 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 14:42:38 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:42:38 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:42:38 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 14:42:38 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:42:38 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 14:42:38 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:42:39 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:42:39 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 14:45:17 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 10 '
+2026-03-14 14:45:17 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 81
+2026-03-14 14:45:17 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 81)...
+2026-03-14 14:45:22 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 8 '
+2026-03-14 14:45:22 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 76
+2026-03-14 14:45:22 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 76)...
+2026-03-14 14:45:27 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 14:45:28 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 71
+2026-03-14 14:45:28 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 71)...
+2026-03-14 14:45:47 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 14:45:48 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 51
+2026-03-14 14:45:48 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 51)...
+2026-03-14 14:45:53 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 6 '
+2026-03-14 14:45:53 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 46
+2026-03-14 14:45:53 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 46)...
+2026-03-14 14:45:58 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 2 '
+2026-03-14 14:45:58 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 41
+2026-03-14 14:45:58 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 41)...
+2026-03-14 14:46:03 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 1 '
+2026-03-14 14:46:03 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 36
+2026-03-14 14:46:03 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 36)...
+2026-03-14 14:47:43 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'wakeupFromSuspend 91 '
+2026-03-14 14:47:43 GMT+5:30100 [v4.0-stable-L]: wait_for: woke up from suspend, breaking loop
+2026-03-14 14:47:43 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 14:47:43 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 14:47:43 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 14:47:43 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:47:43 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:47:53 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (170 s)
+2026-03-14 14:47:55 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:48:06 GMT+5:30100 [v4.0-stable-L]: TURBO RESET: Stubborn radio detected. Cycling WiFi power...
+2026-03-14 14:48:09 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (160 s)
+2026-03-14 14:48:11 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:48:22 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (150 s)
+2026-03-14 14:48:24 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:48:35 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (140 s)
+2026-03-14 14:48:37 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:48:48 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (130 s)
+2026-03-14 14:48:50 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:49:01 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (120 s)
+2026-03-14 14:49:01 GMT+5:30100 [v4.0-stable-L]: SLEDGEHAMMER: Radio is ZOMBIE. Simulating Power Button Press...
+2026-03-14 14:49:09 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 14:49:10 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 14:49:10 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:49:10 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 14:49:10 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:49:10 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:49:10 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 14:53:10 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 14:53:10 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 14:53:10 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 14:53:10 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 14:53:10 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 14:53:10 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:53:10 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:53:11 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 14:53:11 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:53:11 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 14:53:11 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:53:11 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:53:11 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 14:57:11 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 15:00:01 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 10 '
+2026-03-14 15:00:02 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 70
+2026-03-14 15:00:02 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 70)...
+2026-03-14 15:00:07 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 8 '
+2026-03-14 15:00:07 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 64
+2026-03-14 15:00:07 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 64)...
+2026-03-14 15:00:12 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 15:00:12 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 59
+2026-03-14 15:00:12 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 59)...
+2026-03-14 15:00:32 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 15:00:32 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 39
+2026-03-14 15:00:32 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 39)...
+2026-03-14 15:00:37 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 6 '
+2026-03-14 15:00:37 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 34
+2026-03-14 15:00:37 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 34)...
+2026-03-14 15:00:42 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 2 '
+2026-03-14 15:00:42 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 29
+2026-03-14 15:00:42 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 29)...
+2026-03-14 15:00:47 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 1 '
+2026-03-14 15:00:47 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 24
+2026-03-14 15:00:47 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 24)...
+2026-03-14 15:02:26 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'wakeupFromSuspend 90 '
+2026-03-14 15:02:27 GMT+5:30100 [v4.0-stable-L]: wait_for: woke up from suspend, breaking loop
+2026-03-14 15:02:27 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 15:02:27 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 15:02:27 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 15:02:27 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 15:02:27 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 15:02:36 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (170 s)
+2026-03-14 15:02:39 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:02:49 GMT+5:30100 [v4.0-stable-L]: TURBO RESET: Stubborn radio detected. Cycling WiFi power...
+2026-03-14 15:02:53 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (160 s)
+2026-03-14 15:02:55 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:03:06 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (150 s)
+2026-03-14 15:03:08 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:03:19 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (140 s)
+2026-03-14 15:03:21 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:03:32 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (130 s)
+2026-03-14 15:03:34 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:03:45 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (120 s)
+2026-03-14 15:03:45 GMT+5:30100 [v4.0-stable-L]: SLEDGEHAMMER: Radio is ZOMBIE. Simulating Power Button Press...
+2026-03-14 15:03:52 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:03:53 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 15:03:53 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 15:03:53 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 15:03:53 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 15:03:53 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 15:03:54 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 15:07:54 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 15:11:54 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 15:11:54 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 15:11:54 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 15:11:54 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 15:11:54 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 15:11:54 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 15:11:54 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 15:11:54 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 15:11:54 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 15:11:55 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 15:11:55 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 15:11:55 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 15:11:55 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 15:14:45 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 10 '
+2026-03-14 15:14:45 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 70
+2026-03-14 15:14:45 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 70)...
+2026-03-14 15:14:50 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 8 '
+2026-03-14 15:14:50 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 65
+2026-03-14 15:14:50 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 65)...
+2026-03-14 15:14:55 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 15:14:55 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 60
+2026-03-14 15:14:55 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 60)...
+2026-03-14 15:15:15 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 15:15:15 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 40
+2026-03-14 15:15:15 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 40)...
+2026-03-14 15:15:20 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 6 '
+2026-03-14 15:15:20 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 35
+2026-03-14 15:15:20 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 35)...
+2026-03-14 15:15:25 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 2 '
+2026-03-14 15:15:25 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 30
+2026-03-14 15:15:25 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 30)...
+2026-03-14 15:15:30 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 1 '
+2026-03-14 15:15:30 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 25
+2026-03-14 15:15:30 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 25)...
+2026-03-14 15:17:11 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'wakeupFromSuspend 91 '
+2026-03-14 15:17:11 GMT+5:30100 [v4.0-stable-L]: wait_for: woke up from suspend, breaking loop
+2026-03-14 15:17:11 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 15:17:11 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 15:17:11 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 15:17:11 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 15:17:11 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 15:17:21 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (170 s)
+2026-03-14 15:17:23 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:17:34 GMT+5:30100 [v4.0-stable-L]: TURBO RESET: Stubborn radio detected. Cycling WiFi power...
+2026-03-14 15:17:37 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (160 s)
+2026-03-14 15:17:39 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:17:50 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (150 s)
+2026-03-14 15:17:52 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:18:03 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (140 s)
+2026-03-14 15:18:05 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:18:16 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (130 s)
+2026-03-14 15:18:18 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:18:29 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (120 s)
+2026-03-14 15:18:29 GMT+5:30100 [v4.0-stable-L]: SLEDGEHAMMER: Radio is ZOMBIE. Simulating Power Button Press...
+2026-03-14 15:18:37 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:18:38 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 15:18:38 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 15:18:38 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 15:18:38 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 15:18:38 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 15:18:38 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 15:22:38 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 15:22:38 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 15:22:38 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 15:22:38 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 15:22:38 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 15:22:38 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 15:22:38 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 15:22:38 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 15:22:39 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 15:22:39 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 15:22:39 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 15:22:39 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 15:22:39 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 15:26:39 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 15:29:30 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 10 '
+2026-03-14 15:29:30 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 69
+2026-03-14 15:29:30 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 69)...
+2026-03-14 15:29:35 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 8 '
+2026-03-14 15:29:35 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 64
+2026-03-14 15:29:35 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 64)...
+2026-03-14 15:29:40 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 15:29:40 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 59
+2026-03-14 15:29:40 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 59)...
+2026-03-14 15:30:00 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 15:30:00 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 39
+2026-03-14 15:30:00 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 39)...
+2026-03-14 15:30:05 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 6 '
+2026-03-14 15:30:05 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 34
+2026-03-14 15:30:05 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 34)...
+2026-03-14 15:30:10 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 2 '
+2026-03-14 15:30:10 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 29
+2026-03-14 15:30:10 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 29)...
+2026-03-14 15:30:15 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 1 '
+2026-03-14 15:30:15 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 24
+2026-03-14 15:30:15 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 24)...
+2026-03-14 15:31:55 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'wakeupFromSuspend 91 '
+2026-03-14 15:31:55 GMT+5:30100 [v4.0-stable-L]: wait_for: woke up from suspend, breaking loop
+2026-03-14 15:31:55 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 15:31:55 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 15:31:55 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 15:31:55 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 15:31:55 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 15:32:04 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (170 s)
+2026-03-14 15:32:07 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:32:17 GMT+5:30100 [v4.0-stable-L]: TURBO RESET: Stubborn radio detected. Cycling WiFi power...
+2026-03-14 15:32:21 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (160 s)
+2026-03-14 15:32:23 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:32:34 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (150 s)
+2026-03-14 15:32:36 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:32:47 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (140 s)
+2026-03-14 15:32:49 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:33:00 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (130 s)
+2026-03-14 15:33:02 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:33:13 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (120 s)
+2026-03-14 15:33:13 GMT+5:30100 [v4.0-stable-L]: SLEDGEHAMMER: Radio is ZOMBIE. Simulating Power Button Press...
+2026-03-14 15:33:20 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:33:21 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 15:33:21 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 15:33:21 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 15:33:21 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 15:33:21 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 15:33:21 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 15:37:22 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 15:41:22 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 15:44:13 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 10 '
+2026-03-14 15:44:13 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 69
+2026-03-14 15:44:13 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 69)...
+2026-03-14 15:44:18 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 8 '
+2026-03-14 15:44:18 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 64
+2026-03-14 15:44:18 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 64)...
+2026-03-14 15:44:23 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 15:44:23 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 59
+2026-03-14 15:44:23 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 59)...
+2026-03-14 15:44:43 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 15:44:43 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 39
+2026-03-14 15:44:43 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 39)...
+2026-03-14 15:44:48 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 6 '
+2026-03-14 15:44:48 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 34
+2026-03-14 15:44:48 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 34)...
+2026-03-14 15:44:53 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 2 '
+2026-03-14 15:44:53 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 29
+2026-03-14 15:44:53 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 29)...
+2026-03-14 15:44:58 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'readyToSuspend 1 '
+2026-03-14 15:44:58 GMT+5:30100 [v4.0-stable-L]: rtcWakeup has been set to 24
+2026-03-14 15:44:58 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 24)...
+2026-03-14 15:46:40 GMT+5:30100 [v4.0-stable-L]: wait_for: received event 'wakeupFromSuspend 91 '
+2026-03-14 15:46:40 GMT+5:30100 [v4.0-stable-L]: wait_for: woke up from suspend, breaking loop
+2026-03-14 15:46:40 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 15:46:40 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 15:46:40 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 15:46:40 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 15:46:40 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 15:46:50 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (170 s)
+2026-03-14 15:46:52 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:47:03 GMT+5:30100 [v4.0-stable-L]: TURBO RESET: Stubborn radio detected. Cycling WiFi power...
+2026-03-14 15:47:06 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (160 s)
+2026-03-14 15:47:08 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:47:19 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (150 s)
+2026-03-14 15:47:21 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:47:32 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (140 s)
+2026-03-14 15:47:34 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:47:45 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (130 s)
+2026-03-14 15:47:47 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:47:58 GMT+5:30100 [v4.0-stable-L]: Turbo Scan/Sync: Checking Radio Health... (120 s)
+2026-03-14 15:47:58 GMT+5:30100 [v4.0-stable-L]: SLEDGEHAMMER: Radio is ZOMBIE. Simulating Power Button Press...
+2026-03-14 15:48:05 GMT+5:30100 [v4.0-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 15:48:06 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 15:48:06 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 15:48:06 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 15:48:06 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 15:48:06 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 15:48:06 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 15:52:07 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 15:56:07 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 16:00:07 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 16:00:07 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 16:00:07 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 16:00:07 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 16:00:07 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 16:00:07 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 16:00:07 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 16:00:08 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 16:00:08 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 16:00:08 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 16:00:08 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 16:00:08 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 16:00:08 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 16:04:08 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 16:04:08 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 16:04:08 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 16:04:08 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 16:04:08 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 16:04:08 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 16:04:08 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 16:04:09 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 16:04:09 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 16:04:09 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 16:04:09 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 16:04:09 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 16:04:09 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+Sat Mar 14 16:05:18 GMT+5:30100 2026 : Installing OnlineScreensaver...
+2026-03-14 16:05:18 GMT+5:30100 [v4.0-stable-L]: INSTALL: Installing OnlineScreensaver...
+Sat Mar 14 16:05:18 GMT+5:30100 2026 : Remounting root RW...
+2026-03-14 16:05:18 GMT+5:30100 [v4.0-stable-L]: INSTALL: Remounting root RW...
+Sat Mar 14 16:05:18 GMT+5:30100 2026 : Copying upstart jobs...
+2026-03-14 16:05:19 GMT+5:30100 [v4.0-stable-L]: INSTALL: Copying upstart jobs...
+Sat Mar 14 16:05:19 GMT+5:30100 2026 : Remounting root RO...
+2026-03-14 16:05:19 GMT+5:30100 [v4.0-stable-L]: INSTALL: Remounting root RO...
+Sat Mar 14 16:05:19 GMT+5:30100 2026 : Install complete. Rebooting now...
+2026-03-14 16:05:19 GMT+5:30100 [v4.0-stable-L]: INSTALL: Install complete. Rebooting now...
+2026-03-14 16:06:18 GMT+5:30100 [v4.0-stable-L]: Full two day schedule:  00:00-24:00=5  24:0-48:0=5
+2026-03-14 16:06:18 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 16:06:19 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 16:06:19 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 16:06:27 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 16:06:27 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 16:06:27 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 16:06:27 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 16:06:27 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 16:06:27 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 16:09:00 GMT+5:30100 [v4.0-stable]: --- Update Started v4.0-stable (Battery: 58%) ---
+2026-03-14 16:09:00 GMT+5:30100 [v4.0-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 16:09:00 GMT+5:30100 [v4.0-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 16:10:28 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 16:10:28 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 16:10:28 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 16:10:28 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 16:10:28 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 16:10:28 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 16:10:28 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 16:10:28 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 16:10:28 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 16:10:28 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 16:10:28 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 16:11:17 GMT+5:30100 [v4.0.2-stable]: --- Update Started v4.0.2-stable (Battery: 58%) ---
+2026-03-14 16:11:17 GMT+5:30100 [v4.0.2-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 16:11:17 GMT+5:30100 [v4.0.2-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 16:11:18 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Syncing Vault (Target: 15 images)...
+2026-03-14 16:11:51 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Sync Complete (15/15 synced).
+2026-03-14 16:11:52 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Preparing Multi-Slot rotation starting at #1...
+2026-03-14 16:12:01 GMT+5:30100 [v4.0.2-stable-L]: Releasing suspension inhibit.
+2026-03-14 16:14:28 GMT+5:30100 [v4.0-stable-L]: wait_for: received event ''
+2026-03-14 16:14:28 GMT+5:30100 [v4.0-stable-L]: wait_for: timed out naturally
+2026-03-14 16:14:28 GMT+5:30100 [v4.0-stable-L]: wait_for: finished
+2026-03-14 16:14:28 GMT+5:30100 [v4.0-stable-L]: Background scheduler woke up from wait.
+2026-03-14 16:14:28 GMT+5:30100 [v4.0-stable-L]: --- Background Loop Start ---
+2026-03-14 16:14:28 GMT+5:30100 [v4.0.2-stable]: --- Update Started v4.0.2-stable (Battery: 57%) ---
+2026-03-14 16:14:28 GMT+5:30100 [v4.0.2-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 16:14:28 GMT+5:30100 [v4.0.2-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 16:14:28 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Syncing Vault (Target: 15 images)...
+2026-03-14 16:14:39 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Sync Complete (15/15 synced).
+2026-03-14 16:14:40 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Preparing Multi-Slot rotation starting at #2...
+2026-03-14 16:14:49 GMT+5:30100 [v4.0.2-stable-L]: Releasing suspension inhibit.
+2026-03-14 16:14:49 GMT+5:30100 [v4.0-stable-L]: --- Heartbeat: Update Cycle Complete v4.0-stable ---
+2026-03-14 16:14:49 GMT+5:30100 [v4.0-stable-L]: Schedule 00:00-24:00=5 used, next update in 5 minutes
+2026-03-14 16:14:49 GMT+5:30100 [v4.0-stable-L]: Next update in 5 minutes
+2026-03-14 16:14:49 GMT+5:30100 [v4.0-stable-L]: Early Bird: Waking 60s early (240 s) for WiFi warmup.
+2026-03-14 16:14:49 GMT+5:30100 [v4.0-stable-L]: Starting to wait for timeout to expire: 240
+2026-03-14 16:14:49 GMT+5:30100 [v4.0-stable-L]: wait_for: checking events (timeout 240)...
+2026-03-14 16:16:01 GMT+5:30100 : Setting interval to 30 min...
+2026-03-14 16:16:01 GMT+5:30100 [v4.0.2-stable-L]: INTERVAL: Setting interval to 30 min...
+2026-03-14 16:16:01 GMT+5:30100 : Configuration updated.
+2026-03-14 16:16:01 GMT+5:30100 [v4.0.2-stable-L]: INTERVAL: Configuration updated.
+2026-03-14 16:16:01 GMT+5:30100 : Restarting service...
+2026-03-14 16:16:01 GMT+5:30100 [v4.0.2-stable-L]: INTERVAL: Restarting service...
+2026-03-14 16:16:04 GMT+5:30100 : Done! Next update in 30 min.
+2026-03-14 16:16:04 GMT+5:30100 [v4.0.2-stable-L]: Full two day schedule:  0:0-24:00=30  24:0-48:00=30
+2026-03-14 16:16:04 GMT+5:30100 [v4.0.2-stable-L]: INTERVAL: Done! Next update in 30 min.
+2026-03-14 16:16:04 GMT+5:30100 [v4.0.2-stable-L]: --- Background Loop Start ---
+2026-03-14 16:16:04 GMT+5:30100 [v4.0.2-stable]: --- Update Started v4.0.2-stable (Battery: 57%) ---
+2026-03-14 16:16:04 GMT+5:30100 [v4.0.2-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 16:16:04 GMT+5:30100 [v4.0.2-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 16:16:04 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Syncing Vault (Target: 15 images)...
+2026-03-14 16:16:16 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Sync Complete (15/15 synced).
+2026-03-14 16:16:17 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Preparing Multi-Slot rotation starting at #3...
+2026-03-14 16:16:27 GMT+5:30100 [v4.0.2-stable-L]: Releasing suspension inhibit.
+2026-03-14 16:16:27 GMT+5:30100 [v4.0.2-stable-L]: --- Heartbeat: Update Cycle Complete v4.0.2-stable ---
+2026-03-14 16:16:27 GMT+5:30100 [v4.0.2-stable-L]: Schedule 0:0-24:00=30 used, next update in 30 minutes
+2026-03-14 16:16:27 GMT+5:30100 [v4.0.2-stable-L]: Next update in 30 minutes
+2026-03-14 16:16:27 GMT+5:30100 [v4.0.2-stable-L]: Early Bird: Waking 60s early (1740 s) for WiFi warmup.
+2026-03-14 16:16:27 GMT+5:30100 [v4.0.2-stable-L]: Starting to wait for timeout to expire: 1740
+2026-03-14 16:16:27 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1740)...
+2026-03-14 16:17:36 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 10 '
+2026-03-14 16:17:37 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1671
+2026-03-14 16:17:37 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1671)...
+2026-03-14 16:17:41 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 8 '
+2026-03-14 16:17:42 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1666
+2026-03-14 16:17:42 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1666)...
+2026-03-14 16:17:47 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 16:17:47 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1661
+2026-03-14 16:17:47 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1661)...
+2026-03-14 16:18:07 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 16:18:07 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1641
+2026-03-14 16:18:07 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1641)...
+2026-03-14 16:18:12 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 6 '
+2026-03-14 16:18:12 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1635
+2026-03-14 16:18:12 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1635)...
+2026-03-14 16:18:17 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 2 '
+2026-03-14 16:18:17 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1630
+2026-03-14 16:18:17 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1630)...
+2026-03-14 16:18:22 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 1 '
+2026-03-14 16:18:22 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1625
+2026-03-14 16:18:22 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1625)...
+2026-03-14 16:45:17 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'wakeupFromSuspend 1605 '
+2026-03-14 16:45:17 GMT+5:30100 [v4.0.2-stable-L]: wait_for: woke up from suspend, breaking loop
+2026-03-14 16:45:17 GMT+5:30100 [v4.0.2-stable-L]: wait_for: finished
+2026-03-14 16:45:17 GMT+5:30100 [v4.0.2-stable-L]: Background scheduler woke up from wait.
+2026-03-14 16:45:17 GMT+5:30100 [v4.0.2-stable-L]: --- Background Loop Start ---
+2026-03-14 16:45:17 GMT+5:30100 [v4.0.2-stable]: --- Update Started v4.0.2-stable (Battery: 57%) ---
+2026-03-14 16:45:17 GMT+5:30100 [v4.0.2-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 16:45:17 GMT+5:30100 [v4.0.2-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 16:45:27 GMT+5:30100 [v4.0.2-stable-L]: Turbo Scan/Sync: Checking Radio Health... (170 s)
+2026-03-14 16:45:29 GMT+5:30100 [v4.0.2-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 16:45:39 GMT+5:30100 [v4.0.2-stable-L]: TURBO RESET: Stubborn radio detected. Cycling WiFi power...
+2026-03-14 16:45:42 GMT+5:30100 [v4.0.2-stable-L]: Turbo Scan/Sync: Checking Radio Health... (160 s)
+2026-03-14 16:45:44 GMT+5:30100 [v4.0.2-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 16:45:55 GMT+5:30100 [v4.0.2-stable-L]: Turbo Scan/Sync: Checking Radio Health... (150 s)
+2026-03-14 16:45:57 GMT+5:30100 [v4.0.2-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 16:46:07 GMT+5:30100 [v4.0.2-stable-L]: Turbo Scan/Sync: Checking Radio Health... (140 s)
+2026-03-14 16:46:09 GMT+5:30100 [v4.0.2-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 16:46:20 GMT+5:30100 [v4.0.2-stable-L]: Turbo Scan/Sync: Checking Radio Health... (130 s)
+2026-03-14 16:46:22 GMT+5:30100 [v4.0.2-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 16:46:32 GMT+5:30100 [v4.0.2-stable-L]: Turbo Scan/Sync: Checking Radio Health... (120 s)
+2026-03-14 16:46:32 GMT+5:30100 [v4.0.2-stable-L]: SLEDGEHAMMER: Radio is ZOMBIE. Simulating Power Button Press...
+2026-03-14 16:46:39 GMT+5:30100 [v4.0.2-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[0]
+2026-03-14 16:46:41 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Syncing Vault (Target: 15 images)...
+2026-03-14 16:46:57 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Sync Complete (15/15 synced).
+2026-03-14 16:46:59 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Preparing Multi-Slot rotation starting at #4...
+2026-03-14 16:47:06 GMT+5:30100 [v4.0.2-stable-L]: SLEEPWALKER: Automatic Re-suspend triggered (v2.8).
+2026-03-14 16:47:11 GMT+5:30100 [v4.0.2-stable-L]: Releasing suspension inhibit.
+2026-03-14 16:47:11 GMT+5:30100 [v4.0.2-stable-L]: --- Heartbeat: Update Cycle Complete v4.0.2-stable ---
+2026-03-14 16:47:11 GMT+5:30100 [v4.0.2-stable-L]: Schedule 0:0-24:00=30 used, next update in 30 minutes
+2026-03-14 16:47:11 GMT+5:30100 [v4.0.2-stable-L]: Next update in 30 minutes
+2026-03-14 16:47:11 GMT+5:30100 [v4.0.2-stable-L]: Early Bird: Waking 60s early (1740 s) for WiFi warmup.
+2026-03-14 16:47:11 GMT+5:30100 [v4.0.2-stable-L]: Starting to wait for timeout to expire: 1740
+2026-03-14 16:47:11 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1740)...
+2026-03-14 16:48:11 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 10 '
+2026-03-14 16:48:11 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1680
+2026-03-14 16:48:11 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1680)...
+2026-03-14 16:48:16 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 8 '
+2026-03-14 16:48:16 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1675
+2026-03-14 16:48:16 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1675)...
+2026-03-14 16:48:21 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 16:48:21 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1670
+2026-03-14 16:48:21 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1670)...
+2026-03-14 16:48:41 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-14 16:48:41 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1650
+2026-03-14 16:48:41 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1650)...
+2026-03-14 16:48:46 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 6 '
+2026-03-14 16:48:46 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1645
+2026-03-14 16:48:46 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1645)...
+2026-03-14 16:48:51 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 2 '
+2026-03-14 16:48:51 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1640
+2026-03-14 16:48:51 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1640)...
+2026-03-14 16:48:56 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'readyToSuspend 1 '
+2026-03-14 16:48:56 GMT+5:30100 [v4.0.2-stable-L]: rtcWakeup has been set to 1635
+2026-03-14 16:48:56 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1635)...
+2026-03-14 16:52:07 GMT+5:30100 [v4.0.2-stable-L]: wait_for: received event 'wakeupFromSuspend 180 '
+2026-03-14 16:52:07 GMT+5:30100 [v4.0.2-stable-L]: wait_for: woke up from suspend, breaking loop
+2026-03-14 16:52:08 GMT+5:30100 [v4.0.2-stable-L]: wait_for: finished
+2026-03-14 16:52:08 GMT+5:30100 [v4.0.2-stable-L]: Background scheduler woke up from wait.
+2026-03-14 16:52:08 GMT+5:30100 [v4.0.2-stable-L]: --- Background Loop Start ---
+2026-03-14 16:52:08 GMT+5:30100 [v4.0.2-stable]: --- Update Started v4.0.2-stable (Battery: 57%) ---
+2026-03-14 16:52:08 GMT+5:30100 [v4.0.2-stable-L]: Inhibiting suspension for 120s...
+2026-03-14 16:52:08 GMT+5:30100 [v4.0.2-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-14 16:52:10 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Syncing Vault (Target: 15 images)...
+2026-03-14 16:52:26 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Sync Complete (15/15 synced).
+2026-03-14 16:52:27 GMT+5:30100 [v4.0.2-stable]: CAROUSEL: Preparing Multi-Slot rotation starting at #5...
+2026-03-14 16:52:37 GMT+5:30100 [v4.0.2-stable-L]: Releasing suspension inhibit.
+2026-03-14 16:52:37 GMT+5:30100 [v4.0.2-stable-L]: --- Heartbeat: Update Cycle Complete v4.0.2-stable ---
+2026-03-14 16:52:42 GMT+5:30100 [v4.0.2-stable-L]: Schedule 0:0-24:00=30 used, next update in 30 minutes
+2026-03-14 16:52:43 GMT+5:30100 [v4.0.2-stable-L]: Next update in 30 minutes
+2026-03-14 16:52:43 GMT+5:30100 [v4.0.2-stable-L]: Early Bird: Waking 60s early (1740 s) for WiFi warmup.
+2026-03-14 16:52:43 GMT+5:30100 [v4.0.2-stable-L]: Starting to wait for timeout to expire: 1740
+2026-03-14 16:52:43 GMT+5:30100 [v4.0.2-stable-L]: wait_for: checking events (timeout 1740)...
