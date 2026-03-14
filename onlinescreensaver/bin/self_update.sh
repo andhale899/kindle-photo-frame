@@ -96,12 +96,18 @@ rm -rf "$UPD_DIR"
 rm -f "$TMP_ZIP"
 
 # 6. Post-update cleanup (fixing line endings)
-# CRITICAL: We skip self_update.sh to avoid hanging the running process on BusyBox
+# CRITICAL: We skip active/running scripts to avoid hanging the process on BusyBox
 log "PHOENIX: Finalizing permissions..." "dev_only"
 for f in "$EXT_ROOT/bin/"*.sh; do
-    case "$(basename "$f")" in
-        "self_update.sh") continue ;; # Skip self
+    FNAME=$(basename "$f")
+    case "$FNAME" in
+        "self_update.sh"|"scheduler.sh"|"update.sh") 
+            log "PHOENIX: Skipping busy script: $FNAME" "dev_only"
+            chmod +x "$f"
+            continue 
+            ;;
         *) 
+            log "PHOENIX: Processing $FNAME..." "dev_only"
             sed -i 's/\r$//' "$f"
             chmod +x "$f"
             ;;
