@@ -1,4 +1,4 @@
-# AI Context & Project Deep Knowledge (v2.5)
+# AI Context & Project Deep Knowledge (v2.6)
 
 This document serves as a "Brain Dump" for future AI assistants working on this repository. It explains the subtle, Kindle-specific behaviors and the hard-won fixes that are not obvious from the code alone.
 
@@ -19,7 +19,12 @@ This document serves as a "Brain Dump" for future AI assistants working on this 
 
 ### 3. The Sledgehammer (update.sh)
 - **Why**: In some cases, only a user interaction (physical button press) wakes the high-power WiFi path.
-- **How**: `powerd_test -p` simulates a physical power button click. We only use this as a last resort after 60s of silence to avoid draining the battery.
+- **How**: `powerd_test -p` simulates a physical power button click.
+- **Polite Logic (v2.6)**: We now check `lipc-get-prop com.lab126.powerd status`. If the state is not "Screen Saver" (e.g., user is reading), we skip the Sledgehammer to avoid locking the screen.
+
+### 4. The 3-Strike Rule (v2.6)
+- **Why**: Constant aggressive searching drains battery if you are out of WiFi range for hours.
+- **How**: We track consecutive failures in `/tmp/wifi_strike_count`. After 3 strikes, we enter **Passive Mode**, disabling Turbo/Sledgehammer until a connection is restored.
 
 ## 🔐 Security Standards
 - **Secrets**: Never hardcode Telegram or API keys in `config.sh`.

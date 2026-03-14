@@ -60,6 +60,15 @@ CONNECTED=0
 KICKED=0
 TURBO_THRESHOLD=20 # Reset radio early if it's stubborn
 
+# 3-Strike Rule Implementation
+STRIKE_FILE="/tmp/wifi_strike_count"
+STRIKES=$(cat "$STRIKE_FILE" 2>/dev/null || echo 0)
+PASSIVE_MODE=0
+if [ "$STRIKES" -ge 3 ]; then
+    logger "3-STRIKE RULE: Consecutive failures: $STRIKES. Entering PASSIVE battery mode."
+    PASSIVE_MODE=1
+fi
+
 if [ "$RUN_MODE" = "dev" ]; then
     eips 0 38 "WiFi: Searching... (v$VERSION)"
 fi
@@ -91,33 +100,51 @@ while [ 0 -eq $CONNECTED ]; do
             # 2. Check Kindle Connection Manager State
             KSTATE=$(lipc-get-prop com.lab126.wifid cmState 2>/dev/null)
             
-            # 3. Aggressive Framework Kick
-            lipc-set-prop com.lab126.wifid scan 1 2>/dev/null
-            lipc-set-prop com.lab126.cmd ensureConnection "any" 2>/dev/null
-            
-            # 4. EMERGENCY SLEDGEHAMMER (Wait 60s before being nuclear)
-            # If still blind after 60s, simulate power button press
-            if [ $(( $NETWORK_TIMEOUT - $TIMER )) -ge 60 ] && [ -z "$IP" ] && [ "$SSIDS" = "" ]; then
-                logger "SLEDGEHAMMER: Radio is ZOMBIE. Simulating Power Button Press..."
-                if [ "$RUN_MODE" = "dev" ]; then eips 0 38 "!!! SLEDGEHAMMER WAKE !!!"; fi
-                powerd_test -p 2>/dev/null
-                # Wait a bit for the framework to react to the button
-                sleep 5
+            # 3. Aggressive Framework Kick (Skip if in Passive Mode)
+            if [ "$PASSIVE_MODE" -eq 0 ]; then
+                lipc-set-prop com.lab126.wifid scan 1 2>/dev/null
+                lipc-set-prop com.lab126.cmd ensureConnection "any" 2>/dev/null
             fi
             
-            # 5. Low-level Scan for visibility
-            /usr/bin/wpa_cli -i wlan0 scan >/dev/null 2>&1
-            sleep 2
-            SSIDS=$(/usr/bin/wpa_cli -i wlan0 scan_results | awk -F'\t' '/[0-9a-f]{2:}/{print $5}' | tr '\n' ',' | sed 's/,$//')
+            # 4. POLITE SLEDGEHAMMER (Wait 60s, then check for idle state)
+            # Skip if Passive or if User is Active
+            if [ "$PASSIVE_MODE" -eq 0 ] && [ $(( $NETWORK_TIMEOUT - $TIMER )) -ge 60 ] && [ -z "$IP" ] && [ "$SSIDS" = "" ]; then
+                # Check Power State
+                PSTATE=$(lipc-get-prop com.lab126.powerd status | grep "Powerd state" | awk '{print $3}')
+                if [ "$PSTATE" = "Screen" ] || [ "$PSTATE" = "Ready" ]; then # Likely 'Screen Saver' or 'Ready to Suspend'
+                    logger "SLEDGEHAMMER: Radio is ZOMBIE. Simulating Power Button Press..."
+                    if [ "$RUN_MODE" = "dev" ]; then eips 0 38 "!!! SLEDGEHAMMER WAKE !!!"; fi
+                    powerd_test -p 2>/dev/null
+                    sleep 5
+                else
+                    logger "Sledgehammer SKIPPED: Polite mode (User is Active: $PSTATE)"
+                fi
+            fi
             
-            logger "Diagnostic: IP=[${IP:-none}] State=[$KSTATE] SSIDs=[${SSIDS:-none}]"
+            # 5. Low-level Scan for visibility (Skip if Passive)
+            if [ "$PASSIVE_MODE" -eq 0 ]; then
+                /usr/bin/wpa_cli -i wlan0 scan >/dev/null 2>&1
+                sleep 2
+                SSIDS=$(/usr/bin/wpa_cli -i wlan0 scan_results | awk -F'\t' '/[0-9a-f]{2:}/{print $5}' | tr '\n' ',' | sed 's/,$//')
+            fi
             
-            /usr/bin/wpa_cli -i wlan0 reassociate >/dev/null 2>&1
+            logger "Diagnostic: IP=[${IP:-none}] State=[$KSTATE] SSIDs=[${SSIDS:-none}] Strikes=[$STRIKES]"
+            
+            if [ "$PASSIVE_MODE" -eq 0 ]; then
+                /usr/bin/wpa_cli -i wlan0 reassociate >/dev/null 2>&1
+            fi
+            
             if [ "$RUN_MODE" = "dev" ]; then eips 0 38 "WiFi: $KSTATE... ($TIMER s)"; fi
         fi
 
 		if [ 0 -eq $TIMER ]; then
 			log "No internet/DNS connection after ${NETWORK_TIMEOUT} seconds, aborting."
+            
+            # Strike Rule: Increment count
+            NEW_STRIKES=$(( $STRIKES + 1 ))
+            echo "$NEW_STRIKES" > "$STRIKE_FILE"
+            logger "WiFi strike recorded: $NEW_STRIKES"
+
             if [ "$RUN_MODE" = "dev" ]; then
                 eips -f -g /usr/share/blanket/screensaver/bg_ss00.png 2>/dev/null
                 eips 0 38 "!!! WIFI FAILED (v$VERSION) !!!"
@@ -133,6 +160,9 @@ while [ 0 -eq $CONNECTED ]; do
 done
 
 if [ 1 -eq $CONNECTED ]; then
+    # Reset Strike Count on success
+    echo "0" > "$STRIKE_FILE"
+
     # ONLY log the start once we have internet to avoid Telegram timeouts
     # We use eips to show progress on screen
     eips 0 0 "Updating Screen v$VERSION... (Batt: $BATT)"
