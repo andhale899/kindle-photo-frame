@@ -1,4 +1,4 @@
-# AI Context & Project Deep Knowledge (v2.7)
+# AI Context & Project Deep Knowledge (v2.8)
 
 This document serves as a "Brain Dump" for future AI assistants working on this repository. It explains the subtle, Kindle-specific behaviors and the hard-won fixes that are not obvious from the code alone.
 
@@ -30,6 +30,11 @@ This document serves as a "Brain Dump" for future AI assistants working on this 
 - **Telegram Gating**: We enforce a strict `$TELEGRAM_READY=1` guard on notifications. Without it, the script triggers a 70+ message error storm during the "WiFi Zombie" state while `/wlan0` tries to resolve DNS.
 - **Sledgehammer Limiting**: The Sledgehammer is extremely disruptive (`powerd_test -p` physically flashes the screen). We strictly limit it with `SLEDGEHAMMER_FIRED=1` so it can only ever trigger once per cycle. 
 - **Log Rotation**: We rotate `/mnt/us/extensions/onlinescreensaver/logs/onlinescreensaver.txt` dynamically using a 500KB cap check `$(stat -c%s "$LOGFILE")` before writing, saving the Kindle's rootfs from gigabytes of chatty debugging logs.
+
+### 6. The Sleepwalker (v2.8)
+- **Why**: Sledgehammer (power button) is a toggle. Waking the radio lands the Kindle on the main menu, where it stays.
+- **How**: If `SLEDGEHAMMER_FIRED=1`, the script fires the power button **one more time** at the very end of the cycle. This "toggles" the device back to screensaver sleep.
+- **Guard**: It checks `lipc-get-prop com.lab126.powerd status`. If the user is active, the re-suspend is aborted.
 
 ## 🔐 Security Standards
 - **Secrets**: Never hardcode Telegram or API keys in `config.sh`.
