@@ -53,18 +53,28 @@ def get_font(size: int):
 def fetch_weather_complex(location: str, units: str):
     """
     Returns (temp, desc) using wttr.in.
+    Includes validation to prevent showing '0' for transient errors.
     """
     unit_param = "m" if units == "metric" else "u"
     url = f"https://wttr.in/{urllib.parse.quote(location)}?format=j1&{unit_param}"
     try:
-        resp = requests.get(url, timeout=10, headers={"User-Agent": "kindle-photo-frame/1.0"})
+        resp = requests.get(url, timeout=15, headers={"User-Agent": "kindle-photo-frame/1.1"})
         resp.raise_for_status()
         data = resp.json()
         current = data["current_condition"][0]
         temp = current["temp_C"] if units == "metric" else current["temp_F"]
         desc = current["weatherDesc"][0]["value"]
+        
+        # Validating temperature: 0 is mathematically possible but highly suspicious 
+        # in some regions (like Ahmednagar, India) if it's the only value returned.
+        # We check weatherCode or desc to see if it makes sense.
+        if str(temp) == "0" and "Cloudy" not in desc and "Clear" not in desc:
+            log.warning("Weather caught returning '0' suspiciously. Using None to trigger default/hide.")
+            return None, None
+            
         return str(temp), str(desc)
-    except Exception:
+    except Exception as e:
+        log.error("Weather fetch failed: %s", e)
         return None, None
 
 

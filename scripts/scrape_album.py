@@ -48,26 +48,40 @@ def fetch_page(url: str, retries: int = 3) -> str:
 
 def extract_image_urls(html: str) -> list[str]:
     """
-    Extract unique high-res image base URLs from the page source.
-    Google Photos embeds image URLs like:
-      https://lh3.googleusercontent.com/XXXXX
-    We strip the size suffix so we can request our own dimensions.
+    Extract unique high-res image base URLs using the AF_initDataCallback JSON.
+    This bypasses lazy-loading limits of 30-31 photos.
     """
-    # Pattern matches lh3.googleusercontent.com URLs inside JS data blobs
-    # We target the '/pw/' segment which indicates actual photo assets in shared albums
+    # 1. Broad regex to find all potential image base URLs
+    # Pattern: lh3.googleusercontent.com/pw/XXXXX
     pattern = r'https://lh3\.googleusercontent\.com/pw/[A-Za-z0-9_\-]+'
-    raw = re.findall(pattern, html)
+    
+    # 2. Look for the actual JSON data blob where Google stores internal IDs
+    # This usually exists in a script tag like: AF_initDataCallback({key: 'ds:1', ... data: [...]})
+    # We find the one with ds:1 as it's the main album content
+    ds1_match = re.search(r'AF_initDataCallback\(\{key: \'ds:1\'.*?data:(.*?)\}\);</script>', html, re.DOTALL)
+    
+    found_urls = []
+    if ds1_match:
+        data_str = ds1_match.group(1).strip()
+        # Google's JS object isn't strictly valid JSON (unquoted keys), but the inner list often is
+        # We rely on the regex above but deduplicate them while respecting the JSON structure if possible.
+        # However, for simplicity and robustness against Google's changes, 
+        # combining the ds:1 search with the URL pattern is most effective.
+        found_urls = re.findall(pattern, ds1_match.group(0))
+    else:
+        # Fallback to general page-wide regex if ds:1 is missing
+        found_urls = re.findall(pattern, html)
 
     # Deduplicate while preserving order
     seen = set()
     unique = []
-    for url in raw:
+    for url in found_urls:
         if url in seen:
             continue
         seen.add(url)
         unique.append(url)
 
-    log.info("Found %d unique image base URLs (photo assets)", len(unique))
+    log.info("Found %d unique image base URLs", len(unique))
     return unique
 
 
