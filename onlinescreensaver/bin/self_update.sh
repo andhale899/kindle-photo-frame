@@ -21,8 +21,24 @@ lipc-set-prop com.lab126.cmd airplaneMode 0 2>/dev/null
 lipc-set-prop com.lab126.cmd wirelessEnable 1
 sleep 10
 
-# 2. Check Connection
-if ! /bin/ping -c 1 www.google.com > /dev/null; then
+# 2. Check Connection (with retries)
+MAX_RETRIES=6
+RETRY_COUNT=0
+CONNECTED=0
+
+log "PHOENIX: Waiting for internet connection..." "dev_only"
+while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+    if curl -s --head  --request GET https://www.google.com | grep "200 OK" > /dev/null; then
+        CONNECTED=1
+        break
+    fi
+    log "PHOENIX: No internet, retrying in 10s... ($RETRY_COUNT/$MAX_RETRIES)" "dev_only"
+    eips 0 38 "Update: Waiting for WiFi ($RETRY_COUNT)..."
+    RETRY_COUNT=$((RETRY_COUNT+1))
+    sleep 10
+done
+
+if [ $CONNECTED -eq 0 ]; then
     log "PHOENIX: Update FAILED. No internet connection." "error"
     eips 0 38 "!!! UPDATE FAILED: NO WIFI !!!"
     exit 1
@@ -40,16 +56,29 @@ fi
 # 4. Unpack
 log "PHOENIX: Unpacking update..." "dev_only"
 eips 0 38 "Update: Unpacking..."
-unzip -o "$TMP_ZIP" -d /tmp/
+rm -rf /tmp/kindle-photo-frame-*
+if ! unzip -o "$TMP_ZIP" -d /tmp/; then
+    log "PHOENIX: Unzip FAILED." "error"
+    eips 0 38 "!!! UPDATE FAILED: UNZIP ERR !!!"
+    exit 1
+fi
 
-# 5. Protective Deployment
-# We keep secrets.sh!
-log "PHOENIX: Deploying files (preserving secrets)..." "dev_only"
+# 5. Protective Deployment (Dynamic Path Detection)
+log "PHOENIX: Deploying files..." "dev_only"
 eips 0 38 "Update: Deploying..."
-cp -r /tmp/kindle-photo-frame-master/onlinescreensaver/* "$EXT_ROOT/"
+
+# Find the unpacked directory (GitHub zips are repo-name-branch)
+UPD_DIR=$(ls -d /tmp/kindle-photo-frame-* 2>/dev/null | head -n 1)
+
+if [ -z "$UPD_DIR" ]; then
+    log "PHOENIX: Could not find update source directory." "error"
+    exit 1
+fi
+
+cp -r "$UPD_DIR/onlinescreensaver/"* "$EXT_ROOT/"
 
 # Cleanup
-rm -rf /tmp/kindle-photo-frame-master
+rm -rf "$UPD_DIR"
 rm -f "$TMP_ZIP"
 
 # 6. Post-update cleanup (fixing line endings just in case)
