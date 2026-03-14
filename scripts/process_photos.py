@@ -50,11 +50,69 @@ def get_font(size: int):
 
 
 # ── Weather via wttr.in (no API key required) ─────────────────────────────────
+def fetch_weather_open_meteo(location: str):
+    """
+    Returns (temp, desc) using Open-Meteo + Geocoding API.
+    No API key required.
+    """
+    try:
+        # 1. Geocoding: Resolve location string to coordinates
+        # Strip suffix like ", IN" or ", India" as the API prefers just the name
+        search_name = location.split(",")[0].strip()
+        geo_url = f"https://geocoding-api.open-meteo.com/v1/search?name={urllib.parse.quote(search_name)}&count=1&language=en&format=json"
+        geo_resp = requests.get(geo_url, timeout=10)
+        geo_resp.raise_for_status()
+        geo_data = geo_resp.json()
+        
+        if not geo_data.get("results"):
+            log.warning("Open-Meteo Geocoding failed for: %s", location)
+            return None, None
+            
+        result = geo_data["results"][0]
+        lat, lon = result["latitude"], result["longitude"]
+        
+        # 2. Forecast: Get current weather
+        # We map the weather code to a description roughly
+        wx_url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,weather_code&timezone=auto"
+        wx_resp = requests.get(wx_url, timeout=10)
+        wx_resp.raise_for_status()
+        wx_data = wx_resp.json()["current"]
+        
+        temp = int(round(wx_data["temperature_2m"]))
+        code = wx_data["weather_code"]
+        
+        # Simple mapping for common codes (WMO Weather interpretation codes)
+        descriptions = {
+            0: "Clear sky",
+            1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast",
+            45: "Foggy", 48: "Depositing rime fog",
+            51: "Light drizzle", 53: "Moderate drizzle", 55: "Dense drizzle",
+            61: "Slight rain", 63: "Moderate rain", 65: "Heavy rain",
+            71: "Slight snow", 73: "Moderate snow", 75: "Heavy snow",
+            80: "Slight rain showers", 81: "Moderate rain showers", 82: "Violent rain showers",
+            95: "Thunderstorm",
+        }
+        desc = descriptions.get(code, "Clear")
+        
+        log.info("Open-Meteo Success: %sC, %s", temp, desc)
+        return str(temp), str(desc)
+    except Exception as e:
+        log.warning("Open-Meteo fetch failed: %s", e)
+        return None, None
+
 def fetch_weather_complex(location: str, units: str):
     """
-    Returns (temp, desc) using wttr.in.
-    Includes validation to prevent showing '0' for transient errors.
+    Tries multiple weather sources for maximum reliability.
+    1. Open-Meteo (Primary)
+    2. wttr.in (Fallback)
     """
+    # Try Open-Meteo first
+    temp, desc = fetch_weather_open_meteo(location)
+    if temp is not None:
+        return temp, desc
+
+    # Fallback to wttr.in
+    log.info("Open-Meteo failed or returned 0, attempting wttr.in fallback...")
     unit_param = "m" if units == "metric" else "u"
     url = f"https://wttr.in/{urllib.parse.quote(location)}?format=j1&{unit_param}"
     try:
@@ -65,11 +123,8 @@ def fetch_weather_complex(location: str, units: str):
         temp = current["temp_C"] if units == "metric" else current["temp_F"]
         desc = current["weatherDesc"][0]["value"]
         
-        # Validating temperature: 0 is mathematically possible but highly suspicious 
-        # in some regions (like Ahmednagar, India) if it's the only value returned.
-        # We check weatherCode or desc to see if it makes sense.
         if str(temp) == "0" and "Cloudy" not in desc and "Clear" not in desc:
-            log.warning("Weather caught returning '0' suspiciously. Using None to trigger default/hide.")
+            log.warning("wttr.in returned suspicious '0'.")
             return None, None
             
         return str(temp), str(desc)
