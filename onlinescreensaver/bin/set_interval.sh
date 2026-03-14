@@ -15,7 +15,7 @@ screen_log() {
     echo "$1"
     if [ -n "$LOGFILE" ]; then
         mkdir -p "$(dirname "$LOGFILE")"
-        echo "$(date) : $1" >> "$LOGFILE"
+        echo "$(date '+%Y-%m-%d %H:%M:%S %Z') : $1" >> "$LOGFILE"
     fi
     logger "INTERVAL: $1"
 }
@@ -47,7 +47,21 @@ fi
 screen_log "Restarting service..."
 if [ -f /etc/upstart/onlinescreensaver.conf ]; then
     stop onlinescreensaver || true
-    if start onlinescreensaver; then
+    
+    # Retry loop for starting service (Bug 8)
+    RETRY=0
+    STARTED=0
+    while [ $RETRY -lt 3 ]; do
+        sleep 2
+        if start onlinescreensaver; then
+            STARTED=1
+            break
+        fi
+        RETRY=$((RETRY + 1))
+        screen_log "Retry start ($RETRY/3)..."
+    done
+
+    if [ $STARTED -eq 1 ]; then
         screen_log "Done! Next update in $INTERVAL min."
     else
         screen_log "Error: Failed to start service."

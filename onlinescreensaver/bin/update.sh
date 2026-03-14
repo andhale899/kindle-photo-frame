@@ -36,7 +36,7 @@ else
 fi
 
 # Fetch system status
-BATT=$(powerd_test -s | grep "Battery Level" | awk '{print $3}')
+# Battery will be fetched fresh later
 # ensure sleep is inhibited
 toggle_inhibit 1
 
@@ -47,10 +47,10 @@ logger "v2.0 Check: WiFi state is $WIFI_STATE"
 # FORCE Airplane Mode OFF (in case it got stuck)
 lipc-set-prop com.lab126.cmd airplaneMode 0 2>/dev/null
 
-if [ "$WIFI_STATE" -eq 0 ]; then
+if [ -n "$WIFI_STATE" ] && [ "$WIFI_STATE" -eq 0 ] 2>/dev/null; then
 	logger "WiFi is off, forcing ignition"
 	lipc-set-prop com.lab126.cmd wirelessEnable 1
-	DISABLE_WIFI=1
+	SHOULD_DISABLE_WIFI=1
     sleep 5
 fi
 
@@ -72,6 +72,9 @@ fi
 if [ "$RUN_MODE" = "dev" ]; then
     eips 0 38 "WiFi: Searching... (v$VERSION)"
 fi
+
+SSIDS=""
+SLEDGEHAMMER_FIRED=0
 
 while [ 0 -eq $CONNECTED ]; do
 	# test whether we can ping outside
@@ -108,17 +111,21 @@ while [ 0 -eq $CONNECTED ]; do
             
             # 4. POLITE SLEDGEHAMMER (Wait 60s, then check for idle state)
             # Skip if Passive or if User is Active
-            if [ "$PASSIVE_MODE" -eq 0 ] && [ $(( $NETWORK_TIMEOUT - $TIMER )) -ge 60 ] && [ -z "$IP" ] && [ "$SSIDS" = "" ]; then
+            if [ "$PASSIVE_MODE" -eq 0 ] && [ $(( $NETWORK_TIMEOUT - $TIMER )) -ge 60 ] && [ -z "$IP" ] && [ "$SSIDS" = "" ] && [ "$SLEDGEHAMMER_FIRED" -eq 0 ]; then
                 # Check Power State
-                PSTATE=$(lipc-get-prop com.lab126.powerd status | grep "Powerd state" | awk '{print $3}')
-                if [ "$PSTATE" = "Screen" ] || [ "$PSTATE" = "Ready" ]; then # Likely 'Screen Saver' or 'Ready to Suspend'
-                    logger "SLEDGEHAMMER: Radio is ZOMBIE. Simulating Power Button Press..."
-                    if [ "$RUN_MODE" = "dev" ]; then eips 0 38 "!!! SLEDGEHAMMER WAKE !!!"; fi
-                    powerd_test -p 2>/dev/null
-                    sleep 5
-                else
-                    logger "Sledgehammer SKIPPED: Polite mode (User is Active: $PSTATE)"
-                fi
+                PSTATE_RAW=$(lipc-get-prop com.lab126.powerd status | grep "Powerd state")
+                case "$PSTATE_RAW" in
+                    *"Screen Saver"*|*"Ready to Suspend"*|*"Ready"*)
+                        logger "SLEDGEHAMMER: Radio is ZOMBIE. Simulating Power Button Press..."
+                        if [ "$RUN_MODE" = "dev" ]; then eips 0 38 "!!! SLEDGEHAMMER WAKE !!!"; fi
+                        powerd_test -p 2>/dev/null
+                        SLEDGEHAMMER_FIRED=1
+                        sleep 5
+                        ;;
+                    *)
+                        logger "Sledgehammer SKIPPED: Polite mode (User is Active: $PSTATE_RAW)"
+                        ;;
+                esac
             fi
             
             # 5. Low-level Scan for visibility (Skip if Passive)
@@ -162,6 +169,11 @@ done
 if [ 1 -eq $CONNECTED ]; then
     # Reset Strike Count on success
     echo "0" > "$STRIKE_FILE"
+
+    TELEGRAM_READY=1
+
+    # Fetch fresh battery level
+    BATT=$(powerd_test -s | grep "Battery Level" | awk '{print $3}')
 
     # ONLY log the start once we have internet to avoid Telegram timeouts
     # We use eips to show progress on screen
@@ -220,7 +232,7 @@ fi
 toggle_inhibit 0
 
 # disable wireless if necessary
-if [ 1 -eq $DISABLE_WIFI ]; then
+if [ "${SHOULD_DISABLE_WIFI:-0}" -eq 1 ]; then
 	log "Disabling WiFi"
 	lipc-set-prop com.lab126.cmd wirelessEnable 0
 fi

@@ -1,4 +1,4 @@
-# AI Context & Project Deep Knowledge (v2.6)
+# AI Context & Project Deep Knowledge (v2.7)
 
 This document serves as a "Brain Dump" for future AI assistants working on this repository. It explains the subtle, Kindle-specific behaviors and the hard-won fixes that are not obvious from the code alone.
 
@@ -25,6 +25,11 @@ This document serves as a "Brain Dump" for future AI assistants working on this 
 ### 4. The 3-Strike Rule (v2.6)
 - **Why**: Constant aggressive searching drains battery if you are out of WiFi range for hours.
 - **How**: We track consecutive failures in `/tmp/wifi_strike_count`. After 3 strikes, we enter **Passive Mode**, disabling Turbo/Sledgehammer until a connection is restored.
+
+### 5. Stability & Robustness (v2.7)
+- **Telegram Gating**: We enforce a strict `$TELEGRAM_READY=1` guard on notifications. Without it, the script triggers a 70+ message error storm during the "WiFi Zombie" state while `/wlan0` tries to resolve DNS.
+- **Sledgehammer Limiting**: The Sledgehammer is extremely disruptive (`powerd_test -p` physically flashes the screen). We strictly limit it with `SLEDGEHAMMER_FIRED=1` so it can only ever trigger once per cycle. 
+- **Log Rotation**: We rotate `/mnt/us/extensions/onlinescreensaver/logs/onlinescreensaver.txt` dynamically using a 500KB cap check `$(stat -c%s "$LOGFILE")` before writing, saving the Kindle's rootfs from gigabytes of chatty debugging logs.
 
 ## 🔐 Security Standards
 - **Secrets**: Never hardcode Telegram or API keys in `config.sh`.

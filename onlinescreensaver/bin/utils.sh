@@ -1,5 +1,8 @@
 # Send a message to Telegram
 send_telegram_msg() {
+    if [ "${TELEGRAM_READY:-0}" -ne 1 ]; then
+        return 1
+    fi
     if [ "$ENABLE_TELEGRAM" -eq 1 ] && [ -n "$TELEGRAM_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
         # Check for network with a bit of patience
         # DNS often takes longer than IP ping. We check for $TEST_DOMAIN.
@@ -15,7 +18,7 @@ send_telegram_msg() {
         done
 
         if [ $TIMER -ne 999 ]; then
-            echo "$(date) : Skipping Telegram (No Internet/DNS)" >> "$LOGFILE"
+            echo "$(date '+%Y-%m-%d %H:%M:%S %Z') : Skipping Telegram (No Internet/DNS)" >> "$LOGFILE"
             return 1
         fi
 
@@ -27,7 +30,7 @@ send_telegram_msg() {
         
     RET=$?
     if [ $RET -ne 0 ]; then
-        echo "$(date) : TELEGRAM ERROR ($RET): $CURL_OUT" >> "$LOGFILE"
+        echo "$(date '+%Y-%m-%d %H:%M:%S %Z') : TELEGRAM ERROR ($RET): $CURL_OUT" >> "$LOGFILE"
     else
         echo "Telegram Message Sent Successfully."
     fi
@@ -62,7 +65,12 @@ log() {
 	[ -z "$LOGFILE" ] && LOGFILE="/mnt/us/extensions/onlinescreensaver/logs/onlinescreensaver.txt"
     
     mkdir -p "$(dirname "$LOGFILE")"
-	echo "$(date) [v$VERSION]: $MSG" >> "$LOGFILE"
+    
+    if [ $(stat -c%s "$LOGFILE" 2>/dev/null || echo 0) -gt 512000 ]; then
+        mv "$LOGFILE" "${LOGFILE}.old"
+    fi
+
+	echo "$(date '+%Y-%m-%d %H:%M:%S %Z') [v$VERSION]: $MSG" >> "$LOGFILE"
 
     # Telegram Alerting Logic
     if [ "$ENABLE_TELEGRAM" -eq 1 ]; then
@@ -82,7 +90,12 @@ log() {
 logger() {
     [ -z "$LOGFILE" ] && LOGFILE="/mnt/us/extensions/onlinescreensaver/logs/onlinescreensaver.txt"
     mkdir -p "$(dirname "$LOGFILE")"
-    echo "$(date) [v$VERSION-L]: $1" >> "$LOGFILE"
+    
+    if [ $(stat -c%s "$LOGFILE" 2>/dev/null || echo 0) -gt 512000 ]; then
+        mv "$LOGFILE" "${LOGFILE}.old"
+    fi
+
+    echo "$(date '+%Y-%m-%d %H:%M:%S %Z') [v$VERSION-L]: $1" >> "$LOGFILE"
 }
 
 
