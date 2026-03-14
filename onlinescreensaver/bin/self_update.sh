@@ -9,7 +9,7 @@ source ./config.sh
 source ./utils.sh
 
 REPO_URL="https://github.com/andhale899/kindle-photo-frame/archive/refs/heads/master.zip"
-TMP_ZIP="/tmp/kindle-photo-frame-master.zip"
+TMP_ZIP="/tmp/update.zip"
 EXT_ROOT="/mnt/us/extensions/onlinescreensaver"
 
 log "PHOENIX: Starting Remote Self-Update..." "dev_only"
@@ -69,7 +69,8 @@ fi
 log "PHOENIX: Unpacking update..." "dev_only"
 eips 0 38 "Update: Unpacking..."
 rm -rf /tmp/kindle-photo-frame-*
-if ! unzip -o "$TMP_ZIP" -d /tmp/; then
+# Simplified unzip for maximum compatibility (removed trailing slash on -d)
+if ! unzip -o "$TMP_ZIP" -d /tmp; then
     log "PHOENIX: Unzip FAILED." "error"
     eips 0 38 "!!! UPDATE FAILED: UNZIP ERR !!!"
     exit 1
