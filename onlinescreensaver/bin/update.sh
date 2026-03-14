@@ -243,7 +243,7 @@ rotate_carousel() {
          
          # Extract battery for overlay
          batt=$(powerd_test -s | grep "Battery Level" | awk '{print $3}' | tr -d '%')
-         eips 40 39 "Batt:${batt}% (v3.0)"
+         eips 40 39 "Batt:${batt}% (v$VERSION)"
     )
     return 0
 }
@@ -283,5 +283,8 @@ if [ "${SHOULD_DISABLE_WIFI:-0}" -eq 1 ]; then
 	log "Disabling WiFi"
 	lipc-set-prop com.lab126.cmd wirelessEnable 0
 fi
+
+# release sleep inhibit
+toggle_inhibit 0
 
 exit 0
