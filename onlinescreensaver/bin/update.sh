@@ -35,8 +35,10 @@ else
 	exit 1
 fi
 
-# Fetch system status
-# Battery will be fetched fresh later
+# Fetch battery percentage at start
+batt_percent=$(powerd_test -s | grep "Battery Level" | awk '{print $3}' | tr -d '%')
+log "--- Update Started v$VERSION (Battery: $batt_percent%) ---"
+
 # ensure sleep is inhibited
 toggle_inhibit 1
 
@@ -78,7 +80,10 @@ SLEDGEHAMMER_FIRED=0
 
 while [ 0 -eq $CONNECTED ]; do
 	# test whether we can ping outside
-	/bin/ping -c 1 $TEST_DOMAIN > /dev/null && CONNECTED=1
+	if /bin/ping -c 1 $TEST_DOMAIN > /dev/null; then
+        CONNECTED=1
+        TELEGRAM_READY=1
+    fi
 
 	if [ 0 -eq $CONNECTED ]; then
 		TIMER=$(($TIMER-1))
@@ -166,7 +171,6 @@ while [ 0 -eq $CONNECTED ]; do
 	fi
 done
 
-if [ 1 -eq $CONNECTED ]; then
 # --- v3.0 THE CAROUSEL LOGIC ---
 
 # 1. Sync Vault: Download all 15 images from GitHub
@@ -253,7 +257,6 @@ rotate_carousel() {
 if [ 1 -eq $CONNECTED ]; then
     # Net is up: Sync the library
     sync_vault
-    TELEGRAM_READY=1
 fi
 
 # Always rotate even if network failed/was skipped
