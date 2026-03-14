@@ -25,7 +25,6 @@
 				{"name": "Maintenance",
 					"items": [
 						{"name": "Check Status",                   "priority":0, "action": "sh bin/status.sh"},
-						{"name": "Update Code from GitHub",        "priority":0, "action": "sh bin/self_update.sh"},
 						{"name": "Test Telegram Bot",              "priority":0, "action": "sh bin/test_telegram.sh"},
 						{"name": "[WARNING] Install Standalone",   "priority":0, "action": "sh bin/install.sh"},
 						{"name": "[WARNING] Uninstall Standalone", "priority":0, "action": "sh bin/uninstall.sh"}

@@ -41,7 +41,6 @@ Customize the core behavior of the extension:
 
 - **Manual Synchronize**: Triggers an immediate network check and screen update.
 - **Diagnostic Check**: Validates the health of the scheduler, mount points, and log accessibility.
-- **System Update**: Pulls the latest stable version of the extension directly from GitHub.
 
 ## Technical Notes
 This extension uses a bind-mount strategy on `/usr/share/blanket/screensaver` to safely override system behavior without modifying core system partitions. It is designed to be lightweight and resilient against system-level power management events.

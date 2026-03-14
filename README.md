@@ -20,9 +20,8 @@ Transform your jailbroken Kindle into a high-performance digital photo frame. Th
 - **WiFi Management**: Actively manages the Kindle's wireless radio to ensure successful updates even in low-signal environments.
 - **Local Caching**: Stores a "Vault" of 15 images locally, allowing the screensaver to rotate through photos even when offline.
 
-### 4. Remote Monitoring & Maintenance
+### 4. Remote Monitoring
 - **Telegram Alerts**: Receive instant notifications on your phone regarding update status, battery levels, and system health.
-- **In-App Updates**: Update the entire system directly from the Kindle interface using the built-in GitHub sync tool.
 
 ---
 
@@ -72,7 +71,7 @@ Before installation, ensure you have the following:
 Your Kindle provides a specialized menu within KUAL for common tasks:
 - **Update Now**: Triggers an immediate refresh of the current photo.
 - **Check Status**: Displays a diagnostic report of the connection, schedule, and logs.
-- **Maintenance**: Access tools for self-updating the code or uninstalling the extension.
+- **Maintenance**: Access tools for testing the Telegram bot or uninstalling the extension.
 
 ---
 
