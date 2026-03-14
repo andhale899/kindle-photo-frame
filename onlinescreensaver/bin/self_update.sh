@@ -47,10 +47,22 @@ fi
 # 3. Download Latest Zip
 log "PHOENIX: Downloading latest source from GitHub..." "dev_only"
 eips 0 38 "Update: Downloading zip..."
+rm -f "$TMP_ZIP"
 if ! curl -Lk "$REPO_URL" -o "$TMP_ZIP"; then
     log "PHOENIX: Download FAILED." "error"
     eips 0 38 "!!! UPDATE FAILED: DOWNLOAD ERR !!!"
     exit 1
+fi
+
+# Log size for debugging
+if [ -f "$TMP_ZIP" ]; then
+    SIZE=$(ls -l "$TMP_ZIP" | awk '{print $5}')
+    log "PHOENIX: Downloaded $SIZE bytes." "dev_only"
+    if [ "$SIZE" -lt 1000 ]; then
+        log "PHOENIX: Downloaded file too small. Likely error page." "error"
+        eips 0 38 "!!! UPDATE FAILED: ZIP TOO SMALL !!!"
+        exit 1
+    fi
 fi
 
 # 4. Unpack
@@ -67,23 +79,33 @@ fi
 log "PHOENIX: Deploying files..." "dev_only"
 eips 0 38 "Update: Deploying..."
 
-# Find the unpacked directory (GitHub zips are repo-name-branch)
-UPD_DIR=$(ls -d /tmp/kindle-photo-frame-* 2>/dev/null | head -n 1)
+# Find the unpacked directory (GitHub zips are repo-name-branch or repo-name-master)
+UPD_DIR=$(ls -d /tmp/kindle-photo-frame-* 2>/dev/null | grep -v "\.zip$" | head -n 1)
 
 if [ -z "$UPD_DIR" ]; then
     log "PHOENIX: Could not find update source directory." "error"
     exit 1
 fi
 
+# Copy everything
 cp -r "$UPD_DIR/onlinescreensaver/"* "$EXT_ROOT/"
 
 # Cleanup
 rm -rf "$UPD_DIR"
 rm -f "$TMP_ZIP"
 
-# 6. Post-update cleanup (fixing line endings just in case)
-sed -i 's/\r$//' "$EXT_ROOT/bin/"*.sh
-chmod +x "$EXT_ROOT/bin/"*.sh
+# 6. Post-update cleanup (fixing line endings)
+# CRITICAL: We skip self_update.sh to avoid hanging the running process on BusyBox
+log "PHOENIX: Finalizing permissions..." "dev_only"
+for f in "$EXT_ROOT/bin/"*.sh; do
+    case "$(basename "$f")" in
+        "self_update.sh") continue ;; # Skip self
+        *) 
+            sed -i 's/\r$//' "$f"
+            chmod +x "$f"
+            ;;
+    esac
+done
 
 log "PHOENIX: Self-Update SUCCESSFUL! System rebooting in 5s..." "success"
 eips 0 38 "PHOENIX: SUCCESS! REBOOTING..."
