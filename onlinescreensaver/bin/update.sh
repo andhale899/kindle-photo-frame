@@ -167,66 +167,97 @@ while [ 0 -eq $CONNECTED ]; do
 done
 
 if [ 1 -eq $CONNECTED ]; then
-    # Reset Strike Count on success
-    echo "0" > "$STRIKE_FILE"
+# --- v3.0 THE CAROUSEL LOGIC ---
 
+# 1. Sync Vault: Download all 15 images from GitHub
+sync_vault() {
+    log "CAROUSEL: Syncing Vault (Target: $VAULT_COUNT images)..." "dev_only"
+    mkdir -p "$VAULT_DIR"
+    
+    SUCCESS_COUNT=0
+    i=1
+    while [ $i -le $VAULT_COUNT ]; do
+        idx=$(pad_index $i)
+        VIMAGE="$VAULT_DIR/photo_$idx.png"
+        VURL="$IMAGE_BASE_URL/photo_$idx.png"
+        
+        # Download if net is up (max 30s per photo)
+        if curl -klL --connect-timeout 10 -m 30 "$VURL" -o "$TMPFILE"; then
+            mv -f "$TMPFILE" "$VIMAGE"
+            SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+        else
+            log "CAROUSEL: Failed to sync photo_$idx" "dev_only"
+        fi
+        i=$((i + 1))
+    done
+    log "CAROUSEL: Sync Complete ($SUCCESS_COUNT/$VAULT_COUNT synced)." "success"
+}
+
+# 2. Rotate Carousel: Fill SS slots with a variety from the Vault
+rotate_carousel() {
+    # State file to track next image index
+    STATE_FILE="/tmp/carousel_next_idx"
+    [ -e "$STATE_FILE" ] || echo "1" > "$STATE_FILE"
+    NEXT_IDX=$(cat "$STATE_FILE")
+    
+    log "CAROUSEL: Preparing Multi-Slot rotation starting at #$NEXT_IDX..." "dev_only"
+    
+    mkdir -p $(dirname "$SCREENSAVERFILE")
+    
+    # Fill the Kindle slots with the full range from the vault
+    # This ensures that even if you lock/unlock many times, you see different photos!
+    # We loop from 0 to VAULT_COUNT - 1
+    i=0
+    while [ $i -lt $VAULT_COUNT ]; do
+        # Calculate index for this slot (looping 1-VAULT_COUNT)
+        SLOT_IDX=$(( (NEXT_IDX + i - 1) % VAULT_COUNT + 1 ))
+        PADDED_V_IDX=$(pad_index $SLOT_IDX)
+        PADDED_S_IDX=$(pad_index $i)
+        
+        SOURCE_IMAGE="$VAULT_DIR/photo_$PADDED_V_IDX.png"
+        
+        if [ -f "$SOURCE_IMAGE" ]; then
+            # Main file (slot 00 is usually the primary)
+            [ $i -eq 0 ] && cp -f "$SOURCE_IMAGE" "$SCREENSAVERFILE"
+            
+            # Framework slots
+            TGT_DIR=$(dirname "$SCREENSAVERFILE")
+            cp -f "$SOURCE_IMAGE" "$TGT_DIR/bg_ss$PADDED_S_IDX.png"
+            cp -f "$SOURCE_IMAGE" "$TGT_DIR/bg_xsmall_ss$PADDED_S_IDX.png"
+            cp -f "$SOURCE_IMAGE" "$TGT_DIR/bg_medium_ss$PADDED_S_IDX.png"
+            cp -f "$SOURCE_IMAGE" "$TGT_DIR/bg_large_ss$PADDED_S_IDX.png"
+        fi
+        i=$((i + 1))
+    done
+
+    # Increment global pointer for the next 15-minute shift
+    NEW_IDX=$((NEXT_IDX + 1))
+    [ $NEW_IDX -gt $VAULT_COUNT ] && NEW_IDX=1
+    echo "$NEW_IDX" > "$STATE_FILE"
+    
+    # Trigger Refresh if in screensaver mode
+    lipc-get-prop com.lab126.powerd status | grep "Screen Saver" && (
+         eips -f -g "$SCREENSAVERFILE"
+         lipc-set-prop com.lab126.blanket unload 1 2>/dev/null
+         lipc-set-prop com.lab126.blanket load 1 2>/dev/null
+         
+         # Extract battery for overlay
+         batt=$(powerd_test -s | grep "Battery Level" | awk '{print $3}' | tr -d '%')
+         eips 40 39 "Batt:${batt}% (v3.0)"
+    )
+    return 0
+}
+
+# --- Execution Flow ---
+
+if [ 1 -eq $CONNECTED ]; then
+    # Net is up: Sync the library
+    sync_vault
     TELEGRAM_READY=1
-
-    # Fetch fresh battery level
-    BATT=$(powerd_test -s | grep "Battery Level" | awk '{print $3}')
-
-    # ONLY log the start once we have internet to avoid Telegram timeouts
-    # We use eips to show progress on screen
-    eips 0 0 "Updating Screen v$VERSION... (Batt: $BATT)"
-    log "--- Update Started v$VERSION (Battery: $BATT) ---" "dev_only"
-
-	if curl -kl $IMAGE_URI -o $TMPFILE; then
-		mkdir -p $(dirname $SCREENSAVERFILE)
-		mv -f $TMPFILE $SCREENSAVERFILE
-		
-		# Kindle framework often looks for various prefixed/numbered files
-		# We'll populate a wider range to cover all Kindle models
-		for i in 00 01 02 03 04 05 06 07 08 09 10; do
-			cp "$SCREENSAVERFILE" "$(dirname "$SCREENSAVERFILE")/bg_ss$i.png"
-			cp "$SCREENSAVERFILE" "$(dirname "$SCREENSAVERFILE")/bg_xsmall_ss$i.png"
-			cp "$SCREENSAVERFILE" "$(dirname "$SCREENSAVERFILE")/bg_medium_ss$i.png"
-			cp "$SCREENSAVERFILE" "$(dirname "$SCREENSAVERFILE")/bg_large_ss$i.png"
-		done
-		
-		log "Screen saver image file updated v$VERSION (cloned 00-10)" "success"
-                # refresh screen if in screensaver mode
-                lipc-get-prop com.lab126.powerd status | grep "Screen Saver" && (
-                     log "Updating image on screen via eips" "dev_only"
-                     eips -f -g $SCREENSAVERFILE
-                     
-                     # Force framework to reload screensaver (PW3 specific)
-                     log "Force-reloading screensaver framework..." "dev_only"
-                     lipc-set-prop com.lab126.blanket unload 1 2>/dev/null
-                     lipc-set-prop com.lab126.blanket load 1 2>/dev/null
-                     
-                     batt=`powerd_test -s | awk -F: '/Battery Level: / {print $2}' | awk -F' |%' '{print $2}'`
-# Create json for POST
-generate_post_data()
-{
-  cat<<EOF
-{
-  "kindle_battery":"$batt"
-}
-EOF
-}
-                     # If WEBHOOKADR has been defined, send data
-					 if [ "" != $WEBHOOKADR ]; then
-                       curl -X POST -k -d "$(generate_post_data)" -H 'Content-Type: application/json' $WEBHOOKADR
-                     fi
-                     eips 40 39 "Batt:${batt}%"
-                )
-	else
-		log "Error downloading image: $(tail -n 1 $LOGFILE)"
-		if [ 1 -eq $DONOTRETRY ]; then
-			touch $SCREENSAVERFILE
-		fi
-	fi
 fi
+
+# Always rotate even if network failed/was skipped
+rotate_carousel
 
 # re-suspend logic (v2.8 Sleepwalker)
 # If Sledgehammer was used to wake the radio, and the user hasn't interacted,

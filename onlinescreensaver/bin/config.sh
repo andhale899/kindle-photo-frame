@@ -4,7 +4,7 @@
 
 # Interval in MINUTES
 DEFAULTINTERVAL=15
-VERSION="2.8-stable"
+VERSION="4.0-stable"
 
 # load secrets if available (managed in gitignore)
 [ -e "secrets.sh" ] && source ./secrets.sh
@@ -13,8 +13,14 @@ VERSION="2.8-stable"
 # Schedule for updating the screensaver.
 SCHEDULE="00:00-24:00=5"
 
-# URL of screensaver image (MUST be PNG)
-IMAGE_URI="https://raw.githubusercontent.com/andhale899/kindle-photo-frame/processed-photos/photos/photo_01.png"
+# URL/Path Base for Carousel (v3.0)
+GITHUB_USER="andhale899"
+GITHUB_REPO="kindle-photo-frame"
+IMAGE_BASE_URL="https://raw.githubusercontent.com/$GITHUB_USER/$GITHUB_REPO/processed-photos/photos"
+
+# The Vault (Local Multi-Image Cache)
+VAULT_DIR="/mnt/us/extensions/onlinescreensaver/vault"
+VAULT_COUNT=15
 
 # folder that holds the screensavers
 SCREENSAVERFOLDER=/mnt/us/onlinescreensaver/screensaver

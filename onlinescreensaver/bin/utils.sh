@@ -49,6 +49,15 @@ toggle_inhibit() {
 }
 
 # Main logging function (File + Telegram)
+# Helper for 0-padding numbers (e.g. 1 -> 01)
+pad_index() {
+    if [ "$1" -lt 10 ]; then
+        echo "0$1"
+    else
+        echo "$1"
+    fi
+}
+
 log() {
 	MSG=$1
     LOG_TYPE=$2 # Optional: success, error, dev_only

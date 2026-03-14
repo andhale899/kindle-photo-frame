@@ -1,4 +1,4 @@
-# AI Context & Project Deep Knowledge (v2.8)
+# AI Context & Project Deep Knowledge (v3.0)
 
 This document serves as a "Brain Dump" for future AI assistants working on this repository. It explains the subtle, Kindle-specific behaviors and the hard-won fixes that are not obvious from the code alone.
 

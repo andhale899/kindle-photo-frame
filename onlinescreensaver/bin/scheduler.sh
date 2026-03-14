@@ -80,7 +80,7 @@ EOF
 
 # return number of minutes until next update
 get_time_to_next_update () {
-	CURRENTMINUTE=$(( 60*`date +%-H` + `date +%-M` ))
+	CURRENTMINUTE=$(( 60*$(date +%-H) + $(date +%-M) ))
 
 	for schedule in $SCHEDULE; do
 		read STARTHOUR STARTMINUTE ENDHOUR ENDMINUTE INTERVAL << EOF
@@ -100,11 +100,14 @@ EOF
 
 		# if the next update falls into (or overlaps) a following schedule
 		# entry, apply this schedule entry instead if it would trigger earlier
-		elif [ $(( $START + $INTERVAL )) -lt $NEXTUPDATE ]; then
+		elif [ -n "$NEXTUPDATE" ] && [ $(( $START + $INTERVAL )) -lt $NEXTUPDATE ]; then
 			logger "Selected timeout will overlap $schedule, applying it instead"
 			NEXTUPDATE=$(( $START + $INTERVAL ))
 		fi
 	done
+
+	# Handle case where NEXTUPDATE was never set
+	[ -z "$NEXTUPDATE" ] && NEXTUPDATE=$(( CURRENTMINUTE + DEFAULTINTERVAL ))
 
 	logger "Next update in $(( $NEXTUPDATE - $CURRENTMINUTE )) minutes"
 	echo $(( $NEXTUPDATE - $CURRENTMINUTE ))
