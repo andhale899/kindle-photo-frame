@@ -228,8 +228,24 @@ EOF
 	fi
 fi
 
-# release suspension inhibitor
-toggle_inhibit 0
+# re-suspend logic (v2.8 Sleepwalker)
+# If Sledgehammer was used to wake the radio, and the user hasn't interacted,
+# fire it again to toggle the device back to screensaver/sleep.
+if [ "$SLEDGEHAMMER_FIRED" -eq 1 ]; then
+    # Double check power state before nuclear re-suspend
+    PSTATE_FINAL=$(lipc-get-prop com.lab126.powerd status | grep "Powerd state")
+    case "$PSTATE_FINAL" in
+        *"Active"*)
+            logger "SLEEPWALKER: Automatic Re-suspend triggered (v2.8)."
+            if [ "$RUN_MODE" = "dev" ]; then eips 0 38 "--- RE-SUSPENDING ---"; fi
+            sleep 5 # Final grace period
+            powerd_test -p 2>/dev/null
+            ;;
+        *)
+            logger "Sleepwalker SKIPPED: Device is already in $PSTATE_FINAL."
+            ;;
+    esac
+fi
 
 # disable wireless if necessary
 if [ "${SHOULD_DISABLE_WIFI:-0}" -eq 1 ]; then
