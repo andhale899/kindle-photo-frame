@@ -222,13 +222,8 @@ def draw_overlay(img: Image.Image, now: datetime, temp: str, desc: str, cfg: dic
         temp_text = f"{temp}°"
         draw_text_with_shadow(draw, (w - pad, y_top - 20), temp_text, font=font_temp, fill=white, anchor="ra")
         if desc:
-            draw_text_with_shadow(draw, (w - pad, y_top + cfg.get("font_size_weather", 150) - 45), desc, font=font_weather, fill=off_white, anchor="ra")
-
-    # 3. Bottom Center: Sync Status
-    sync_str = f"Updated: {now.strftime('%H:%M')}"
-    bbox = draw.textbbox((0, 0), sync_str, font=font_sync)
-    sw = bbox[2] - bbox[0]
-    draw_text_with_shadow(draw, ((w - sw) // 2, h - pad), sync_str, font=font_sync, fill=(180, 180, 180, 160))
+            # Fixed overlap by reducing the negative offset (was -45, now -20)
+            draw_text_with_shadow(draw, (w - pad, y_top + cfg.get("font_size_weather", 150) - 20), desc, font=font_weather, fill=off_white, anchor="ra")
 
     return img
 

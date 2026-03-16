@@ -1,8 +1,5 @@
 # Send a message to Telegram
 send_telegram_msg() {
-    if [ "${TELEGRAM_READY:-0}" -ne 1 ]; then
-        return 1
-    fi
     if [ "$ENABLE_TELEGRAM" -eq 1 ] && [ -n "$TELEGRAM_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
         # Check for network with a bit of patience
         # DNS often takes longer than IP ping. We check for $TEST_DOMAIN.

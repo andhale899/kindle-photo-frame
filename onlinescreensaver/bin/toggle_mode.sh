@@ -36,6 +36,9 @@ fi
 # Update config.sh
 sed -i "s/^RUN_MODE=.*/RUN_MODE=\"$NEW_MODE\"/" "$CONFIG"
 
+# Telegram notification
+[ "$ENABLE_TELEGRAM" -eq 1 ] && send_telegram_msg "🛠️ System Mode changed to: *$NEW_MODE*"
+
 eips -c
 screen_log "Switched to $NEW_MODE mode."
 screen_log "Dev: All logs to Telegram"
