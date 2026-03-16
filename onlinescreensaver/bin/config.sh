@@ -4,7 +4,7 @@
 
 # Interval in MINUTES
 DEFAULTINTERVAL=15
-VERSION="4.4-stable"
+VERSION="4.5-stable"
 
 # load secrets if available (managed in gitignore)
 [ -e "secrets.sh" ] && source ./secrets.sh
@@ -45,6 +45,19 @@ RUN_MODE="dev"
 
 # Telegram Bot Integration (Credentials in secrets.sh)
 ENABLE_TELEGRAM=1
+
+#############################################################################
+# Power Guardian & Archivist (v4.5)
+#############################################################################
+
+# Battery Alerts: List of percentages to send Telegram alerts (Descending order)
+BATT_ALERTS="40 35 30"
+
+# Battery Pause: Threshold at which script stops all operations
+BATT_PAUSE=25
+
+# Log Retention: Prune logs older than X days
+LOG_RETENTION_DAYS=100
 
 #############################################################################
 # Advanced

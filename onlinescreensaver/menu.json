@@ -18,14 +18,15 @@
 								{"name": "12 Hours",          "action": "sh bin/set_interval.sh 720"},
 								{"name": "24 Hours (Daily)",  "action": "sh bin/set_interval.sh 1440"}
 							]
-						},
-						{"name": "Switch Dev/Prod Mode", "action": "sh bin/toggle_mode.sh"}
+						}
 					]
 				},
 				{"name": "Maintenance",
 					"items": [
 						{"name": "Check Status",                   "priority":0, "action": "sh bin/status.sh"},
 						{"name": "Test Telegram Bot",              "priority":0, "action": "sh bin/test_telegram.sh"},
+						{"name": "Switch Dev/Prod Mode",           "action": "sh bin/toggle_mode.sh"},
+						{"name": "Prune Old Logs (100d)",          "action": "sh bin/cleanup_logs.sh"},
 						{"name": "[WARNING] Install Standalone",   "priority":0, "action": "sh bin/install.sh"},
 						{"name": "[WARNING] Uninstall Standalone", "priority":0, "action": "sh bin/uninstall.sh"}
 					]

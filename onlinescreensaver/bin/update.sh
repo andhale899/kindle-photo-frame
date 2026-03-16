@@ -39,6 +39,35 @@ fi
 batt_percent=$(powerd_test -s | grep "Battery Level" | awk '{print $3}' | tr -d '%')
 log "--- Update Started v$VERSION (Battery: $batt_percent%) ---"
 
+# --- v4.5 POWER GUARDIAN ---
+BATT_ALERT_FILE="/tmp/last_batt_threshold"
+
+# 1. Check for Emergency Pause
+if [ "$batt_percent" -le "$BATT_PAUSE" ]; then
+    log "CRITICAL: Battery at $batt_percent% (Threshold: $BATT_PAUSE%). Pausing updates to save power." "error"
+    send_telegram_msg "🔋 CRITICAL: Battery at $batt_percent%. OnlineScreensaver is now PAUSED until charged."
+    exit 0
+fi
+
+# 2. Check for Alerts
+for threshold in $BATT_ALERTS; do
+    if [ "$batt_percent" -le "$threshold" ]; then
+        LAST_SENT=$(cat "$BATT_ALERT_FILE" 2>/dev/null || echo 100)
+        if [ "$threshold" -lt "$LAST_SENT" ]; then
+            log "POWER: Battery dropped below $threshold%." "dev_only"
+            send_telegram_msg "🔌 LOW BATTERY: Kindle at $batt_percent% (Alert Threshold: $threshold%)."
+            echo "$threshold" > "$BATT_ALERT_FILE"
+        fi
+        break # Only fire for the highest met threshold
+    fi
+done
+
+# Reset threshold tracker if battery is charging (higher than alerts)
+FIRST_ALERT=$(echo $BATT_ALERTS | awk '{print $1}')
+if [ "$batt_percent" -gt "$FIRST_ALERT" ]; then
+    rm -f "$BATT_ALERT_FILE"
+fi
+
 # ensure sleep is inhibited
 toggle_inhibit 1
 
@@ -245,9 +274,11 @@ rotate_carousel() {
          lipc-set-prop com.lab126.blanket unload 1 2>/dev/null
          lipc-set-prop com.lab126.blanket load 1 2>/dev/null
          
-         # Extract battery for overlay
-         batt=$(powerd_test -s | grep "Battery Level" | awk '{print $3}' | tr -d '%')
-         eips 40 39 "Batt:${batt}% (v$VERSION)"
+         # Extract battery for overlay (dev mode only)
+         if [ "$RUN_MODE" = "dev" ]; then
+             batt=$(powerd_test -s | grep "Battery Level" | awk '{print $3}' | tr -d '%')
+             eips 40 39 "Batt:${batt}% (v$VERSION)"
+         fi
     )
     return 0
 }
