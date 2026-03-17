@@ -108,16 +108,34 @@ SSIDS=""
 SLEDGEHAMMER_FIRED=0
 
 while [ 0 -eq $CONNECTED ]; do
-    # PASSIVE MODE BYPASS: Skip network checks entirely to prevent ping hangs
+    # PASSIVE MODE RECOVERY PROBE (v4.5.5)
+    # If in passive mode, allow a connection attempt once every ~100 cycles (approx 24h at 15m intervals)
     if [ "$PASSIVE_MODE" -eq 1 ]; then
-        log "PASSIVE MODE ACTIVE: Skipping all network checks." "dev_only"
-        break
+        PROBE_FILE="/tmp/passive_probe_count"
+        PROBE_COUNT=$(cat "$PROBE_FILE" 2>/dev/null || echo 0)
+        PROBE_COUNT=$((PROBE_COUNT + 1))
+        
+        if [ "$PROBE_COUNT" -gt 100 ]; then
+            log "PASSIVE MODE PROBE: Attempting daily recovery ping..." "dev_only"
+            rm -f "$PROBE_FILE" # Reset counter for next time
+            # Do NOT break; fall through to the ping attempt below
+        else
+            echo "$PROBE_COUNT" > "$PROBE_FILE"
+            log "PASSIVE MODE ACTIVE: Skipping network checks (Probe in $(( 100 - PROBE_COUNT )) cycles)." "dev_only"
+            break
+        fi
     fi
 
 	# test whether we can ping outside
 	if /bin/ping -c 1 -w 2 $TEST_DOMAIN > /dev/null 2>&1; then
         CONNECTED=1
         TELEGRAM_READY=1
+        # If we connected, ensure we aren't trapped in passive mode anymore
+        if [ "$PASSIVE_MODE" -eq 1 ]; then
+            log "RECOVERY SUCCESS: Network restored. Clearing strikes." "success"
+            rm -f "$STRIKE_FILE"
+            PASSIVE_MODE=0
+        fi
     fi
 
 	if [ 0 -eq $CONNECTED ]; then
