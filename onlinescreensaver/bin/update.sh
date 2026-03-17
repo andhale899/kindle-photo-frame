@@ -108,26 +108,39 @@ SSIDS=""
 SLEDGEHAMMER_FIRED=0
 
 while [ 0 -eq $CONNECTED ]; do
-    # PASSIVE MODE RECOVERY PROBE (v4.5.5)
-    # If in passive mode, allow a connection attempt once every ~100 cycles (approx 24h at 15m intervals)
+    # PASSIVE MODE RECOVERY PROBE (v4.5.6 Configurable)
     if [ "$PASSIVE_MODE" -eq 1 ]; then
         PROBE_FILE="/tmp/passive_probe_count"
         PROBE_COUNT=$(cat "$PROBE_FILE" 2>/dev/null || echo 0)
         PROBE_COUNT=$((PROBE_COUNT + 1))
         
-        if [ "$PROBE_COUNT" -gt 100 ]; then
-            log "PASSIVE MODE PROBE: Attempting daily recovery ping..." "dev_only"
+        # Default to 48 cycles (12 hours) if not set in config
+        PROBE_MAX=${PROBE_INTERVAL_CYCLES:-48}
+        PROBE_WAIT=${PROBE_TIMEOUT:-20}
+        
+        if [ "$PROBE_COUNT" -gt "$PROBE_MAX" ]; then
+            log "PASSIVE MODE PROBE: Attempting recovery ping (Wait: ${PROBE_WAIT}s)..." "dev_only"
             rm -f "$PROBE_FILE" # Reset counter for next time
-            # Do NOT break; fall through to the ping attempt below
+            CURRENT_TIMEOUT=$PROBE_WAIT
         else
             echo "$PROBE_COUNT" > "$PROBE_FILE"
-            log "PASSIVE MODE ACTIVE: Skipping network checks (Probe in $(( 100 - PROBE_COUNT )) cycles)." "dev_only"
+            log "PASSIVE MODE ACTIVE: Skipping network checks (Probe in $(( PROBE_MAX - PROBE_COUNT )) cycles)." "dev_only"
             break
         fi
+    else
+        # ACTIVE MODE: Dynamic Timeouts based on Strikes
+        if [ "$STRIKES" -eq 0 ]; then
+            CURRENT_TIMEOUT=15
+        elif [ "$STRIKES" -eq 1 ]; then
+            CURRENT_TIMEOUT=30
+        else
+            CURRENT_TIMEOUT=45
+        fi
+        log "ACTIVE MODE: Strike $STRIKES. Ping timeout: ${CURRENT_TIMEOUT}s" "dev_only"
     fi
 
 	# test whether we can ping outside
-	if /bin/ping -c 1 -w 2 $TEST_DOMAIN > /dev/null 2>&1; then
+	if /bin/ping -c 1 -w "$CURRENT_TIMEOUT" $TEST_DOMAIN > /dev/null 2>&1; then
         CONNECTED=1
         TELEGRAM_READY=1
         # If we connected, ensure we aren't trapped in passive mode anymore

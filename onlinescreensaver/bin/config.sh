@@ -4,7 +4,11 @@
 
 # Interval in MINUTES
 DEFAULTINTERVAL=15
-VERSION="4.5.5-stable"
+VERSION="4.5.6-stable"
+
+# --- v4.5.6 Passive Mode Config ---
+PROBE_INTERVAL_CYCLES=48   # Check connection every 48 cycles (12h at 15m)
+PROBE_TIMEOUT=20         # Wait 20 seconds for the daily check
 
 # load secrets if available (managed in gitignore)
 [ -e "secrets.sh" ] && source ./secrets.sh
