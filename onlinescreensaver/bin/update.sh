@@ -108,8 +108,14 @@ SSIDS=""
 SLEDGEHAMMER_FIRED=0
 
 while [ 0 -eq $CONNECTED ]; do
+    # PASSIVE MODE BYPASS: Skip network checks entirely to prevent ping hangs
+    if [ "$PASSIVE_MODE" -eq 1 ]; then
+        log "PASSIVE MODE ACTIVE: Skipping all network checks." "dev_only"
+        break
+    fi
+
 	# test whether we can ping outside
-	if /bin/ping -c 1 $TEST_DOMAIN > /dev/null; then
+	if /bin/ping -c 1 -w 2 $TEST_DOMAIN > /dev/null 2>&1; then
         CONNECTED=1
         TELEGRAM_READY=1
     fi

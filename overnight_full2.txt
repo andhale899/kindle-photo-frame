@@ -1,0 +1,101 @@
+2026-03-16 22:10:22 GMT+5:30100 [v4.4-stable-L]: wait_for: received event 'wakeupFromSuspend 1617 '
+2026-03-16 22:10:22 GMT+5:30100 [v4.4-stable-L]: wait_for: woke up from suspend, breaking loop
+2026-03-16 22:10:22 GMT+5:30100 [v4.4-stable-L]: wait_for: finished
+2026-03-16 22:10:23 GMT+5:30100 [v4.4-stable-L]: Background scheduler woke up from wait.
+2026-03-16 22:10:23 GMT+5:30100 [v4.4-stable-L]: --- Background Loop Start ---
+2026-03-16 22:10:23 GMT+5:30100 [v4.5.1-stable]: --- Update Started v4.5.1-stable (Battery: 90%) ---
+2026-03-16 22:10:23 GMT+5:30100 [v4.5.1-stable-L]: Inhibiting suspension for 120s...
+2026-03-16 22:10:23 GMT+5:30100 [v4.5.1-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-16 22:10:23 GMT+5:30100 [v4.5.1-stable-L]: 3-STRIKE RULE: Consecutive failures: 3. Entering PASSIVE battery mode.
+2026-03-16 22:10:32 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (170 s)
+2026-03-16 22:10:32 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[PENDING] SSIDs=[none] Strikes=[3]
+2026-03-16 22:10:42 GMT+5:30100 [v4.5.1-stable-L]: TURBO RESET: Stubborn radio detected. Cycling WiFi power...
+2026-03-16 22:10:46 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (160 s)
+2026-03-16 22:10:46 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-16 22:10:56 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (150 s)
+2026-03-16 22:10:56 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[PENDING] SSIDs=[none] Strikes=[3]
+2026-03-16 22:11:06 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (140 s)
+2026-03-16 22:11:06 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[PENDING] SSIDs=[none] Strikes=[3]
+2026-03-16 22:11:17 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (130 s)
+2026-03-16 22:11:17 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[PENDING] SSIDs=[none] Strikes=[3]
+2026-03-16 22:11:27 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (120 s)
+2026-03-16 22:11:27 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[PENDING] SSIDs=[none] Strikes=[3]
+2026-03-16 22:11:37 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (110 s)
+2026-03-16 22:11:37 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[READY] SSIDs=[none] Strikes=[3]
+2026-03-16 22:11:47 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (100 s)
+2026-03-16 22:11:48 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[READY] SSIDs=[none] Strikes=[3]
+2026-03-16 22:11:58 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (90 s)
+2026-03-16 22:11:58 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-16 22:12:08 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (80 s)
+2026-03-16 22:12:08 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-17 09:28:16 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (70 s)
+2026-03-17 09:28:17 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-17 09:28:21 GMT+5:30100 [v4.5.1-stable]: CAROUSEL: Syncing Vault (Target: 15 images)...
+2026-03-17 09:28:49 GMT+5:30100 [v4.5.1-stable]: CAROUSEL: Sync Complete (15/15 synced).
+2026-03-17 09:28:50 GMT+5:30100 [v4.5.1-stable]: CAROUSEL: Preparing Multi-Slot rotation starting at #11...
+2026-03-17 09:29:01 GMT+5:30100 [v4.5.1-stable-L]: Releasing suspension inhibit.
+2026-03-17 09:29:01 GMT+5:30100 [v4.4-stable-L]: --- Heartbeat: Update Cycle Complete v4.4-stable ---
+2026-03-17 09:29:01 GMT+5:30100 [v4.4-stable-L]: Schedule 0:0-24:00=30 used, next update in 30 minutes
+2026-03-17 09:29:01 GMT+5:30100 [v4.4-stable-L]: Next update in 30 minutes
+2026-03-17 09:29:01 GMT+5:30100 [v4.4-stable-L]: Early Bird: Waking 60s early (1740 s) for WiFi warmup.
+2026-03-17 09:29:01 GMT+5:30100 [v4.4-stable-L]: Starting to wait for timeout to expire: 1740
+2026-03-17 09:29:01 GMT+5:30100 [v4.4-stable-L]: wait_for: checking events (timeout 1740)...
+2026-03-17 09:39:24 GMT+5:30100 [v4.4-stable-L]: wait_for: received event 'readyToSuspend 10 '
+2026-03-17 09:39:24 GMT+5:30100 [v4.4-stable-L]: rtcWakeup has been set to 1117
+2026-03-17 09:39:24 GMT+5:30100 [v4.4-stable-L]: wait_for: checking events (timeout 1117)...
+2026-03-17 09:39:29 GMT+5:30100 [v4.4-stable-L]: wait_for: received event 'readyToSuspend 8 '
+2026-03-17 09:39:29 GMT+5:30100 [v4.4-stable-L]: rtcWakeup has been set to 1112
+2026-03-17 09:39:29 GMT+5:30100 [v4.4-stable-L]: wait_for: checking events (timeout 1112)...
+2026-03-17 09:39:34 GMT+5:30100 [v4.4-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-17 09:39:34 GMT+5:30100 [v4.4-stable-L]: rtcWakeup has been set to 1107
+2026-03-17 09:39:34 GMT+5:30100 [v4.4-stable-L]: wait_for: checking events (timeout 1107)...
+2026-03-17 09:39:54 GMT+5:30100 [v4.4-stable-L]: wait_for: received event 'readyToSuspend 7 '
+2026-03-17 09:39:54 GMT+5:30100 [v4.4-stable-L]: rtcWakeup has been set to 1087
+2026-03-17 09:39:54 GMT+5:30100 [v4.4-stable-L]: wait_for: checking events (timeout 1087)...
+2026-03-17 09:39:59 GMT+5:30100 [v4.4-stable-L]: wait_for: received event 'readyToSuspend 6 '
+2026-03-17 09:39:59 GMT+5:30100 [v4.4-stable-L]: rtcWakeup has been set to 1082
+2026-03-17 09:39:59 GMT+5:30100 [v4.4-stable-L]: wait_for: checking events (timeout 1082)...
+2026-03-17 09:40:04 GMT+5:30100 [v4.4-stable-L]: wait_for: received event 'readyToSuspend 2 '
+2026-03-17 09:40:04 GMT+5:30100 [v4.4-stable-L]: rtcWakeup has been set to 1077
+2026-03-17 09:40:04 GMT+5:30100 [v4.4-stable-L]: wait_for: checking events (timeout 1077)...
+2026-03-17 09:40:09 GMT+5:30100 [v4.4-stable-L]: wait_for: received event 'readyToSuspend 1 '
+2026-03-17 09:40:09 GMT+5:30100 [v4.4-stable-L]: rtcWakeup has been set to 1072
+2026-03-17 09:40:09 GMT+5:30100 [v4.4-stable-L]: wait_for: checking events (timeout 1072)...
+2026-03-17 09:57:52 GMT+5:30100 [v4.4-stable-L]: wait_for: received event 'wakeupFromSuspend 1053 '
+2026-03-17 09:57:52 GMT+5:30100 [v4.4-stable-L]: wait_for: woke up from suspend, breaking loop
+2026-03-17 09:57:52 GMT+5:30100 [v4.4-stable-L]: wait_for: finished
+2026-03-17 09:57:52 GMT+5:30100 [v4.4-stable-L]: Background scheduler woke up from wait.
+2026-03-17 09:57:52 GMT+5:30100 [v4.4-stable-L]: --- Background Loop Start ---
+2026-03-17 09:57:52 GMT+5:30100 [v4.5.1-stable]: --- Update Started v4.5.1-stable (Battery: 88%) ---
+2026-03-17 09:57:52 GMT+5:30100 [v4.5.1-stable-L]: Inhibiting suspension for 120s...
+2026-03-17 09:57:52 GMT+5:30100 [v4.5.1-stable-L]: v2.0 Check: WiFi state is 1
+2026-03-17 09:57:52 GMT+5:30100 [v4.5.1-stable-L]: 3-STRIKE RULE: Consecutive failures: 3. Entering PASSIVE battery mode.
+2026-03-17 09:58:02 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (170 s)
+2026-03-17 09:58:02 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-17 09:58:12 GMT+5:30100 [v4.5.1-stable-L]: TURBO RESET: Stubborn radio detected. Cycling WiFi power...
+2026-03-17 09:58:15 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (160 s)
+2026-03-17 09:58:15 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-17 09:58:25 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (150 s)
+2026-03-17 09:58:25 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-17 09:58:36 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (140 s)
+2026-03-17 09:58:36 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-17 09:58:46 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (130 s)
+2026-03-17 09:58:46 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-17 09:58:56 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (120 s)
+2026-03-17 09:58:56 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-17 09:59:06 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (110 s)
+2026-03-17 09:59:06 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-17 09:59:17 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (100 s)
+2026-03-17 09:59:17 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-17 09:59:27 GMT+5:30100 [v4.5.1-stable-L]: Turbo Scan/Sync: Checking Radio Health... (90 s)
+2026-03-17 09:59:27 GMT+5:30100 [v4.5.1-stable-L]: Diagnostic: IP=[none] State=[NA] SSIDs=[none] Strikes=[3]
+2026-03-17 10:17:18 GMT+5:30100 [v4.5.1-stable]: CAROUSEL: Syncing Vault (Target: 15 images)...
+2026-03-17 10:17:34 GMT+5:30100 [v4.5.1-stable]: CAROUSEL: Sync Complete (15/15 synced).
+2026-03-17 10:17:35 GMT+5:30100 [v4.5.1-stable]: CAROUSEL: Preparing Multi-Slot rotation starting at #12...
+2026-03-17 10:17:48 GMT+5:30100 [v4.5.1-stable-L]: Releasing suspension inhibit.
+2026-03-17 10:17:48 GMT+5:30100 [v4.4-stable-L]: --- Heartbeat: Update Cycle Complete v4.4-stable ---
+2026-03-17 10:17:48 GMT+5:30100 [v4.4-stable-L]: Schedule 0:0-24:00=30 used, next update in 30 minutes
+2026-03-17 10:17:48 GMT+5:30100 [v4.4-stable-L]: Next update in 30 minutes
+2026-03-17 10:17:48 GMT+5:30100 [v4.4-stable-L]: Early Bird: Waking 60s early (1740 s) for WiFi warmup.
+2026-03-17 10:17:48 GMT+5:30100 [v4.4-stable-L]: Starting to wait for timeout to expire: 1740
+2026-03-17 10:17:48 GMT+5:30100 [v4.4-stable-L]: wait_for: checking events (timeout 1740)...
