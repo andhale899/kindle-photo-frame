@@ -6,6 +6,10 @@ on:
       - kindle-local-only-main
   workflow_dispatch:
 
+# Required to create GitHub Releases
+permissions:
+  contents: write
+
 jobs:
   build-mrpi:
     name: Package → MRPI .bin (with bundled ImageMagick armv7)
