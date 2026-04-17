@@ -2,14 +2,22 @@
 ### ONLINE-SCREENSAVER CONFIGURATION SETTINGS (v5.0-local)
 ### Branch: kindle-local-only-main
 ### All processing happens ON the Kindle — no GitHub Actions needed.
+###
+### HOW TO CONFIGURE:
+###   1. Edit the values in the "CONFIGURE ME" section below
+###   2. Edit secrets.sh (created by the installer) for Telegram credentials
+###   3. Use KUAL → Photo Frame → ⚙️ Settings to change values from the Kindle
 #############################################################################
 
 VERSION="5.0-local"
 
 #############################################################################
-# Photo Source (Google Photos shared album)
+# ★ CONFIGURE ME: Google Photos shared album
 #############################################################################
-ALBUM_URL="https://photos.app.goo.gl/yBPwxSGuEEnwnhGk9"
+# Paste your Google Photos shared album URL here.
+# Get it from Google Photos → Share → Create link
+ALBUM_URL=""   # e.g. "https://photos.app.goo.gl/XXXXXXXXXXXXXXXXX"
+
 PHOTO_COUNT=15         # How many random photos to fetch per cycle
 
 #############################################################################

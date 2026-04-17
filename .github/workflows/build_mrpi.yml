@@ -8,14 +8,20 @@ on:
 
 jobs:
   build-mrpi:
-    name: Package → MRPI .bin
+    name: Package → MRPI .bin (with bundled ImageMagick armv7)
     runs-on: ubuntu-latest
 
     steps:
       # ── 1. Checkout ──────────────────────────────────────────────────────
       - uses: actions/checkout@v4
 
-      # ── 2. Read version from config.sh ───────────────────────────────────
+      # ── 2. Set up QEMU for ARMv7 emulation ───────────────────────────────
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: linux/arm/v7
+
+      # ── 3. Read version ───────────────────────────────────────────────────
       - name: Get version
         id: ver
         run: |
@@ -23,115 +29,158 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "filename=Update_KindlePhotoFrame_${VERSION}_install.bin" >> $GITHUB_OUTPUT
 
-      # ── 3. Build the MRPI package ─────────────────────────────────────────
-      # MRPI .bin format:
-      #   - It's a ZIP file renamed to .bin
-      #   - Contains install.sh at the root (MRPI runs this)
-      #   - Files should be laid out matching their target paths on the Kindle
-      - name: Build MRPI .bin
+      # ── 4. Build package directory structure ──────────────────────────────
+      - name: Prepare package structure
         run: |
-          VERSION="${{ steps.ver.outputs.version }}"
-          FILENAME="${{ steps.ver.outputs.filename }}"
-          BUILD_DIR="$(pwd)/build"
-          PKG_DIR="$BUILD_DIR/pkg"
+          PKG_DIR="$(pwd)/build/pkg"
+          EXT_SRC="$(pwd)/onlinescreensaver"
 
-          mkdir -p "$PKG_DIR"
-
-          # ── Copy the extension files into the package ──────────────────
-          mkdir -p "$PKG_DIR/extensions/onlinescreensaver/bin"
+          mkdir -p "$PKG_DIR/extensions/onlinescreensaver/bin/libs"
           mkdir -p "$PKG_DIR/extensions/onlinescreensaver"
 
-          # Main extension scripts
-          cp -r onlinescreensaver/bin/*   "$PKG_DIR/extensions/onlinescreensaver/bin/"
-          cp    onlinescreensaver/menu.json    "$PKG_DIR/extensions/onlinescreensaver/"
-          cp    onlinescreensaver/config.xml   "$PKG_DIR/extensions/onlinescreensaver/"
+          # Copy extension scripts + configs
+          cp -r "$EXT_SRC/bin/."   "$PKG_DIR/extensions/onlinescreensaver/bin/"
+          cp    "$EXT_SRC/menu.json"   "$PKG_DIR/extensions/onlinescreensaver/"
+          cp    "$EXT_SRC/config.xml"  "$PKG_DIR/extensions/onlinescreensaver/"
 
-          # ── Ensure scripts are executable (zip -X preserves permissions) ──
+          # Make scripts executable
           chmod +x "$PKG_DIR/extensions/onlinescreensaver/bin/"*.sh
 
-          # ── Create the MRPI install.sh ─────────────────────────────────
-          # MRPI extracts the zip and runs install.sh from the package root.
-          cat > "$PKG_DIR/install.sh" << 'INSTALL_EOF'
+          echo "PKG_DIR=$PKG_DIR" >> $GITHUB_ENV
+
+      # ── 5. Bundle ImageMagick armv7 (via Alpine arm32v7 container) ────────
+      # We run an ARM container using QEMU and extract the 'convert' binary
+      # plus all its shared libraries for self-contained operation on the Kindle.
+      - name: Bundle ImageMagick armv7 binary
+        run: |
+          BIN_OUT="$PKG_DIR/extensions/onlinescreensaver/bin"
+
+          docker run --rm --platform linux/arm/v7 \
+            -v "$BIN_OUT:/output" \
+            arm32v7/alpine:3.19 \
+            sh -c '
+              set -e
+              apk add --no-cache imagemagick imagemagick-libs
+
+              # Copy main binary
+              cp /usr/bin/convert /output/convert
+              chmod +x /output/convert
+
+              # Copy all shared libraries that convert depends on
+              mkdir -p /output/libs
+              ldd /usr/bin/convert 2>/dev/null | awk "/=>/ { print \$3 }" | sort -u | \
+                while read -r lib; do
+                  [ -f "$lib" ] && cp "$lib" /output/libs/ 2>/dev/null || true
+                done
+
+              # Copy musl libc (used by Alpine binaries)
+              find /lib -name "ld-musl-*.so*" -exec cp {} /output/libs/ \; 2>/dev/null || true
+
+              # Copy ImageMagick config/modules directory
+              find /usr -type d -name "ImageMagick*" | head -1 | xargs -I{} cp -r {} /output/libs/ 2>/dev/null || true
+
+              echo "convert binary: $(ls -lh /output/convert)"
+              echo "libs bundled: $(ls /output/libs | wc -l)"
+            '
+
+      # ── 6. Create the MRPI install.sh ─────────────────────────────────────
+      - name: Write install.sh
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          cat > "$PKG_DIR/install.sh" << 'EOF'
           #!/bin/sh
           ##################################################################
-          # Kindle Photo Frame — MRPI Installer
-          # Installs the onlinescreensaver extension to /mnt/us/extensions/
+          # Kindle Photo Frame — MRPI Installer v${VERSION}
           ##################################################################
+          set -e
 
           SCRIPT_DIR="$(dirname "$0")"
           DEST="/mnt/us/extensions/onlinescreensaver"
 
-          echo "Installing Kindle Photo Frame v${VERSION}..."
+          echo "Installing Kindle Photo Frame..."
 
-          # Make root filesystem writable (needed to touch /etc/upstart)
+          # Make root filesystem writable
           mntroot rw 2>/dev/null || true
 
-          # Copy extension files
+          # Copy the extension files
           mkdir -p "$DEST"
           cp -r "$SCRIPT_DIR/extensions/onlinescreensaver/." "$DEST/"
-
-          # Make all scripts executable
           chmod +x "$DEST/bin/"*.sh
+          chmod +x "$DEST/bin/convert" 2>/dev/null || true
 
-          # Create vault and log directories
+          # Create required directories
           mkdir -p "$DEST/vault"
           mkdir -p "$DEST/logs"
           mkdir -p "/mnt/us/onlinescreensaver/screensaver"
 
-          # Install the upstart scheduler (if not already running)
-          if [ -f "$DEST/bin/install.sh" ]; then
-              sh "$DEST/bin/install.sh"
+          # Create secrets.sh from template if it doesn't exist yet
+          if [ ! -f "$DEST/bin/secrets.sh" ] && [ -f "$DEST/bin/secrets.sh.template" ]; then
+              cp "$DEST/bin/secrets.sh.template" "$DEST/bin/secrets.sh"
+              echo ""
+              echo "★ IMPORTANT: Edit $DEST/bin/secrets.sh to set your Album URL."
+              echo "  Or use KUAL → Photo Frame → Settings → Photo Source"
+              echo ""
           fi
 
-          echo "Done! Open KUAL to configure and start the Photo Frame."
-          INSTALL_EOF
+          # Register the upstart scheduler
+          if [ -f "$DEST/bin/install.sh" ]; then
+              sh "$DEST/bin/install.sh" 2>/dev/null || true
+          fi
 
-          # Replace version placeholder in install.sh
+          echo "Done! Open KUAL → Photo Frame to start."
+          EOF
+
           sed -i "s/\${VERSION}/$VERSION/g" "$PKG_DIR/install.sh"
           chmod +x "$PKG_DIR/install.sh"
 
-          # ── Package as ZIP (renamed to .bin) ──────────────────────────
+      # ── 7. Package as ZIP → rename to .bin ───────────────────────────────
+      - name: Build MRPI .bin
+        run: |
+          FILENAME="${{ steps.ver.outputs.filename }}"
           cd "$PKG_DIR"
-          zip -r --symlinks -X "$BUILD_DIR/$FILENAME" . -x "*.DS_Store" -x "__MACOSX/*"
+          zip -r --symlinks -X "${{ github.workspace }}/build/$FILENAME" . \
+            -x "*.DS_Store" -x "__MACOSX/*"
 
-          echo "Built: $FILENAME ($(du -sh "$BUILD_DIR/$FILENAME" | cut -f1))"
-          ls -lh "$BUILD_DIR/$FILENAME"
+          echo "Package size: $(du -sh "${{ github.workspace }}/build/$FILENAME" | cut -f1)"
+          ls -lh "${{ github.workspace }}/build/$FILENAME"
 
-          echo "build_dir=$BUILD_DIR" >> $GITHUB_ENV
-          echo "filename=$FILENAME" >> $GITHUB_ENV
-
-      # ── 4. Upload as artifact ─────────────────────────────────────────────
+      # ── 8. Upload as GitHub artifact ──────────────────────────────────────
       - name: Upload MRPI package artifact
         uses: actions/upload-artifact@v4
         with:
           name: mrpi-package
           path: build/${{ steps.ver.outputs.filename }}
-          retention-days: 30
+          retention-days: 90
 
-      # ── 5. Create GitHub Release ──────────────────────────────────────────
+      # ── 9. Create GitHub Release ──────────────────────────────────────────
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.ver.outputs.version }}
           name: "Kindle Photo Frame v${{ steps.ver.outputs.version }}"
           body: |
-            ## Installation
+            ## 📥 Installation
 
-            1. Download `${{ steps.ver.outputs.filename }}`
-            2. Copy it to `/mrpackages/` on your Kindle (via USB)
-            3. On your Kindle, search: `;log mrpi`
-            4. Open KUAL → **Photo Frame** to configure
+            1. Download **`${{ steps.ver.outputs.filename }}`** below
+            2. Connect your Kindle via USB
+            3. Copy the file to the `mrpackages/` folder on your Kindle
+            4. On your Kindle, open search and type: `;log mrpi` → press Enter
+            5. Wait for the install to complete
+            6. Open **KUAL → Photo Frame → ⚙️ Settings → 📷 Photo Source** to set your Google Photos album URL
 
-            ## What's new
-            - Zero external dependencies — works with only built-in Kindle tools
-            - All photo processing runs on-device (no GitHub Actions needed)
-            - Interactive KUAL settings menus (weather, interval, photo count, etc.)
-            - Passive Mode fix: no longer skips updates when WiFi is actually up
+            ## ✨ What's included
 
-            ## Requirements
-            - Jailbroken Kindle with KUAL + MRPI installed
-            - Google Photos shared album URL (configured in KUAL settings)
+            - ✅ **Zero runtime dependencies** — ImageMagick armv7 binary is bundled inside
+            - ✅ **No GitHub Actions needed** — all photo processing runs on the Kindle
+            - ✅ **Date + weather embedded** in each photo (not screen overlays)
+            - ✅ **Interactive KUAL menus** — configure everything from the Kindle
+            - ✅ **Passive Mode fix** — no longer skips updates when WiFi is actually up
+
+            ## ⚙️ Requirements
+            - Jailbroken Kindle with **KUAL + MRPI** installed
+            - A **Google Photos shared album** URL (set in KUAL after install)
           files: build/${{ steps.ver.outputs.filename }}
           make_latest: true
+          fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
