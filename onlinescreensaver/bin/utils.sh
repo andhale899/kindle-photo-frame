@@ -117,90 +117,45 @@ currentTime () {
 # sets an RTC alarm
 # arguments: $1 - time in seconds from now
 
-#wait_for () { 
-#	delay=$1
-#	now=$(currentTime)
-#
-#        if [ "x1" == "x$LOGGING" ]; then
-#		state=`/usr/bin/powerd_test -s | grep "Powerd state"`
-#		defer=`/usr/bin/powerd_test -s | grep defer`
-#		remain=`/usr/bin/powerd_test -s | grep Remain`
-#		batt=`/usr/bin/powerd_test -s | grep Battery`
-#		logger "wait_for called with $delay, now=$now, $state, $defer, $remain, $batt"
-#	fi		
-#	# calculate the time we should return
-#	ENDWAIT=$(( $(currentTime) + $1 ))
-#
-#	# wait for timeout to expire
-#	logger "Wait_for $1 seconds"
-#	while [ $(currentTime) -lt $ENDWAIT ]; do
-#		REMAININGWAITTIME=$(( $ENDWAIT - $(currentTime) ))
-#		if [ 0 -lt $REMAININGWAITTIME ]; then
-#			sleep 2
-#			lipc-get-prop com.lab126.powerd status | grep "Screen Saver" 
-#			if [ $? -eq 0 ]
-#			then
-#				# in screensaver mode
-#				logger "go to sleep for $REMAININGWAITTIME seconds, wlan off"
-#				lipc-set-prop com.lab126.cmd wirelessEnable 0
-#				/mnt/us/extensions/onlinescreensaver/bin/rtcwake -d rtc$RTC -s $REMAININGWAITTIME -m mem
-#				logger "woke up again"
-#				logger "Finished waiting, switch wireless back on"
-#				lipc-set-prop com.lab126.cmd wirelessEnable 1
-#			else
-#				# not in screensaver mode - don't really sleep with rtcwake
-#				sleep $REMAININGWAITTIME
-#			fi
-#		fi
-#	done
-#
+wait_for () { 
+	delay=$1
+	now=$(currentTime)
 
-#	# not sure whether this is required
-#	lipc-set-prop com.lab126.powerd -i deferSuspend 40
-#	
-#}
+    if [ "x1" == "x$LOGGING" ]; then
+		state=`/usr/bin/powerd_test -s | grep "Powerd state"`
+		defer=`/usr/bin/powerd_test -s | grep defer`
+		remain=`/usr/bin/powerd_test -s | grep Remain`
+		batt=`/usr/bin/powerd_test -s | grep Battery`
+		logger "wait_for called with $delay, now=$now, $state, $defer, $remain, $batt"
+	fi		
 
-# runs when in the readyToSuspend state;
-# sets the rtc to wake up
-# arguments: $1 - amount of seconds to wake up in
-set_rtc_wakeup()
-{
-	lipc-set-prop -i com.lab126.powerd rtcWakeup $1 2>&1
-	logger "rtcWakeup has been set to $1"
-}
-
-##############################################################################
-# sets an RTC alarm
-# arguments: $1 - time in seconds from now
-
-wait_for () {
+	# calculate the time we should return
 	ENDWAIT=$(( $(currentTime) + $1 ))
-	REMAININGWAITTIME=$(( $ENDWAIT - $(currentTime) ))
-	logger "Starting to wait for timeout to expire: $1"
 
 	# wait for timeout to expire
-	while [ $REMAININGWAITTIME -gt 0 ]; do
-        logger "wait_for: checking events (timeout $REMAININGWAITTIME)..."
-		EVENT=$(lipc-wait-event -s $REMAININGWAITTIME com.lab126.powerd readyToSuspend,wakeupFromSuspend,resuming)
+	logger "Wait_for $1 seconds"
+	while [ $(currentTime) -lt $ENDWAIT ]; do
 		REMAININGWAITTIME=$(( $ENDWAIT - $(currentTime) ))
-		logger "wait_for: received event '$EVENT'"
-
-		case "$EVENT" in
-			readyToSuspend*)
-				set_rtc_wakeup $REMAININGWAITTIME
-			;;
-			wakeupFromSuspend*|resuming*)
-				logger "wait_for: woke up from suspend, breaking loop"
-				break
-			;;
-			*)
-				# If we timed out or got an ignored event
-                if [ -z "$EVENT" ]; then
-                    logger "wait_for: timed out naturally"
-                fi
-			;;
-		esac
+		if [ 0 -lt $REMAININGWAITTIME ]; then
+			sleep 2
+			lipc-get-prop com.lab126.powerd status | grep "Screen Saver" 
+			if [ $? -eq 0 ]
+			then
+				# in screensaver mode
+				logger "go to sleep for $REMAININGWAITTIME seconds, wlan off"
+				lipc-set-prop com.lab126.cmd wirelessEnable 0
+				/mnt/us/extensions/onlinescreensaver/bin/rtcwake -d rtc$RTC -s $REMAININGWAITTIME -m mem
+				logger "woke up again"
+				logger "Finished waiting, switch wireless back on"
+				lipc-set-prop com.lab126.cmd wirelessEnable 1
+			else
+				# not in screensaver mode - don't really sleep with rtcwake
+				sleep $REMAININGWAITTIME
+			fi
+		fi
 	done
 
-	logger "wait_for: finished"
+	# not sure whether this is required
+	lipc-set-prop com.lab126.powerd -i deferSuspend 40
 }
+
