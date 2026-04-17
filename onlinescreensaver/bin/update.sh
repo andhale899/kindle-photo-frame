@@ -123,9 +123,18 @@ while [ 0 -eq $CONNECTED ]; do
             rm -f "$PROBE_FILE" # Reset counter for next time
             CURRENT_TIMEOUT=$PROBE_WAIT
         else
-            echo "$PROBE_COUNT" > "$PROBE_FILE"
-            log "PASSIVE MODE ACTIVE: Skipping network checks (Probe in $(( PROBE_MAX - PROBE_COUNT )) cycles)." "dev_only"
-            break
+            # Quick check to see if the network is actually already up
+            if /bin/ping -c 1 -w 2 $TEST_DOMAIN > /dev/null 2>&1; then
+                log "PASSIVE MODE OVERRIDE: Network is up! Clearing strikes." "success"
+                rm -f "$STRIKE_FILE" "$PROBE_FILE"
+                PASSIVE_MODE=0
+                CONNECTED=1
+                TELEGRAM_READY=1
+            else
+                echo "$PROBE_COUNT" > "$PROBE_FILE"
+                log "PASSIVE MODE ACTIVE: Skipping network checks (Probe in $(( PROBE_MAX - PROBE_COUNT )) cycles)." "dev_only"
+                break
+            fi
         fi
     else
         # ACTIVE MODE: Dynamic Timeouts based on Strikes

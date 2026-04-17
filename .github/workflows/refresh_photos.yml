@@ -141,17 +141,10 @@ jobs:
       - name: Prepare output branch
         run: |
           BRANCH="${{ steps.cfg.outputs.out_branch }}"
-          if git ls-remote --exit-code origin "refs/heads/$BRANCH" > /dev/null 2>&1; then
-            git fetch origin "$BRANCH"
-            git checkout "$BRANCH"
-          else
-            echo "Creating orphan branch: $BRANCH"
-            git checkout --orphan "$BRANCH"
-            git rm -rf . --quiet || true
-            echo "# Kindle processed photos" > README.md
-            git add README.md
-            git commit -m "chore: init processed-photos branch"
-          fi
+          echo "Force-creating fresh orphan branch: $BRANCH"
+          git checkout --orphan "temp-$BRANCH"
+          git rm -rf . --quiet || true
+          echo "# Kindle processed photos" > README.md
 
       - name: Copy photos into branch
         run: |
@@ -166,13 +159,16 @@ jobs:
           TS=$(date -u "+%Y-%m-%d %H:%M UTC")
           MSG=$(echo "${{ steps.cfg.outputs.commit_msg }}" | sed "s/{timestamp}/$TS/")
           git add "${{ steps.cfg.outputs.out_dir }}/"
+          git add README.md
+          
           if git diff --cached --quiet; then
             echo "Nothing changed — skipping commit"
           else
             git commit -m "$MSG"
-            git push origin "$BRANCH"
+            # Force push the local HEAD to the remote branch, erasing its history
+            git push origin "HEAD:$BRANCH" --force
             COUNT=$(git show --stat HEAD | grep -c "photo_" || true)
-            echo "Pushed $COUNT photos to $BRANCH"
+            echo "Force-pushed $COUNT photos to $BRANCH. Repository history wiped for this branch!"
           fi
 
       # ── 7. Summary ────────────────────────────────────────────────────────
