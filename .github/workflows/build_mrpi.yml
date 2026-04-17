@@ -1,0 +1,137 @@
+name: Build MRPI Package
+
+on:
+  push:
+    branches:
+      - kindle-local-only-main
+  workflow_dispatch:
+
+jobs:
+  build-mrpi:
+    name: Package → MRPI .bin
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────────
+      - uses: actions/checkout@v4
+
+      # ── 2. Read version from config.sh ───────────────────────────────────
+      - name: Get version
+        id: ver
+        run: |
+          VERSION=$(grep '^VERSION=' onlinescreensaver/bin/config.sh | cut -d'"' -f2)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "filename=Update_KindlePhotoFrame_${VERSION}_install.bin" >> $GITHUB_OUTPUT
+
+      # ── 3. Build the MRPI package ─────────────────────────────────────────
+      # MRPI .bin format:
+      #   - It's a ZIP file renamed to .bin
+      #   - Contains install.sh at the root (MRPI runs this)
+      #   - Files should be laid out matching their target paths on the Kindle
+      - name: Build MRPI .bin
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          FILENAME="${{ steps.ver.outputs.filename }}"
+          BUILD_DIR="$(pwd)/build"
+          PKG_DIR="$BUILD_DIR/pkg"
+
+          mkdir -p "$PKG_DIR"
+
+          # ── Copy the extension files into the package ──────────────────
+          mkdir -p "$PKG_DIR/extensions/onlinescreensaver/bin"
+          mkdir -p "$PKG_DIR/extensions/onlinescreensaver"
+
+          # Main extension scripts
+          cp -r onlinescreensaver/bin/*   "$PKG_DIR/extensions/onlinescreensaver/bin/"
+          cp    onlinescreensaver/menu.json    "$PKG_DIR/extensions/onlinescreensaver/"
+          cp    onlinescreensaver/config.xml   "$PKG_DIR/extensions/onlinescreensaver/"
+
+          # ── Ensure scripts are executable (zip -X preserves permissions) ──
+          chmod +x "$PKG_DIR/extensions/onlinescreensaver/bin/"*.sh
+
+          # ── Create the MRPI install.sh ─────────────────────────────────
+          # MRPI extracts the zip and runs install.sh from the package root.
+          cat > "$PKG_DIR/install.sh" << 'INSTALL_EOF'
+          #!/bin/sh
+          ##################################################################
+          # Kindle Photo Frame — MRPI Installer
+          # Installs the onlinescreensaver extension to /mnt/us/extensions/
+          ##################################################################
+
+          SCRIPT_DIR="$(dirname "$0")"
+          DEST="/mnt/us/extensions/onlinescreensaver"
+
+          echo "Installing Kindle Photo Frame v${VERSION}..."
+
+          # Make root filesystem writable (needed to touch /etc/upstart)
+          mntroot rw 2>/dev/null || true
+
+          # Copy extension files
+          mkdir -p "$DEST"
+          cp -r "$SCRIPT_DIR/extensions/onlinescreensaver/." "$DEST/"
+
+          # Make all scripts executable
+          chmod +x "$DEST/bin/"*.sh
+
+          # Create vault and log directories
+          mkdir -p "$DEST/vault"
+          mkdir -p "$DEST/logs"
+          mkdir -p "/mnt/us/onlinescreensaver/screensaver"
+
+          # Install the upstart scheduler (if not already running)
+          if [ -f "$DEST/bin/install.sh" ]; then
+              sh "$DEST/bin/install.sh"
+          fi
+
+          echo "Done! Open KUAL to configure and start the Photo Frame."
+          INSTALL_EOF
+
+          # Replace version placeholder in install.sh
+          sed -i "s/\${VERSION}/$VERSION/g" "$PKG_DIR/install.sh"
+          chmod +x "$PKG_DIR/install.sh"
+
+          # ── Package as ZIP (renamed to .bin) ──────────────────────────
+          cd "$PKG_DIR"
+          zip -r --symlinks -X "$BUILD_DIR/$FILENAME" . -x "*.DS_Store" -x "__MACOSX/*"
+
+          echo "Built: $FILENAME ($(du -sh "$BUILD_DIR/$FILENAME" | cut -f1))"
+          ls -lh "$BUILD_DIR/$FILENAME"
+
+          echo "build_dir=$BUILD_DIR" >> $GITHUB_ENV
+          echo "filename=$FILENAME" >> $GITHUB_ENV
+
+      # ── 4. Upload as artifact ─────────────────────────────────────────────
+      - name: Upload MRPI package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mrpi-package
+          path: build/${{ steps.ver.outputs.filename }}
+          retention-days: 30
+
+      # ── 5. Create GitHub Release ──────────────────────────────────────────
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.ver.outputs.version }}
+          name: "Kindle Photo Frame v${{ steps.ver.outputs.version }}"
+          body: |
+            ## Installation
+
+            1. Download `${{ steps.ver.outputs.filename }}`
+            2. Copy it to `/mrpackages/` on your Kindle (via USB)
+            3. On your Kindle, search: `;log mrpi`
+            4. Open KUAL → **Photo Frame** to configure
+
+            ## What's new
+            - Zero external dependencies — works with only built-in Kindle tools
+            - All photo processing runs on-device (no GitHub Actions needed)
+            - Interactive KUAL settings menus (weather, interval, photo count, etc.)
+            - Passive Mode fix: no longer skips updates when WiFi is actually up
+
+            ## Requirements
+            - Jailbroken Kindle with KUAL + MRPI installed
+            - Google Photos shared album URL (configured in KUAL settings)
+          files: build/${{ steps.ver.outputs.filename }}
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
