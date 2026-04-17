@@ -1,72 +1,101 @@
 #############################################################################
-### ONLINE-SCREENSAVER CONFIGURATION SETTINGS (v2.1-stable)
+### ONLINE-SCREENSAVER CONFIGURATION SETTINGS (v5.0-local)
+### Branch: kindle-local-only-main
+### All processing happens ON the Kindle — no GitHub Actions needed.
 #############################################################################
 
-# Interval in MINUTES
-DEFAULTINTERVAL=15
-VERSION="4.5.6-stable"
+VERSION="5.0-local"
 
-# --- v4.5.6 Passive Mode Config ---
-PROBE_INTERVAL_CYCLES=48   # Check connection every 48 cycles (12h at 15m)
-PROBE_TIMEOUT=20         # Wait 20 seconds for the daily check
+#############################################################################
+# Photo Source (Google Photos shared album)
+#############################################################################
+ALBUM_URL="https://photos.app.goo.gl/yBPwxSGuEEnwnhGk9"
+PHOTO_COUNT=15         # How many random photos to fetch per cycle
 
-# load secrets if available (managed in gitignore)
-[ -e "secrets.sh" ] && source ./secrets.sh
-[ -e "/mnt/us/extensions/onlinescreensaver/bin/secrets.sh" ] && source /mnt/us/extensions/onlinescreensaver/bin/secrets.sh
+#############################################################################
+# Kindle screen dimensions
+#############################################################################
+KINDLE_W=1072
+KINDLE_H=1448
 
-# Schedule for updating the screensaver.
-SCHEDULE="00:00-24:00=5"
+#############################################################################
+# Weather overlay
+#############################################################################
+ENABLE_WEATHER=1
+WEATHER_LOCATION="Ahmednagar, IN"   # "City, Country" format
+WEATHER_UNITS="C"                   # C or F
 
-# URL/Path Base for Carousel (v3.0)
-GITHUB_USER="andhale899"
-GITHUB_REPO="kindle-photo-frame"
-IMAGE_BASE_URL="https://raw.githubusercontent.com/$GITHUB_USER/$GITHUB_REPO/processed-photos/photos"
+#############################################################################
+# ImageMagick path (auto-detected by setup.sh, override here if needed)
+#############################################################################
+CONVERT_BIN="convert"              # Will be updated to local path if installed
+NO_OVERLAY=0                       # Set to 1 to disable overlay (no ImageMagick)
 
-# The Vault (Local Multi-Image Cache)
+#############################################################################
+# Scheduling
+#############################################################################
+DEFAULTINTERVAL=30                 # Minutes between updates
+
+# Schedule range (used by checkschedule.sh)
+SCHEDULE="00:00-24:00=30"
+
+# Early Bird: wake this many seconds early for WiFi warmup
+# (30m interval - 60s early = 29min actual sleep)
+
+#############################################################################
+# Passive Mode Config (v4.5.6)
+#############################################################################
+PROBE_INTERVAL_CYCLES=4    # Re-check network every 4 cycles (~2h at 30m)
+PROBE_TIMEOUT=20           # Seconds to wait during passive probe
+
+#############################################################################
+# Vault (local image cache on Kindle)
+#############################################################################
 VAULT_DIR="/mnt/us/extensions/onlinescreensaver/vault"
-VAULT_COUNT=15
 
-# folder that holds the screensavers
+#############################################################################
+# Screensaver output paths
+#############################################################################
 SCREENSAVERFOLDER=/mnt/us/onlinescreensaver/screensaver
-# In which file to store the downloaded image.
 SCREENSAVERFILE=$SCREENSAVERFOLDER/bg_ss.png
 
-# Logging configuration
+#############################################################################
+# Logging
+#############################################################################
 LOGGING=1
 LOGFILE=/mnt/us/extensions/onlinescreensaver/logs/onlinescreensaver.txt
+LOG_RETENTION_DAYS=30
+RUN_MODE="prod"           # dev = verbose Telegram, prod = success/error only
 
-# WiFi management
-DISABLE_WIFI=0
+#############################################################################
+# Temp files
+#############################################################################
+URLS_FILE="/tmp/kindle_image_urls.txt"
+TMPFILE=/tmp/tmp.onlinescreensaver.png
+
+#############################################################################
+# WiFi settings
+#############################################################################
 TEST_DOMAIN="www.google.com"
 NETWORK_TIMEOUT=180
 
 #############################################################################
-# Environment & Telegram Alerts
+# Telegram Alerts (credentials in secrets.sh)
 #############################################################################
-
-# RUN_MODE: dev (verbose) or prod (success only)
-RUN_MODE="dev"
-
-# Telegram Bot Integration (Credentials in secrets.sh)
 ENABLE_TELEGRAM=1
 
 #############################################################################
-# Power Guardian & Archivist (v4.5)
+# Battery Guardian (v4.5)
 #############################################################################
-
-# Battery Alerts: List of percentages to send Telegram alerts (Descending order)
 BATT_ALERTS="40 35 30"
-
-# Battery Pause: Threshold at which script stops all operations
 BATT_PAUSE=25
-
-# Log Retention: Prune logs older than X days
-LOG_RETENTION_DAYS=100
 
 #############################################################################
 # Advanced
 #############################################################################
-
 RTC=1
-TMPFILE=/tmp/tmp.onlinescreensaver.png
 WEBHOOKADR=""
+
+# Load secrets (gitignored)
+[ -e "secrets.sh" ] && source ./secrets.sh
+[ -e "/mnt/us/extensions/onlinescreensaver/bin/secrets.sh" ] && source /mnt/us/extensions/onlinescreensaver/bin/secrets.sh

@@ -1,36 +1,135 @@
 {
 	"items": [
-		{"name": "Online-Screensaver",
+		{"name": "Photo Frame",
 			"items" : [
-				{"name": "Update Screen Now",     "priority":0, "action": "sh bin/update.sh"},
-				{"name": "Auto-Update Control",
+
+				{"name": "🔄 Update Screen Now",
+				 "priority": 0,
+				 "action": "sh bin/update.sh"},
+
+				{"name": "⚙️ Settings",
 					"items": [
-						{"name": "Enable Scheduler",  "priority":0, "action": "sh bin/enable.sh",  "if": "\"/etc/upstart/onlinescreensaver.conf\" -f !" },
-						{"name": "Disable Scheduler", "priority":0, "action": "sh bin/disable.sh", "if": "\"/etc/upstart/onlinescreensaver.conf\" -f" },
-						{"name": "Set Update Interval",
+
+						{"name": "📷 Photo Source",
 							"items": [
-								{"name": "5 Min (Fast/Test)", "action": "sh bin/set_interval.sh 5"},
-								{"name": "15 Minutes",        "action": "sh bin/set_interval.sh 15"},
-								{"name": "30 Minutes",        "action": "sh bin/set_interval.sh 30"},
-								{"name": "1 Hour (Normal)",   "action": "sh bin/set_interval.sh 60"},
-								{"name": "3 Hours",           "action": "sh bin/set_interval.sh 180"},
-								{"name": "6 Hours",           "action": "sh bin/set_interval.sh 360"},
-								{"name": "12 Hours",          "action": "sh bin/set_interval.sh 720"},
-								{"name": "24 Hours (Daily)",  "action": "sh bin/set_interval.sh 1440"}
+								{"name": "ℹ️ Current album → See status",
+								 "action": "sh bin/status.sh"},
+								{"name": "── Set Album ──────────────",
+								 "action": "sh bin/status.sh"},
+								{"name": "🏠 Family Album (Default)",
+								 "action": "sh bin/set_config.sh ALBUM_URL 'https://photos.app.goo.gl/yBPwxSGuEEnwnhGk9'"},
+								{"name": "➕ Add custom: Edit config.sh via SSH",
+								 "action": "sh bin/status.sh"}
+							]
+						},
+
+						{"name": "🖼️ Photo Count",
+							"items": [
+								{"name": "5 photos",  "action": "sh bin/set_config.sh PHOTO_COUNT 5"},
+								{"name": "10 photos", "action": "sh bin/set_config.sh PHOTO_COUNT 10"},
+								{"name": "15 photos (default)", "action": "sh bin/set_config.sh PHOTO_COUNT 15"},
+								{"name": "20 photos", "action": "sh bin/set_config.sh PHOTO_COUNT 20"},
+								{"name": "25 photos", "action": "sh bin/set_config.sh PHOTO_COUNT 25"}
+							]
+						},
+
+						{"name": "🌤️ Weather",
+							"items": [
+								{"name": "✅ Enable Weather Overlay",
+								 "action": "sh bin/set_config.sh ENABLE_WEATHER 1"},
+								{"name": "❌ Disable Weather Overlay",
+								 "action": "sh bin/set_config.sh ENABLE_WEATHER 0"},
+								{"name": "── Units ───────────────────",
+								 "action": "sh bin/status.sh"},
+								{"name": "°C (Celsius)",
+								 "action": "sh bin/set_config.sh WEATHER_UNITS C"},
+								{"name": "°F (Fahrenheit)",
+								 "action": "sh bin/set_config.sh WEATHER_UNITS F"},
+								{"name": "── Location ────────────────",
+								 "action": "sh bin/status.sh"},
+								{"name": "📍 Ahmednagar, IN (default)",
+								 "action": "sh bin/set_config.sh WEATHER_LOCATION 'Ahmednagar, IN'"},
+								{"name": "📍 Mumbai, IN",
+								 "action": "sh bin/set_config.sh WEATHER_LOCATION 'Mumbai, IN'"},
+								{"name": "📍 Pune, IN",
+								 "action": "sh bin/set_config.sh WEATHER_LOCATION 'Pune, IN'"},
+								{"name": "📍 Delhi, IN",
+								 "action": "sh bin/set_config.sh WEATHER_LOCATION 'Delhi, IN'"},
+								{"name": "🌍 Custom → Edit config.sh via SSH",
+								 "action": "sh bin/status.sh"}
+							]
+						},
+
+						{"name": "🖼️ Overlay / Processing",
+							"items": [
+								{"name": "✅ Enable Overlay (ImageMagick)",
+								 "action": "sh bin/set_config.sh NO_OVERLAY 0"},
+								{"name": "❌ Disable Overlay (Raw photos)",
+								 "action": "sh bin/set_config.sh NO_OVERLAY 1"},
+								{"name": "🔧 Check / Install ImageMagick",
+								 "action": "sh bin/setup.sh"}
+							]
+						},
+
+						{"name": "⏱️ Update Interval",
+							"items": [
+								{"name": "5 Min  (Fast / Test)",    "action": "sh bin/set_interval.sh 5"},
+								{"name": "15 Minutes",              "action": "sh bin/set_interval.sh 15"},
+								{"name": "30 Minutes (default)",    "action": "sh bin/set_interval.sh 30"},
+								{"name": "1 Hour",                  "action": "sh bin/set_interval.sh 60"},
+								{"name": "3 Hours",                 "action": "sh bin/set_interval.sh 180"},
+								{"name": "6 Hours",                 "action": "sh bin/set_interval.sh 360"},
+								{"name": "12 Hours",                "action": "sh bin/set_interval.sh 720"},
+								{"name": "24 Hours (Daily)",        "action": "sh bin/set_interval.sh 1440"}
+							]
+						},
+
+						{"name": "📶 Network / WiFi",
+							"items": [
+								{"name": "🔓 Clear Passive Mode (Reset Strikes)",
+								 "action": "rm -f /tmp/wifi_strike_count /tmp/passive_probe_count && echo 'Strikes cleared.'"},
+								{"name": "ℹ️  Check Network Status",
+								 "action": "sh bin/status.sh"}
 							]
 						}
+
 					]
 				},
-				{"name": "Maintenance",
+
+				{"name": "🔁 Scheduler",
 					"items": [
-						{"name": "Check Status",                   "priority":0, "action": "sh bin/status.sh"},
-						{"name": "Test Telegram Bot",              "priority":0, "action": "sh bin/test_telegram.sh"},
-						{"name": "Switch Dev/Prod Mode",           "action": "sh bin/toggle_mode.sh"},
-						{"name": "Prune Old Logs (100d)",          "action": "sh bin/cleanup_logs.sh"},
-						{"name": "[WARNING] Install Standalone",   "priority":0, "action": "sh bin/install.sh"},
-						{"name": "[WARNING] Uninstall Standalone", "priority":0, "action": "sh bin/uninstall.sh"}
+						{"name": "▶️ Enable Auto-Updates",
+						 "priority": 0,
+						 "action": "sh bin/enable.sh",
+						 "if": "\"/etc/upstart/onlinescreensaver.conf\" -f !"},
+						{"name": "⏹️ Disable Auto-Updates",
+						 "priority": 0,
+						 "action": "sh bin/disable.sh",
+						 "if": "\"/etc/upstart/onlinescreensaver.conf\" -f"}
+					]
+				},
+
+				{"name": "🛠️ Maintenance",
+					"items": [
+						{"name": "📊 Check Status",
+						 "priority": 0,
+						 "action": "sh bin/status.sh"},
+						{"name": "📨 Test Telegram Bot",
+						 "priority": 0,
+						 "action": "sh bin/test_telegram.sh"},
+						{"name": "🧹 Prune Old Logs",
+						 "action": "sh bin/cleanup_logs.sh"},
+						{"name": "🔀 Switch Dev/Prod Mode",
+						 "action": "sh bin/toggle_mode.sh"},
+						{"name": "⚠️  Install Standalone",
+						 "priority": 0,
+						 "action": "sh bin/install.sh"},
+						{"name": "⚠️  Uninstall",
+						 "priority": 0,
+						 "action": "sh bin/uninstall.sh"}
 					]
 				}
+
 			]
 		}
 	]

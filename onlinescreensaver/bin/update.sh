@@ -246,30 +246,35 @@ while [ 0 -eq $CONNECTED ]; do
 	fi
 done
 
-# --- v3.0 THE CAROUSEL LOGIC ---
+# --- v5.0 LOCAL PROCESSING ENGINE ---
 
-# 1. Sync Vault: Download all 15 images from GitHub
-sync_vault() {
-    log "CAROUSEL: Syncing Vault (Target: $VAULT_COUNT images)..." "dev_only"
-    mkdir -p "$VAULT_DIR"
-    
-    SUCCESS_COUNT=0
-    i=1
-    while [ $i -le $VAULT_COUNT ]; do
-        idx=$(pad_index $i)
-        VIMAGE="$VAULT_DIR/photo_$idx.png"
-        VURL="$IMAGE_BASE_URL/photo_$idx.png"
-        
-        # Download if net is up (max 30s per photo)
-        if curl -klL --connect-timeout 10 -m 30 "$VURL" -o "$TMPFILE"; then
-            mv -f "$TMPFILE" "$VIMAGE"
-            SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
-        else
-            log "CAROUSEL: Failed to sync photo_$idx" "dev_only"
-        fi
-        i=$((i + 1))
-    done
-    log "CAROUSEL: Sync Complete ($SUCCESS_COUNT/$VAULT_COUNT synced)." "success"
+# Run setup.sh to ensure dependencies (ImageMagick) are available
+if [ -e "setup.sh" ]; then
+    sh setup.sh
+fi
+
+# 1. Fetch photo URLs from Google Photos album
+fetch_photos() {
+    log "LOCAL: Fetching photo URLs from album..." "dev_only"
+    if sh "$(dirname "$0")/fetch_photos.sh"; then
+        log "LOCAL: URL fetch complete." "dev_only"
+        return 0
+    else
+        log "LOCAL: URL fetch failed." "error"
+        return 1
+    fi
+}
+
+# 2. Process photos locally on the Kindle
+process_photos() {
+    log "LOCAL: Processing photos with ImageMagick..." "dev_only"
+    if sh "$(dirname "$0")/process_local.sh"; then
+        log "LOCAL: Photo processing complete." "dev_only"
+        return 0
+    else
+        log "LOCAL: Photo processing failed." "error"
+        return 1
+    fi
 }
 
 # 2. Rotate Carousel: Fill SS slots with a variety from the Vault
@@ -332,11 +337,11 @@ rotate_carousel() {
 # --- Execution Flow ---
 
 if [ 1 -eq $CONNECTED ]; then
-    # Net is up: Sync the library
-    sync_vault
+    # Net is up: fetch URLs and process locally on the Kindle
+    fetch_photos && process_photos
 fi
 
-# Always rotate even if network failed/was skipped
+# Always rotate even if network failed/was skipped (uses vault)
 rotate_carousel
 
 # re-suspend logic (v2.8 Sleepwalker)
