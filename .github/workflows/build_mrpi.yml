@@ -82,6 +82,7 @@ jobs:
 
               # Copy ImageMagick config/modules directory
               find /usr -type d -name "ImageMagick*" | head -1 | xargs -I{} cp -r {} /output/libs/ 2>/dev/null || true
+              cp -r /etc/ImageMagick-7 /output/libs/ 2>/dev/null || true
 
               echo "convert binary: $(ls -lh /output/convert)"
               echo "libs bundled: $(ls /output/libs | wc -l)"
