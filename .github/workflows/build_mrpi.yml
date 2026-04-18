@@ -87,73 +87,62 @@ jobs:
               echo "libs bundled: $(ls /output/libs | wc -l)"
             '
 
-      # ── 6. Create the MRPI install.sh ─────────────────────────────────────
+      # ── 6. Create the installer/updater script ────────────────────────────
       - name: Write install.sh
         run: |
           VERSION="${{ steps.ver.outputs.version }}"
-          cat > "$PKG_DIR/install.sh" << 'EOF'
+          cat > "$PKG_DIR/extensions/onlinescreensaver/bin/install_kual.sh" << 'EOF'
           #!/bin/sh
           ##################################################################
-          # Kindle Photo Frame — MRPI Installer v${VERSION}
+          # Kindle Photo Frame — First Run Setup
           ##################################################################
           set -e
 
-          SCRIPT_DIR="$(dirname "$0")"
           DEST="/mnt/us/extensions/onlinescreensaver"
 
-          echo "Installing Kindle Photo Frame..."
+          echo "Initializing Kindle Photo Frame..."
 
           # Make root filesystem writable
           mntroot rw 2>/dev/null || true
-
-          # Copy the extension files
-          mkdir -p "$DEST"
-          cp -r "$SCRIPT_DIR/extensions/onlinescreensaver/." "$DEST/"
-          chmod +x "$DEST/bin/"*.sh
-          chmod +x "$DEST/bin/convert" 2>/dev/null || true
 
           # Create required directories
           mkdir -p "$DEST/vault"
           mkdir -p "$DEST/logs"
           mkdir -p "/mnt/us/onlinescreensaver/screensaver"
 
-          # Create secrets.sh from template if it doesn't exist yet
+          chmod +x "$DEST/bin/"*.sh
+          chmod +x "$DEST/bin/convert" 2>/dev/null || true
+
+          # Create secrets.sh from template if it doesn't exist
           if [ ! -f "$DEST/bin/secrets.sh" ] && [ -f "$DEST/bin/secrets.sh.template" ]; then
               cp "$DEST/bin/secrets.sh.template" "$DEST/bin/secrets.sh"
-              echo ""
-              echo "★ IMPORTANT: Edit $DEST/bin/secrets.sh to set your Album URL."
-              echo "  Or use KUAL → Photo Frame → Settings → Photo Source"
-              echo ""
           fi
 
-          # Register the upstart scheduler
           if [ -f "$DEST/bin/install.sh" ]; then
               sh "$DEST/bin/install.sh" 2>/dev/null || true
           fi
-
-          echo "Done! Open KUAL → Photo Frame to start."
           EOF
 
-          sed -i "s/\${VERSION}/$VERSION/g" "$PKG_DIR/install.sh"
-          chmod +x "$PKG_DIR/install.sh"
+          chmod +x "$PKG_DIR/extensions/onlinescreensaver/bin/install_kual.sh"
 
-      # ── 7. Package as ZIP → rename to .bin ───────────────────────────────
-      - name: Build MRPI .bin
+      # ── 7. Package as ZIP ────────────────────────────────────────────────
+      - name: Build ZIP
         run: |
-          FILENAME="${{ steps.ver.outputs.filename }}"
+          FILENAME="KindlePhotoFrame_${{ steps.ver.outputs.version }}.zip"
           cd "$PKG_DIR"
-          zip -r --symlinks -X "${{ github.workspace }}/build/$FILENAME" . \
+          zip -r -X "${{ github.workspace }}/build/$FILENAME" . \
             -x "*.DS_Store" -x "__MACOSX/*"
 
           echo "Package size: $(du -sh "${{ github.workspace }}/build/$FILENAME" | cut -f1)"
           ls -lh "${{ github.workspace }}/build/$FILENAME"
+          echo "filename=$FILENAME" >> $GITHUB_ENV
 
       # ── 8. Upload as GitHub artifact ──────────────────────────────────────
-      - name: Upload MRPI package artifact
+      - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mrpi-package
-          path: build/${{ steps.ver.outputs.filename }}
+          name: kual-extension
+          path: build/${{ env.filename }}
           retention-days: 90
 
       # ── 9. Create GitHub Release ──────────────────────────────────────────
@@ -165,12 +154,13 @@ jobs:
           body: |
             ## 📥 Installation
 
-            1. Download **`${{ steps.ver.outputs.filename }}`** below
+            1. Download **`${{ env.filename }}`** below
             2. Connect your Kindle via USB
-            3. Copy the file to the `mrpackages/` folder on your Kindle
-            4. On your Kindle, open search and type: `;log mrpi` → press Enter
-            5. Wait for the install to complete
-            6. Open **KUAL → Photo Frame → ⚙️ Settings → 📷 Photo Source** to set your Google Photos album URL
+            3. Unzip the file directly to the **root** of your Kindle drive (so the `extensions` folder inside the zip merges with the `extensions` folder on your Kindle).
+            4. Eject your Kindle
+            5. Open **KUAL → Photo Frame**
+            6. Tap **⚙️ Settings → 📷 Photo Source** to insert your Google Photos album URL (or edit `extensions/onlinescreensaver/bin/secrets.sh` on your PC).
+            7. Tap **Start Background Updater**
 
             ## ✨ What's included
 
@@ -181,9 +171,9 @@ jobs:
             - ✅ **Passive Mode fix** — no longer skips updates when WiFi is actually up
 
             ## ⚙️ Requirements
-            - Jailbroken Kindle with **KUAL + MRPI** installed
-            - A **Google Photos shared album** URL (set in KUAL after install)
-          files: build/${{ steps.ver.outputs.filename }}
+            - Jailbroken Kindle with **KUAL** installed
+            - A **Google Photos shared album** URL
+          files: build/${{ env.filename }}
           make_latest: true
           fail_on_unmatched_files: false
         env:
