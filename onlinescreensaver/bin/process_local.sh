@@ -30,12 +30,6 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 LIBS_DIR="$SCRIPT_DIR/libs"
 CONVERT_BIN="$SCRIPT_DIR/convert"
 
-# Point the linker to our bundled libs so convert finds them
-export LD_LIBRARY_PATH="$LIBS_DIR:$LD_LIBRARY_PATH"
-# Point ImageMagick at its bundled config/delegates
-export MAGICK_HOME="$SCRIPT_DIR"
-export MAGICK_CONFIGURE_PATH="$LIBS_DIR"
-
 # Check if bundled convert is available
 HAS_CONVERT=0
 if [ -x "$CONVERT_BIN" ]; then
@@ -88,6 +82,7 @@ embed_overlay() {
     #   3. Foreground pass (white) for date
     #   4. Shadow pass for weather  
     #   5. Foreground pass for weather
+    env LD_LIBRARY_PATH="$LIBS_DIR" MAGICK_HOME="$SCRIPT_DIR" MAGICK_CONFIGURE_PATH="$LIBS_DIR" \
     "$CONVERT_BIN" "$IMG_PATH" \
         -colorspace Gray -depth 8 \
         \( -clone 0 \
