@@ -97,7 +97,7 @@ embed_overlay() {
     # Invoke convert via musl loader, both from /tmp (exec mount)
     env LD_LIBRARY_PATH="$TMP_LIBS" \
         MAGICK_HOME="$TMP_BIN" \
-        MAGICK_CONFIGURE_PATH="$TMP_LIBS" \
+        MAGICK_CONFIGURE_PATH="$TMP_LIBS/ImageMagick-7" \
     "$MUSL_LOADER" "$CONVERT_BIN" "$IMG_PATH" \
         -colorspace Gray -depth 8 \
         \( -clone 0 \
