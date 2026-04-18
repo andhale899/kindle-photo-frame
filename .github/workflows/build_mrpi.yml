@@ -64,7 +64,7 @@ jobs:
             arm32v7/alpine:3.19 \
             sh -c '
               set -e
-              apk add --no-cache imagemagick imagemagick-libs
+              apk add --no-cache imagemagick imagemagick-libs libjpeg-turbo libpng libwebp
 
               # Copy main binary
               cp /usr/bin/convert /output/convert
@@ -81,8 +81,8 @@ jobs:
               find /lib -name "ld-musl-*.so*" -exec cp {} /output/libs/ \; 2>/dev/null || true
 
               # Copy ImageMagick config/modules directory
-              find /usr -type d -name "ImageMagick*" | head -1 | xargs -I{} cp -r {} /output/libs/ 2>/dev/null || true
-              cp -r /etc/ImageMagick-7 /output/libs/ 2>/dev/null || true
+              cp -r /usr/lib/ImageMagick-* /output/libs/ 2>/dev/null || true
+              cp -r /etc/ImageMagick-* /output/libs/ 2>/dev/null || true
 
               # Copy critical format libraries (dynamically loaded by coders)
               cp /usr/lib/libjpeg*.so* /output/libs/ 2>/dev/null || true
