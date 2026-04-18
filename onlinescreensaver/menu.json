@@ -7,6 +7,10 @@
 				 "priority": 0,
 				 "action": "sh bin/update.sh"},
 
+				{"name": "🚀 Download Latest Version (Auto-Update)",
+				 "priority": 0,
+				 "action": "sh bin/download_latest.sh"},
+
 				{"name": "⚙️ Settings",
 					"items": [
 

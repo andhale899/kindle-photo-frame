@@ -19,26 +19,35 @@ VAULT_DIR="${VAULT_DIR:-/mnt/us/extensions/onlinescreensaver/vault}"
 KINDLE_W="${KINDLE_W:-1072}"
 KINDLE_H="${KINDLE_H:-1448}"
 
-# Bundled ImageMagick — Alpine/musl binary, invoked via bundled ld-musl loader
-# The Kindle runs glibc so we must use the musl loader explicitly, otherwise
-# the kernel reports "not found" when trying to resolve /lib/ld-musl-armhf.so.1
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# /mnt/base-us is a noexec mount — binaries cannot be executed from there.
+# We always use the /mnt/us path (FAT32, exec allowed) for the extension dir.
+SCRIPT_DIR="/mnt/us/extensions/onlinescreensaver/bin"
 LIBS_DIR="$SCRIPT_DIR/libs"
-CONVERT_BIN="$SCRIPT_DIR/convert"
-MUSL_LOADER="$LIBS_DIR/ld-musl-armhf.so.1"
+CONVERT_SRC="$SCRIPT_DIR/convert"
+MUSL_SRC="$LIBS_DIR/ld-musl-armhf.so.1"
 
-logger "PROCESS: SCRIPT_DIR=$SCRIPT_DIR"
-logger "PROCESS: CONVERT_BIN=$CONVERT_BIN"
+# Copy convert + libs to /tmp/kpf_bin/ which is always exec-mounted
+# This is necessary because /mnt/base-us is noexec (KUAL/upstart launches from there)
+TMP_BIN="/tmp/kpf_bin"
+CONVERT_BIN="$TMP_BIN/convert"
+MUSL_LOADER="$TMP_BIN/libs/ld-musl-armhf.so.1"
 
-# Check if both the convert binary and musl loader are present
 HAS_CONVERT=0
-if [ -x "$CONVERT_BIN" ] && [ -x "$MUSL_LOADER" ]; then
+if [ -f "$CONVERT_SRC" ] && [ -f "$MUSL_SRC" ]; then
+    if [ ! -x "$CONVERT_BIN" ]; then
+        logger "PROCESS: Copying convert to /tmp/kpf_bin (noexec bypass)..."
+        mkdir -p "$TMP_BIN/libs"
+        cp "$CONVERT_SRC" "$TMP_BIN/convert"
+        cp "$LIBS_DIR"/*.so* "$TMP_BIN/libs/" 2>/dev/null || true
+        cp -r "$LIBS_DIR/ImageMagick-7" "$TMP_BIN/libs/" 2>/dev/null || true
+        cp "$MUSL_SRC" "$TMP_BIN/libs/ld-musl-armhf.so.1"
+        chmod +x "$TMP_BIN/convert"
+        chmod +x "$TMP_BIN/libs/ld-musl-armhf.so.1"
+    fi
     HAS_CONVERT=1
-    logger "PROCESS: convert + musl loader found OK"
+    logger "PROCESS: convert ready at $TMP_BIN"
 else
-    logger "PROCESS: WARNING - convert or musl loader missing. Text overlay disabled."
-    logger "PROCESS:   convert: $(ls $CONVERT_BIN 2>&1)"
-    logger "PROCESS:   musl:    $(ls $MUSL_LOADER 2>&1)"
+    logger "PROCESS: WARNING - convert or musl loader missing in $SCRIPT_DIR"
 fi
 
 ##############################################################################
@@ -63,6 +72,7 @@ fetch_weather() {
 ##############################################################################
 embed_overlay() {
     IMG_PATH="$1"
+    IMG_IDX="$2"
     [ ! -f "$IMG_PATH" ] && return 1
     [ "$HAS_CONVERT" -eq 0 ] && return 0   # skip silently if no convert
 
@@ -73,34 +83,44 @@ embed_overlay() {
     SHADOW=3
 
     TMP_OUT="/tmp/kindle_overlay_$$.png"
+    TMP_LIBS="$TMP_BIN/libs"
 
-    # Invoke convert via the bundled musl loader (Kindle uses glibc, not musl)
-    env LD_LIBRARY_PATH="$LIBS_DIR" \
-        MAGICK_HOME="$SCRIPT_DIR" \
-        MAGICK_CONFIGURE_PATH="$LIBS_DIR" \
+    # Alternate position based on image index to prevent screen burn
+    if [ $((IMG_IDX % 2)) -eq 0 ]; then
+        GRAV_DATE="NorthWest"
+        GRAV_WEATHER="NorthEast"
+    else
+        GRAV_DATE="SouthWest"
+        GRAV_WEATHER="SouthEast"
+    fi
+
+    # Invoke convert via musl loader, both from /tmp (exec mount)
+    env LD_LIBRARY_PATH="$TMP_LIBS" \
+        MAGICK_HOME="$TMP_BIN" \
+        MAGICK_CONFIGURE_PATH="$TMP_LIBS" \
     "$MUSL_LOADER" "$CONVERT_BIN" "$IMG_PATH" \
         -colorspace Gray -depth 8 \
         \( -clone 0 \
            -fill black \
-           -gravity SouthWest \
+           -gravity $GRAV_DATE \
            -pointsize "$SZ_DATE" \
            -annotate "+$((PAD + SHADOW))+$((PAD - SHADOW))" "$DATE_TEXT" \
         \) -composite \
         \( -clone 0 \
            -fill white \
-           -gravity SouthWest \
+           -gravity $GRAV_DATE \
            -pointsize "$SZ_DATE" \
            -annotate "+${PAD}+${PAD}" "$DATE_TEXT" \
         \) -composite \
         \( -clone 0 \
            -fill black \
-           -gravity SouthEast \
+           -gravity $GRAV_WEATHER \
            -pointsize "$SZ_WEATHER" \
            -annotate "+$((PAD + SHADOW))+$((PAD - SHADOW))" "$WEATHER_TEXT" \
         \) -composite \
         \( -clone 0 \
            -fill white \
-           -gravity SouthEast \
+           -gravity $GRAV_WEATHER \
            -pointsize "$SZ_WEATHER" \
            -annotate "+${PAD}+${PAD}" "$WEATHER_TEXT" \
         \) -composite \
@@ -152,7 +172,7 @@ while IFS= read -r URL; do
     if curl -klL --connect-timeout 10 -m 60 "$URL" -o "$OUT_PATH" 2>/dev/null && [ -s "$OUT_PATH" ]; then
         SZ=$(ls -la "$OUT_PATH" 2>/dev/null | awk '{print $5}')
         logger "PROCESS: Downloaded ${SZ} bytes -> photo_${PADDED}.png"
-        embed_overlay "$OUT_PATH"
+        embed_overlay "$OUT_PATH" "$IDX"
         SUCCESS=$(( SUCCESS + 1 ))
     else
         logger "PROCESS: Download failed -> photo_${PADDED}.png"

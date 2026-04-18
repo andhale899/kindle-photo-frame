@@ -37,33 +37,33 @@ fi
 
 # Fetch battery percentage at start
 batt_percent=$(powerd_test -s | grep "Battery Level" | awk '{print $3}' | tr -d '%')
+# Guard against empty battery read
+batt_percent=${batt_percent:-100}
 log "--- Update Started v$VERSION (Battery: $batt_percent%) ---"
 
 # --- v4.5 POWER GUARDIAN ---
 BATT_ALERT_FILE="/tmp/last_batt_threshold"
 
 # 1. Check for Emergency Pause
-if [ "$batt_percent" -le "$BATT_PAUSE" ]; then
+if [ "$batt_percent" -le "${BATT_PAUSE:-20}" ]; then
     log "CRITICAL: Battery at $batt_percent% (Threshold: $BATT_PAUSE%). Pausing updates to save power." "error"
-    send_telegram_msg "🔋 CRITICAL: Battery at $batt_percent%. OnlineScreensaver is now PAUSED until charged."
     exit 0
 fi
 
 # 2. Check for Alerts
-for threshold in $BATT_ALERTS; do
+for threshold in ${BATT_ALERTS:-40 35 30}; do
     if [ "$batt_percent" -le "$threshold" ]; then
         LAST_SENT=$(cat "$BATT_ALERT_FILE" 2>/dev/null || echo 100)
         if [ "$threshold" -lt "$LAST_SENT" ]; then
-            log "POWER: Battery dropped below $threshold%." "dev_only"
-            send_telegram_msg "🔌 LOW BATTERY: Kindle at $batt_percent% (Alert Threshold: $threshold%)."
+            log "POWER: Battery dropped below $threshold%."
             echo "$threshold" > "$BATT_ALERT_FILE"
         fi
-        break # Only fire for the highest met threshold
+        break
     fi
 done
 
-# Reset threshold tracker if battery is charging (higher than alerts)
-FIRST_ALERT=$(echo $BATT_ALERTS | awk '{print $1}')
+# Reset threshold tracker if battery recovered
+FIRST_ALERT=$(echo ${BATT_ALERTS:-40} | awk '{print $1}')
 if [ "$batt_percent" -gt "$FIRST_ALERT" ]; then
     rm -f "$BATT_ALERT_FILE"
 fi
@@ -81,7 +81,9 @@ lipc-set-prop com.lab126.cmd airplaneMode 0 2>/dev/null
 if [ -n "$WIFI_STATE" ] && [ "$WIFI_STATE" -eq 0 ] 2>/dev/null; then
 	logger "WiFi is off, forcing ignition"
 	lipc-set-prop com.lab126.cmd wirelessEnable 1
-	SHOULD_DISABLE_WIFI=1
+	# NOTE: We intentionally do NOT set SHOULD_DISABLE_WIFI here.
+	# The Kindle OS manages WiFi sleep natively. Disabling it from
+	# a script risks leaving it off permanently if the extension stops.
     sleep 5
 fi
 
@@ -363,11 +365,9 @@ if [ "$SLEDGEHAMMER_FIRED" -eq 1 ]; then
     esac
 fi
 
-# disable wireless if necessary
-if [ "${SHOULD_DISABLE_WIFI:-0}" -eq 1 ]; then
-	log "Disabling WiFi"
-	lipc-set-prop com.lab126.cmd wirelessEnable 0
-fi
+# WiFi management is intentionally left to the Kindle OS.
+# We never forcibly disable WiFi — this prevents it getting stuck
+# off permanently if the extension is stopped between cycles.
 
 # release sleep inhibit
 toggle_inhibit 0
